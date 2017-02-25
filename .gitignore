@@ -10,10 +10,10 @@ integration-repo
 ivy-cache
 jxl.log
 jmx.log
-derby.log
+derby.logΩ
 spring-test/test-output/
 .gradle
-argfile
+argfileΩ
 activemq-data/
 
 classes/
@@ -37,3 +37,5 @@ out
 test-output
 atlassian-ide-plugin.xml
 .gradletasknamecache
+
+

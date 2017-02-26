@@ -1,7 +1,6 @@
 package cn.edu.nju.dao;
 
 import cn.edu.nju.entity.AccountEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 /**

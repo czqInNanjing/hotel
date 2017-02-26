@@ -24,7 +24,8 @@ public class CustomerRepositoryTest {
 
     @Autowired
     private AccountRepository repository;
-
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     public void testExample() throws Exception {

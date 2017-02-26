@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"/>
-    <link rel="stylesheet" href="../../static/css/bootstrap-theme.css" th:href="@{/css/bootstrap-theme.css}"/>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
 </head>
 <body>
 
@@ -29,7 +30,6 @@
         <a href="register.html" th:href="@{/account/register}">No Account? Sign up now!</a>
     </div>
 </div>
-
 <div th:insert="~{footer :: copy}"></div>
 </body>
 </html>

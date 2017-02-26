@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
  * @author Qiang
- * @since 25/02/2017
+ * @since 26/02/2017
  */
 @Entity
 @Table(name = "account", schema = "hotel", catalog = "")
@@ -13,6 +13,9 @@ public class AccountEntity {
     private String password;
     private int id;
     private int type;
+    private HotelEntity hotelById;
+    private HotelNewEntity hotelNewById;
+    private MemberEntity memberById;
 
     public AccountEntity() {
     }
@@ -20,10 +23,11 @@ public class AccountEntity {
     public AccountEntity(String mail, String password) {
         this.mail = mail;
         this.password = password;
+
     }
 
     @Basic
-    @Column(name = "mail")
+    @Column(name = "mail", nullable = false, length = 20)
     public String getMail() {
         return mail;
     }
@@ -33,7 +37,7 @@ public class AccountEntity {
     }
 
     @Basic
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 20)
     public String getPassword() {
         return password;
     }
@@ -43,7 +47,7 @@ public class AccountEntity {
     }
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -53,7 +57,7 @@ public class AccountEntity {
     }
 
     @Basic
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     public int getType() {
         return type;
     }
@@ -84,5 +88,32 @@ public class AccountEntity {
         result = 31 * result + id;
         result = 31 * result + type;
         return result;
+    }
+
+    @OneToOne(mappedBy = "accountById")
+    public HotelEntity getHotelById() {
+        return hotelById;
+    }
+
+    public void setHotelById(HotelEntity hotelById) {
+        this.hotelById = hotelById;
+    }
+
+    @OneToOne(mappedBy = "accountById")
+    public HotelNewEntity getHotelNewById() {
+        return hotelNewById;
+    }
+
+    public void setHotelNewById(HotelNewEntity hotelNewById) {
+        this.hotelNewById = hotelNewById;
+    }
+
+    @OneToOne(mappedBy = "accountById")
+    public MemberEntity getMemberById() {
+        return memberById;
+    }
+
+    public void setMemberById(MemberEntity memberById) {
+        this.memberById = memberById;
     }
 }

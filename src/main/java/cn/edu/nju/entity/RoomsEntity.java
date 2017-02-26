@@ -5,7 +5,7 @@ import java.sql.Date;
 
 /**
  * @author Qiang
- * @since 25/02/2017
+ * @since 26/02/2017
  */
 @Entity
 @Table(name = "rooms", schema = "hotel", catalog = "")
@@ -19,7 +19,7 @@ public class RoomsEntity {
     private Integer price;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -29,7 +29,7 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "hotel_id")
+    @Column(name = "hotel_id", nullable = true, length = 20)
     public String getHotelId() {
         return hotelId;
     }
@@ -39,7 +39,7 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "available_time")
+    @Column(name = "available_time", nullable = false)
     public Date getAvailableTime() {
         return availableTime;
     }
@@ -49,7 +49,7 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "wifi")
+    @Column(name = "wifi", nullable = true)
     public Byte getWifi() {
         return wifi;
     }
@@ -59,7 +59,7 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "pic_url")
+    @Column(name = "pic_url", nullable = true, length = -1)
     public String getPicUrl() {
         return picUrl;
     }
@@ -69,7 +69,7 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "type")
+    @Column(name = "type", nullable = true, length = 20)
     public String getType() {
         return type;
     }
@@ -79,7 +79,7 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "price")
+    @Column(name = "price", nullable = true)
     public Integer getPrice() {
         return price;
     }

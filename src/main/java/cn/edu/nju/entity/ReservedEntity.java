@@ -5,7 +5,7 @@ import java.sql.Date;
 
 /**
  * @author Qiang
- * @since 25/02/2017
+ * @since 26/02/2017
  */
 @Entity
 @Table(name = "reserved", schema = "hotel", catalog = "")
@@ -16,7 +16,7 @@ public class ReservedEntity {
     private Date time;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -26,7 +26,7 @@ public class ReservedEntity {
     }
 
     @Basic
-    @Column(name = "room_id")
+    @Column(name = "room_id", nullable = true, length = 20)
     public String getRoomId() {
         return roomId;
     }
@@ -36,7 +36,7 @@ public class ReservedEntity {
     }
 
     @Basic
-    @Column(name = "member_id")
+    @Column(name = "member_id", nullable = true, length = 20)
     public String getMemberId() {
         return memberId;
     }
@@ -46,7 +46,7 @@ public class ReservedEntity {
     }
 
     @Basic
-    @Column(name = "time")
+    @Column(name = "time", nullable = false)
     public Date getTime() {
         return time;
     }

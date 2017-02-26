@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
  * @author Qiang
- * @since 25/02/2017
+ * @since 26/02/2017
  */
 @Entity
 @Table(name = "hotel", schema = "hotel", catalog = "")
@@ -17,7 +17,7 @@ public class HotelEntity {
     private AccountEntity accountById;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -27,7 +27,7 @@ public class HotelEntity {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 30)
     public String getName() {
         return name;
     }
@@ -37,7 +37,7 @@ public class HotelEntity {
     }
 
     @Basic
-    @Column(name = "address")
+    @Column(name = "address", nullable = true, length = 50)
     public String getAddress() {
         return address;
     }
@@ -47,7 +47,7 @@ public class HotelEntity {
     }
 
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = true)
     public Byte getStatus() {
         return status;
     }
@@ -57,7 +57,7 @@ public class HotelEntity {
     }
 
     @Basic
-    @Column(name = "description")
+    @Column(name = "description", nullable = true, length = 1000)
     public String getDescription() {
         return description;
     }

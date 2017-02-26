@@ -1,12 +1,16 @@
 package cn.edu.nju.controller;
 
 import cn.edu.nju.dao.AccountRepository;
+import cn.edu.nju.dao.MemberRepository;
 import cn.edu.nju.entity.AccountEntity;
+import cn.edu.nju.entity.MemberEntity;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 /**
@@ -14,13 +18,16 @@ import org.springframework.web.bind.support.SessionStatus;
  * @since 25/02/2017
  */
 @Controller
+@SessionAttributes({"mail","name"})
 @RequestMapping(value = "/account")
 public class AccountController {
     private final AccountRepository repository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public AccountController(AccountRepository repository) {
+    public AccountController(AccountRepository repository, MemberRepository memberRepository) {
         this.repository = repository;
+        this.memberRepository = memberRepository;
     }
 
 
@@ -31,8 +38,11 @@ public class AccountController {
         AccountEntity result = repository.findByMailAndPassword(mail, password);
 
         if (result != null) {
+
+
             switch (result.getType()) {
                 case 0:
+                    model.addAttribute("member", memberRepository.findOne(result.getId()));
                     return "member/index";
                 case 1:
                     return "hotel/index";
@@ -59,6 +69,11 @@ public class AccountController {
             entity = new AccountEntity(mail, password);
 
             repository.save(entity);
+            entity = repository.findByMail(mail);
+            MemberEntity memberEntity = new MemberEntity();
+
+            BeanUtils.copyProperties(entity, memberEntity);
+            memberRepository.save(memberEntity);
 
             return "account/index";
         }

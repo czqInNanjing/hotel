@@ -5,23 +5,23 @@ import java.sql.Date;
 
 /**
  * @author Qiang
- * @since 25/02/2017
+ * @since 26/02/2017
  */
 @Entity
 @Table(name = "member", schema = "hotel", catalog = "")
 public class MemberEntity {
     private int id;
-    private String name;
-    private Byte status;
-    private Integer remainDays;
-    private Integer deposit;
-    private Integer points;
+    private String name = "Smith";
+    private Byte status = 0;
+    private Integer deposit = 0;
+    private Integer points = 0;
+    private String creditCard = "";
     private Date registDate;
-    private String creditCard;
+    private int remainDays;
     private AccountEntity accountById;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -31,7 +31,7 @@ public class MemberEntity {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 20)
     public String getName() {
         return name;
     }
@@ -41,7 +41,7 @@ public class MemberEntity {
     }
 
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = true)
     public Byte getStatus() {
         return status;
     }
@@ -51,17 +51,7 @@ public class MemberEntity {
     }
 
     @Basic
-    @Column(name = "remainDays")
-    public Integer getRemainDays() {
-        return remainDays;
-    }
-
-    public void setRemainDays(Integer remainDays) {
-        this.remainDays = remainDays;
-    }
-
-    @Basic
-    @Column(name = "deposit")
+    @Column(name = "deposit", nullable = true)
     public Integer getDeposit() {
         return deposit;
     }
@@ -71,7 +61,7 @@ public class MemberEntity {
     }
 
     @Basic
-    @Column(name = "points")
+    @Column(name = "points", nullable = true)
     public Integer getPoints() {
         return points;
     }
@@ -81,7 +71,17 @@ public class MemberEntity {
     }
 
     @Basic
-    @Column(name = "registDate")
+    @Column(name = "credit_card", nullable = false, length = -1)
+    public String getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(String creditCard) {
+        this.creditCard = creditCard;
+    }
+
+    @Basic
+    @Column(name = "regist_date", nullable = false)
     public Date getRegistDate() {
         return registDate;
     }
@@ -91,13 +91,13 @@ public class MemberEntity {
     }
 
     @Basic
-    @Column(name = "creditCard")
-    public String getCreditCard() {
-        return creditCard;
+    @Column(name = "remain_days", nullable = false)
+    public int getRemainDays() {
+        return remainDays;
     }
 
-    public void setCreditCard(String creditCard) {
-        this.creditCard = creditCard;
+    public void setRemainDays(int remainDays) {
+        this.remainDays = remainDays;
     }
 
     @Override
@@ -108,13 +108,13 @@ public class MemberEntity {
         MemberEntity that = (MemberEntity) o;
 
         if (id != that.id) return false;
+        if (remainDays != that.remainDays) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (remainDays != null ? !remainDays.equals(that.remainDays) : that.remainDays != null) return false;
         if (deposit != null ? !deposit.equals(that.deposit) : that.deposit != null) return false;
         if (points != null ? !points.equals(that.points) : that.points != null) return false;
-        if (registDate != null ? !registDate.equals(that.registDate) : that.registDate != null) return false;
         if (creditCard != null ? !creditCard.equals(that.creditCard) : that.creditCard != null) return false;
+        if (registDate != null ? !registDate.equals(that.registDate) : that.registDate != null) return false;
 
         return true;
     }
@@ -124,11 +124,11 @@ public class MemberEntity {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (remainDays != null ? remainDays.hashCode() : 0);
         result = 31 * result + (deposit != null ? deposit.hashCode() : 0);
         result = 31 * result + (points != null ? points.hashCode() : 0);
-        result = 31 * result + (registDate != null ? registDate.hashCode() : 0);
         result = 31 * result + (creditCard != null ? creditCard.hashCode() : 0);
+        result = 31 * result + (registDate != null ? registDate.hashCode() : 0);
+        result = 31 * result + remainDays;
         return result;
     }
 

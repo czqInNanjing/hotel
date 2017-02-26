@@ -2,32 +2,28 @@ package cn.edu.nju.controller;
 
 import cn.edu.nju.dao.AccountRepository;
 import cn.edu.nju.entity.AccountEntity;
-import org.aspectj.apache.bcel.classfile.Method;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 
 /**
  * @author Qiang
  * @since 25/02/2017
  */
 @Controller
-public class LoginController {
+@RequestMapping(value = "/account")
+public class AccountController {
     private final AccountRepository repository;
 
     @Autowired
-    public LoginController(AccountRepository repository) {
+    public AccountController(AccountRepository repository) {
         this.repository = repository;
     }
 
-    @RequestMapping("/")
-    public String index() {
-        return "index";
-    }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(Model model, String mail, String password) {
@@ -37,18 +33,18 @@ public class LoginController {
         if (result != null) {
             switch (result.getType()) {
                 case 0:
-                    return "member";
+                    return "member/index";
                 case 1:
-                    return "hotel";
+                    return "hotel/index";
                 case 2:
-                    return "manager";
+                    return "manager/index";
                 default:
-                    return "index";
+                    return "account/index";
             }
         }
 
         model.addAttribute("error" , "mail or password error");
-        return "index";
+        return "account/index";
 
     }
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -58,16 +54,37 @@ public class LoginController {
 
         if (entity != null) {
             model.addAttribute("error", "Mail Existed");
-            return "register";
+            return "account/register";
         } else {
             entity = new AccountEntity(mail, password);
 
             repository.save(entity);
 
-            return "index";
+            return "account/index";
         }
 
 
     }
+
+    @RequestMapping("/login")
+    public String login() {
+        return "account/login";
+    }
+
+    @RequestMapping("/register")
+    public String register() {
+        return "account/register";
+    }
+
+    @RequestMapping(value="/logout", method=RequestMethod.GET)
+    public String logout(SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return "account/index";
+    }
+
+
+
+
+
 
 }

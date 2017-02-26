@@ -10,18 +10,18 @@ import java.sql.Date;
 @Entity
 @Table(name = "open_application", schema = "hotel", catalog = "")
 public class OpenApplicationEntity {
-    private String id;
+    private int id;
     private Date time;
     private String hotelId;
     private Byte status;
 
     @Id
     @Column(name = "id")
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -62,7 +62,7 @@ public class OpenApplicationEntity {
 
         OpenApplicationEntity that = (OpenApplicationEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != that.id) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
         if (hotelId != null ? !hotelId.equals(that.hotelId) : that.hotelId != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
@@ -72,7 +72,7 @@ public class OpenApplicationEntity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (hotelId != null ? hotelId.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);

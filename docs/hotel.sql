@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Feb 25, 2017 at 04:44 PM
+-- Generation Time: Feb 25, 2017 at 07:32 PM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -30,9 +30,9 @@ USE `hotel`;
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
+  `id` int(11) NOT NULL,
   `mail` varchar(20) COLLATE utf8_bin NOT NULL,
-  `password` varchar(20) COLLATE utf8_bin NOT NULL,
-  `id` varchar(20) COLLATE utf8_bin NOT NULL
+  `password` varchar(20) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -43,7 +43,7 @@ CREATE TABLE `account` (
 
 DROP TABLE IF EXISTS `hotel`;
 CREATE TABLE `hotel` (
-  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(30) COLLATE utf8_bin DEFAULT 'HOTEL',
   `address` varchar(50) COLLATE utf8_bin DEFAULT 'Nanjing',
   `status` tinyint(1) DEFAULT '0',
@@ -58,7 +58,7 @@ CREATE TABLE `hotel` (
 
 DROP TABLE IF EXISTS `hotel_new`;
 CREATE TABLE `hotel_new` (
-  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(30) COLLATE utf8_bin DEFAULT 'HOTEL',
   `address` varchar(50) COLLATE utf8_bin DEFAULT 'Nanjing',
   `status` tinyint(1) DEFAULT '0',
@@ -73,7 +73,7 @@ CREATE TABLE `hotel_new` (
 
 DROP TABLE IF EXISTS `liveMes`;
 CREATE TABLE `liveMes` (
-  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL,
   `in_time` date NOT NULL,
   `out_time` date DEFAULT NULL,
   `person_num` int(11) DEFAULT '1',
@@ -90,7 +90,7 @@ CREATE TABLE `liveMes` (
 
 DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member` (
-  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(20) COLLATE utf8_bin DEFAULT 'Customer',
   `status` tinyint(1) DEFAULT '0',
   `remainDays` int(11) DEFAULT '0',
@@ -108,7 +108,7 @@ CREATE TABLE `member` (
 
 DROP TABLE IF EXISTS `modify_application`;
 CREATE TABLE `modify_application` (
-  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL,
   `time` date NOT NULL,
   `hotel_id` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `new_hotel_id` varchar(20) COLLATE utf8_bin DEFAULT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE `modify_application` (
 
 DROP TABLE IF EXISTS `open_application`;
 CREATE TABLE `open_application` (
-  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL,
   `time` date NOT NULL,
   `hotel_id` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0'
@@ -137,7 +137,7 @@ CREATE TABLE `open_application` (
 
 DROP TABLE IF EXISTS `reserved`;
 CREATE TABLE `reserved` (
-  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL,
   `room_id` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `member_id` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `time` date NOT NULL
@@ -151,7 +151,7 @@ CREATE TABLE `reserved` (
 
 DROP TABLE IF EXISTS `rooms`;
 CREATE TABLE `rooms` (
-  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `id` int(11) NOT NULL,
   `hotel_id` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `available_time` date NOT NULL,
   `wifi` tinyint(1) DEFAULT '1',
@@ -168,8 +168,7 @@ CREATE TABLE `rooms` (
 -- Indexes for table `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`mail`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `hotel`
@@ -219,6 +218,40 @@ ALTER TABLE `reserved`
 ALTER TABLE `rooms`
   ADD PRIMARY KEY (`id`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `member`
+--
+ALTER TABLE `member`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `modify_application`
+--
+ALTER TABLE `modify_application`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `open_application`
+--
+ALTER TABLE `open_application`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `reserved`
+--
+ALTER TABLE `reserved`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `rooms`
+--
+ALTER TABLE `rooms`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --

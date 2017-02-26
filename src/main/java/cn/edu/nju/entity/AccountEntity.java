@@ -11,10 +11,16 @@ import javax.persistence.*;
 public class AccountEntity {
     private String mail;
     private String password;
-    private String id;
-    private HotelEntity hotelById;
-    private HotelNewEntity hotelNewById;
-    private MemberEntity memberById;
+    private int id;
+    private int type;
+
+    public AccountEntity() {
+    }
+
+    public AccountEntity(String mail, String password) {
+        this.mail = mail;
+        this.password = password;
+    }
 
     @Basic
     @Column(name = "mail")
@@ -38,12 +44,22 @@ public class AccountEntity {
 
     @Id
     @Column(name = "id")
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "type")
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override
@@ -53,9 +69,10 @@ public class AccountEntity {
 
         AccountEntity entity = (AccountEntity) o;
 
+        if (id != entity.id) return false;
+        if (type != entity.type) return false;
         if (mail != null ? !mail.equals(entity.mail) : entity.mail != null) return false;
         if (password != null ? !password.equals(entity.password) : entity.password != null) return false;
-        if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
 
         return true;
     }
@@ -64,43 +81,8 @@ public class AccountEntity {
     public int hashCode() {
         int result = mail != null ? mail.hashCode() : 0;
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + id;
+        result = 31 * result + type;
         return result;
-    }
-
-    public AccountEntity() {
-    }
-
-    public AccountEntity(String mail, String password, String id) {
-        this.mail = mail;
-        this.password = password;
-        this.id = id;
-    }
-
-    @OneToOne(mappedBy = "accountById")
-    public HotelEntity getHotelById() {
-        return hotelById;
-    }
-
-    public void setHotelById(HotelEntity hotelById) {
-        this.hotelById = hotelById;
-    }
-
-    @OneToOne(mappedBy = "accountById")
-    public HotelNewEntity getHotelNewById() {
-        return hotelNewById;
-    }
-
-    public void setHotelNewById(HotelNewEntity hotelNewById) {
-        this.hotelNewById = hotelNewById;
-    }
-
-    @OneToOne(mappedBy = "accountById")
-    public MemberEntity getMemberById() {
-        return memberById;
-    }
-
-    public void setMemberById(MemberEntity memberById) {
-        this.memberById = memberById;
     }
 }

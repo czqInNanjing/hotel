@@ -10,7 +10,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "liveMes", schema = "hotel", catalog = "")
 public class LiveMesEntity {
-    private String id;
+    private int id;
     private Date inTime;
     private Date outTime;
     private Integer personNum;
@@ -20,11 +20,11 @@ public class LiveMesEntity {
 
     @Id
     @Column(name = "id")
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -95,7 +95,7 @@ public class LiveMesEntity {
 
         LiveMesEntity that = (LiveMesEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != that.id) return false;
         if (inTime != null ? !inTime.equals(that.inTime) : that.inTime != null) return false;
         if (outTime != null ? !outTime.equals(that.outTime) : that.outTime != null) return false;
         if (personNum != null ? !personNum.equals(that.personNum) : that.personNum != null) return false;
@@ -108,7 +108,7 @@ public class LiveMesEntity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (inTime != null ? inTime.hashCode() : 0);
         result = 31 * result + (outTime != null ? outTime.hashCode() : 0);
         result = 31 * result + (personNum != null ? personNum.hashCode() : 0);

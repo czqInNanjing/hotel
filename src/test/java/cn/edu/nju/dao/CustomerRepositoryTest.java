@@ -29,12 +29,15 @@ public class CustomerRepositoryTest {
     @Test
     public void testExample() throws Exception {
         AccountEntity entity = new AccountEntity();
-        entity.setId("1111111");
+//        entity.setId(1);
         entity.setMail("sdfsdaf@sss.com");
         entity.setPassword("sdfdsf");
 
         this.entityManager.persist(entity);
-        System.out.println(repository.findOne("1111111").getMail());;
+        this.entityManager.persist(entity);
+//        repository.justForTest("Let us test");
+
+        System.out.println(repository.findByMail("sdfsdaf@sss.com").getId());;
 
     }
 

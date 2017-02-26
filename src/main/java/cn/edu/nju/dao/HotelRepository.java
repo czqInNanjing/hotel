@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author Qiang
  * @since 25/02/2017
  */
-public interface HotelRepository extends CrudRepository<HotelEntity, String> {
+public interface HotelRepository extends CrudRepository<HotelEntity, Integer> {
 }

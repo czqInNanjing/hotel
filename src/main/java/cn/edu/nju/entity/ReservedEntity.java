@@ -10,18 +10,18 @@ import java.sql.Date;
 @Entity
 @Table(name = "reserved", schema = "hotel", catalog = "")
 public class ReservedEntity {
-    private String id;
+    private int id;
     private String roomId;
     private String memberId;
     private Date time;
 
     @Id
     @Column(name = "id")
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -62,7 +62,7 @@ public class ReservedEntity {
 
         ReservedEntity that = (ReservedEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != that.id) return false;
         if (roomId != null ? !roomId.equals(that.roomId) : that.roomId != null) return false;
         if (memberId != null ? !memberId.equals(that.memberId) : that.memberId != null) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
@@ -72,7 +72,7 @@ public class ReservedEntity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (roomId != null ? roomId.hashCode() : 0);
         result = 31 * result + (memberId != null ? memberId.hashCode() : 0);
         result = 31 * result + (time != null ? time.hashCode() : 0);

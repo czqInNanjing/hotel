@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "hotel", schema = "hotel", catalog = "")
 public class HotelEntity {
-    private String id;
+    private int id;
     private String name;
     private String address;
     private Byte status;
@@ -18,11 +18,11 @@ public class HotelEntity {
 
     @Id
     @Column(name = "id")
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -73,7 +73,7 @@ public class HotelEntity {
 
         HotelEntity that = (HotelEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
@@ -84,7 +84,7 @@ public class HotelEntity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);

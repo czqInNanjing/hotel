@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
  * @author Qiang
- * @since 26/02/2017
+ * @since 27/02/2017
  */
 @Entity
 @Table(name = "hotel_new", schema = "hotel", catalog = "")
@@ -14,7 +14,6 @@ public class HotelNewEntity {
     private String address;
     private Byte status;
     private String description;
-    private AccountEntity accountById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -57,7 +56,7 @@ public class HotelNewEntity {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = 1000)
+    @Column(name = "description", nullable = true, length = 5000)
     public String getDescription() {
         return description;
     }
@@ -90,15 +89,5 @@ public class HotelNewEntity {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
-    }
-
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
-    public AccountEntity getAccountById() {
-        return accountById;
-    }
-
-    public void setAccountById(AccountEntity accountById) {
-        this.accountById = accountById;
     }
 }

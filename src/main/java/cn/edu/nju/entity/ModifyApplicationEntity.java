@@ -1,19 +1,19 @@
 package cn.edu.nju.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 26/02/2017
+ * @since 27/02/2017
  */
 @Entity
 @Table(name = "modify_application", schema = "hotel", catalog = "")
 public class ModifyApplicationEntity {
     private int id;
-    private Date time;
-    private String hotelId;
-    private String newHotelId;
+    private Timestamp time;
+    private Integer hotelId;
+    private Integer newHotelId;
     private Byte status;
 
     @Id
@@ -28,31 +28,31 @@ public class ModifyApplicationEntity {
 
     @Basic
     @Column(name = "time", nullable = false)
-    public Date getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 
     @Basic
-    @Column(name = "hotel_id", nullable = true, length = 20)
-    public String getHotelId() {
+    @Column(name = "hotel_id", nullable = true)
+    public Integer getHotelId() {
         return hotelId;
     }
 
-    public void setHotelId(String hotelId) {
+    public void setHotelId(Integer hotelId) {
         this.hotelId = hotelId;
     }
 
     @Basic
-    @Column(name = "new_hotel_id", nullable = true, length = 20)
-    public String getNewHotelId() {
+    @Column(name = "new_hotel_id", nullable = true)
+    public Integer getNewHotelId() {
         return newHotelId;
     }
 
-    public void setNewHotelId(String newHotelId) {
+    public void setNewHotelId(Integer newHotelId) {
         this.newHotelId = newHotelId;
     }
 

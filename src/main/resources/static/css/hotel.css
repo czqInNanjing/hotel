@@ -17,3 +17,15 @@ body {
     height: 90px;
     background-color: #050505;
 }
+.carousel{
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+.my-carousel-image {
+    min-height: 400px;
+    max-height: 400px;
+}
+
+.mainpage {
+    margin: 20px 40px 10px 40px;
+}

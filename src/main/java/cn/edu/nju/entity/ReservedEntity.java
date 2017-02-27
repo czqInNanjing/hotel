@@ -1,19 +1,19 @@
 package cn.edu.nju.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 26/02/2017
+ * @since 27/02/2017
  */
 @Entity
 @Table(name = "reserved", schema = "hotel", catalog = "")
 public class ReservedEntity {
     private int id;
-    private String roomId;
-    private String memberId;
-    private Date time;
+    private Integer roomId;
+    private Integer memberId;
+    private Timestamp time;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -26,32 +26,32 @@ public class ReservedEntity {
     }
 
     @Basic
-    @Column(name = "room_id", nullable = true, length = 20)
-    public String getRoomId() {
+    @Column(name = "room_id", nullable = true)
+    public Integer getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
+    public void setRoomId(Integer roomId) {
         this.roomId = roomId;
     }
 
     @Basic
-    @Column(name = "member_id", nullable = true, length = 20)
-    public String getMemberId() {
+    @Column(name = "member_id", nullable = true)
+    public Integer getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(String memberId) {
+    public void setMemberId(Integer memberId) {
         this.memberId = memberId;
     }
 
     @Basic
     @Column(name = "time", nullable = false)
-    public Date getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 

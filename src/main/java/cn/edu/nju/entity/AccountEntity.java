@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
  * @author Qiang
- * @since 26/02/2017
+ * @since 27/02/2017
  */
 @Entity
 @Table(name = "account", schema = "hotel", catalog = "")
@@ -13,21 +13,16 @@ public class AccountEntity {
     private String password;
     private int id;
     private int type;
-    private HotelEntity hotelById;
-    private HotelNewEntity hotelNewById;
-    private MemberEntity memberById;
-
     public AccountEntity() {
     }
 
     public AccountEntity(String mail, String password) {
         this.mail = mail;
         this.password = password;
-
     }
 
     @Basic
-    @Column(name = "mail", nullable = false, length = 20)
+    @Column(name = "mail", nullable = false, length = 50)
     public String getMail() {
         return mail;
     }
@@ -88,32 +83,5 @@ public class AccountEntity {
         result = 31 * result + id;
         result = 31 * result + type;
         return result;
-    }
-
-    @OneToOne(mappedBy = "accountById")
-    public HotelEntity getHotelById() {
-        return hotelById;
-    }
-
-    public void setHotelById(HotelEntity hotelById) {
-        this.hotelById = hotelById;
-    }
-
-    @OneToOne(mappedBy = "accountById")
-    public HotelNewEntity getHotelNewById() {
-        return hotelNewById;
-    }
-
-    public void setHotelNewById(HotelNewEntity hotelNewById) {
-        this.hotelNewById = hotelNewById;
-    }
-
-    @OneToOne(mappedBy = "accountById")
-    public MemberEntity getMemberById() {
-        return memberById;
-    }
-
-    public void setMemberById(MemberEntity memberById) {
-        this.memberById = memberById;
     }
 }

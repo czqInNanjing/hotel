@@ -1,22 +1,22 @@
 package cn.edu.nju.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 26/02/2017
+ * @since 27/02/2017
  */
 @Entity
 @Table(name = "rooms", schema = "hotel", catalog = "")
 public class RoomsEntity {
     private int id;
-    private String hotelId;
-    private Date availableTime;
+    private Integer hotelId;
+    private Timestamp availableTime;
     private Byte wifi;
     private String picUrl;
-    private String type;
-    private Integer price;
+    private int type;
+    private int price;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -29,22 +29,22 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "hotel_id", nullable = true, length = 20)
-    public String getHotelId() {
+    @Column(name = "hotel_id", nullable = true)
+    public Integer getHotelId() {
         return hotelId;
     }
 
-    public void setHotelId(String hotelId) {
+    public void setHotelId(Integer hotelId) {
         this.hotelId = hotelId;
     }
 
     @Basic
     @Column(name = "available_time", nullable = false)
-    public Date getAvailableTime() {
+    public Timestamp getAvailableTime() {
         return availableTime;
     }
 
-    public void setAvailableTime(Date availableTime) {
+    public void setAvailableTime(Timestamp availableTime) {
         this.availableTime = availableTime;
     }
 
@@ -69,22 +69,22 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "type", nullable = true, length = 20)
-    public String getType() {
+    @Column(name = "type", nullable = false)
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
     @Basic
-    @Column(name = "price", nullable = true)
-    public Integer getPrice() {
+    @Column(name = "price", nullable = false)
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -96,13 +96,13 @@ public class RoomsEntity {
         RoomsEntity that = (RoomsEntity) o;
 
         if (id != that.id) return false;
+        if (type != that.type) return false;
+        if (price != that.price) return false;
         if (hotelId != null ? !hotelId.equals(that.hotelId) : that.hotelId != null) return false;
         if (availableTime != null ? !availableTime.equals(that.availableTime) : that.availableTime != null)
             return false;
         if (wifi != null ? !wifi.equals(that.wifi) : that.wifi != null) return false;
         if (picUrl != null ? !picUrl.equals(that.picUrl) : that.picUrl != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (price != null ? !price.equals(that.price) : that.price != null) return false;
 
         return true;
     }
@@ -114,8 +114,8 @@ public class RoomsEntity {
         result = 31 * result + (availableTime != null ? availableTime.hashCode() : 0);
         result = 31 * result + (wifi != null ? wifi.hashCode() : 0);
         result = 31 * result + (picUrl != null ? picUrl.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + type;
+        result = 31 * result + price;
         return result;
     }
 }

@@ -1,53 +1,61 @@
 package cn.edu.nju.controller;
 
 import cn.edu.nju.dao.AccountRepository;
+import cn.edu.nju.dao.HotelRepository;
 import cn.edu.nju.dao.MemberRepository;
 import cn.edu.nju.entity.AccountEntity;
 import cn.edu.nju.entity.MemberEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Qiang
  * @since 25/02/2017
  */
 @Controller
-@SessionAttributes({"mail","name"})
-@RequestMapping(value = "/account")
+@SessionAttributes("id")
 public class AccountController {
     private final AccountRepository repository;
     private final MemberRepository memberRepository;
+    private final HotelRepository hotelRepository;
+
 
     @Autowired
-    public AccountController(AccountRepository repository, MemberRepository memberRepository) {
+    public AccountController(AccountRepository repository, MemberRepository memberRepository, HotelRepository hotelRepository) {
         this.repository = repository;
         this.memberRepository = memberRepository;
+
+        this.hotelRepository = hotelRepository;
     }
 
-
+    //TODO Check Login status in each request use Spring Security
+    //TODO Check Form
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(Model model, String mail, String password) {
+    public String login(HttpSession session,Model model, String mail, String password) {
 
         AccountEntity result = repository.findByMailAndPassword(mail, password);
 
         if (result != null) {
 
-
+            session.setAttribute("id" , result.getId());
             switch (result.getType()) {
                 case 0:
-                    model.addAttribute("member", memberRepository.findOne(result.getId()));
-                    return "member/index";
+                    return "redirect:/member/index";
                 case 1:
-                    return "hotel/index";
+                    return "redirect:/hotel/index";
                 case 2:
-                    return "manager/index";
+                    return "redirect:/manager/index";
                 default:
                     return "account/index";
             }
@@ -81,9 +89,9 @@ public class AccountController {
 
     }
 
-    @RequestMapping("/login")
+    @RequestMapping({"/","/login"})
     public String login() {
-        return "account/login";
+        return "account/index";
     }
 
     @RequestMapping("/register")

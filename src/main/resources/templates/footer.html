@@ -1,6 +1,29 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
+</head>
 <body>
-<div th:fragment="copy"> &copy; 2017 Qiang Chen All Rights Reserved.</div>
+
+<div th:fragment="copy">
+    <footer class="footer">
+        <div class="container col-md-4 col-md-offset-4">
+
+            <p>Designed and built with all the love by <a href="https://www.github.com/czqInNanjing" target="_blank">Qiang
+                Chen</a></p>
+            <p>本项目源码受 <a rel="license" href="https://github.com/twbs/bootstrap/blob/master/LICENSE"
+                         target="_blank">MIT</a>开源协议保护，文档受 <a rel="license"
+                                                              href="https://creativecommons.org/licenses/by/3.0/"
+                                                              target="_blank">CC BY 3.0</a> 开源协议保护。</p>
+            <p> &copy; 2017 Qiang Chen All Rights Reserved.</p>
+        </div>
+    </footer>
+</div>
+
+
 </body>
 </html>

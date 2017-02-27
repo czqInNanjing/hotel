@@ -1,9 +1,19 @@
-
-/* 中等屏幕（桌面显示器，大于等于 992px） */
-/*@media (min-width: @screen-md-min) {*/
-
-
-
-
-
-/*}*/
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+.footer {
+    color: #f0f0f0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 90px;
+    background-color: #050505;
+}

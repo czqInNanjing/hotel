@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "account", schema = "hotel", catalog = "")
 public class AccountEntity {
+
     private String mail;
     private String password;
     private int id;
@@ -42,7 +43,7 @@ public class AccountEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

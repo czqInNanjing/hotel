@@ -50,7 +50,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public void saveModifyApplication(String name, String address, String description, int hotelId) {
         HotelNewEntity newEntity = new HotelNewEntity(name,address,description,hotelId);
-        hotelNewRepository.save(newEntity);
+        newEntity = hotelNewRepository.save(newEntity);
         ModifyApplicationEntity modifyApplicationEntity = new ModifyApplicationEntity(hotelId, newEntity.getId());
         modifyApplicationRepository.save(modifyApplicationEntity);
     }

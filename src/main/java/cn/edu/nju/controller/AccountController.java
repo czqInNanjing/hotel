@@ -91,8 +91,7 @@ public class AccountController {
 
             entity = new AccountEntity(mail, password, accountType);
 
-            repository.save(entity);
-            entity = repository.findByMail(mail);
+            entity = repository.save(entity);
 
             if (accountType == 0 ) {
                 MemberEntity memberEntity = new MemberEntity();

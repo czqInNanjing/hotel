@@ -14,7 +14,7 @@ public class ReservedEntity {
     private int roomId;
     private int memberId;
     private Timestamp time;
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

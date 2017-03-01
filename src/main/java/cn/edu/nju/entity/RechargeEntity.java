@@ -15,7 +15,7 @@ public class RechargeEntity {
     private String memberId;
     private int former;
     private int later;
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false, length = 20)
     public String getId() {

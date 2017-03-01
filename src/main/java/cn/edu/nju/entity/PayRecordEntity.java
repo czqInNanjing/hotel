@@ -15,7 +15,7 @@ public class PayRecordEntity {
     private int bill;
     private int after;
     private int liveId;
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

@@ -25,7 +25,7 @@ public class HotelNewEntity {
         this.description = description;
         this.oldHotel = oldHotel;
     }
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

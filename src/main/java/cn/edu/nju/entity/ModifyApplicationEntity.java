@@ -23,7 +23,7 @@ public class ModifyApplicationEntity {
         this.hotelId = hotelId;
         this.newHotelId = newHotelId;
     }
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

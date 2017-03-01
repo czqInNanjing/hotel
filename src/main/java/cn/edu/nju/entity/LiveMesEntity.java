@@ -18,7 +18,7 @@ public class LiveMesEntity {
     private int payMethod = 0;
     private int memberId = 0;
     private int roomId = 0;
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

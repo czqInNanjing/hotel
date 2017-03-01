@@ -17,7 +17,7 @@ public class RoomsEntity {
     private String picUrl;
     private int type;
     private int price;
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

@@ -29,6 +29,7 @@ public class HotelController {
     private final HotelRepository hotelRepository;
     private final RoomsRepository roomsRepository;
     private final HotelService hotelService;
+
     @Autowired
     public HotelController(HotelRepository hotelRepository, RoomsRepository roomsRepository, HotelService hotelService) {
         this.hotelRepository = hotelRepository;
@@ -40,39 +41,42 @@ public class HotelController {
     public String index(HttpSession session, Model model) {
 
         if (session.getAttribute("id") != null) {
-            int id = (int)session.getAttribute("id");
+            int id = (int) session.getAttribute("id");
             HotelEntity hotel = hotelRepository.findOne(id);
 
             if (hotel.getStatus() == 0) {
-                model.addAttribute("status" , 0);
+                model.addAttribute("status", 0);
 
             } else {
-                model.addAttribute("status" , 1);
+                model.addAttribute("status", 1);
                 List<RoomsEntity> roomsEntities = roomsRepository.findByHotelId(id);
 
                 model.addAttribute("rooms", roomsEntities);
             }
 
 
-
-
         }
-
 
 
         return "hotel/index";
     }
 
     @RequestMapping("/info")
-    public String info(HttpSession session, Model model) {
-        if (session.getAttribute("id") != null) {
-            int id = (int)session.getAttribute("id");
-            HotelEntity hotel = hotelRepository.findOne(id);
+    public String info(HttpSession session, Model model, @SessionAttribute int id) {
 
-            model.addAttribute("hotel", hotel);
+        HotelEntity hotel = hotelRepository.findOne(id);
+
+        model.addAttribute("hotel", hotel);
+
+        if (hotelService.isApplyingForEditing(id)) {
+            model.addAttribute("edit" , true);
         }
+        if (hotelService.isApplyingForOpen(id)) {
+            model.addAttribute("open" , true);
+        }
+
         return "/hotel/info";
-    }
+}
 
     @RequestMapping("/statistics")
     public String statistics() {
@@ -80,18 +84,19 @@ public class HotelController {
     }
 
 
-
-
     @RequestMapping(value = "/open", method = RequestMethod.POST)
-    public void openApplication(String reason, @SessionAttribute int id) {
+    public String openApplication(HttpSession session,Model model ,String reason, @SessionAttribute int id) {
         hotelService.saveOpenApplication(reason, id);
+        return info(session, model ,id);
     }
+
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public void editApplication(String name, String address, String description,@SessionAttribute int id) {
+    public String editApplication(HttpSession session,Model model ,String name, String address, String description, @SessionAttribute int id) {
 
-        hotelService.saveModifyApplication(name,address,description, id);
+        hotelService.saveModifyApplication(name, address, description, id);
+
+        return info(session, model ,id);
     }
-
 
 
     @RequestMapping("/register")

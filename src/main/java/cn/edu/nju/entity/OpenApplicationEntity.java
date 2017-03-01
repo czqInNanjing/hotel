@@ -15,7 +15,7 @@ public class OpenApplicationEntity {
     private int hotelId;
     private byte status;
     private String reason;
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

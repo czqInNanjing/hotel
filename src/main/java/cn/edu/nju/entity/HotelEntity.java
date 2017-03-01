@@ -15,7 +15,7 @@ public class HotelEntity {
     private Byte status = 0;
     private String description = "No Description Yet";
 
-
+    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

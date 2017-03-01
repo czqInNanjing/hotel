@@ -5,19 +5,19 @@ import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 27/02/2017
+ * @since 28/02/2017
  */
 @Entity
 @Table(name = "live_mes", schema = "hotel", catalog = "")
 public class LiveMesEntity {
     private int id;
-    private Timestamp inTime;
-    private Timestamp outTime;
-    private int personNum;
-    private String personMes;
-    private int payMethod;
-    private Integer memberId;
-    private int roomId;
+    private Timestamp inTime = new Timestamp(System.currentTimeMillis());
+    private Timestamp outTime = new Timestamp(System.currentTimeMillis());
+    private int personNum = 1;
+    private String personMes = "None";
+    private int payMethod = 0;
+    private int memberId = 0;
+    private int roomId = 0;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -60,7 +60,7 @@ public class LiveMesEntity {
     }
 
     @Basic
-    @Column(name = "person_mes", nullable = true, length = -1)
+    @Column(name = "person_mes", nullable = false, length = 6000)
     public String getPersonMes() {
         return personMes;
     }
@@ -80,13 +80,23 @@ public class LiveMesEntity {
     }
 
     @Basic
-    @Column(name = "member_id", nullable = true)
-    public Integer getMemberId() {
+    @Column(name = "member_id", nullable = false)
+    public int getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(Integer memberId) {
+    public void setMemberId(int memberId) {
         this.memberId = memberId;
+    }
+
+    @Basic
+    @Column(name = "room_id", nullable = false)
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     @Override
@@ -99,10 +109,11 @@ public class LiveMesEntity {
         if (id != that.id) return false;
         if (personNum != that.personNum) return false;
         if (payMethod != that.payMethod) return false;
+        if (memberId != that.memberId) return false;
+        if (roomId != that.roomId) return false;
         if (inTime != null ? !inTime.equals(that.inTime) : that.inTime != null) return false;
         if (outTime != null ? !outTime.equals(that.outTime) : that.outTime != null) return false;
         if (personMes != null ? !personMes.equals(that.personMes) : that.personMes != null) return false;
-        if (memberId != null ? !memberId.equals(that.memberId) : that.memberId != null) return false;
 
         return true;
     }
@@ -115,17 +126,8 @@ public class LiveMesEntity {
         result = 31 * result + personNum;
         result = 31 * result + (personMes != null ? personMes.hashCode() : 0);
         result = 31 * result + payMethod;
-        result = 31 * result + (memberId != null ? memberId.hashCode() : 0);
+        result = 31 * result + memberId;
+        result = 31 * result + roomId;
         return result;
-    }
-
-    @Basic
-    @Column(name = "room_id", nullable = false)
-    public int getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
     }
 }

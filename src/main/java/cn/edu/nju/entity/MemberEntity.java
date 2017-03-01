@@ -5,19 +5,19 @@ import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 27/02/2017
+ * @since 28/02/2017
  */
 @Entity
 @Table(name = "member", schema = "hotel", catalog = "")
 public class MemberEntity {
     private int id;
-    private String name;
-    private byte status;
-    private int deposit;
-    private int points;
-    private String creditCard;
-    private Timestamp registDate;
-    private int remainDays;
+    private String name = "Name";
+    private byte status = 0;
+    private int deposit = 0;
+    private int points = 0;
+    private String creditCard = "None";
+    private Timestamp registDate = new Timestamp(System.currentTimeMillis());
+    private int remainDays = 0;
 
     @Id
     @Column(name = "id", nullable = false)

@@ -5,15 +5,15 @@ import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 27/02/2017
+ * @since 28/02/2017
  */
 @Entity
 @Table(name = "rooms", schema = "hotel", catalog = "")
 public class RoomsEntity {
     private int id;
-    private Integer hotelId;
+    private int hotelId;
     private Timestamp availableTime;
-    private Byte wifi;
+    private byte wifi;
     private String picUrl;
     private int type;
     private int price;
@@ -29,12 +29,12 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "hotel_id", nullable = true)
-    public Integer getHotelId() {
+    @Column(name = "hotel_id", nullable = false)
+    public int getHotelId() {
         return hotelId;
     }
 
-    public void setHotelId(Integer hotelId) {
+    public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
     }
 
@@ -49,17 +49,17 @@ public class RoomsEntity {
     }
 
     @Basic
-    @Column(name = "wifi", nullable = true)
-    public Byte getWifi() {
+    @Column(name = "wifi", nullable = false)
+    public byte getWifi() {
         return wifi;
     }
 
-    public void setWifi(Byte wifi) {
+    public void setWifi(byte wifi) {
         this.wifi = wifi;
     }
 
     @Basic
-    @Column(name = "pic_url", nullable = true, length = -1)
+    @Column(name = "pic_url", nullable = true, length = 6000)
     public String getPicUrl() {
         return picUrl;
     }
@@ -96,12 +96,12 @@ public class RoomsEntity {
         RoomsEntity that = (RoomsEntity) o;
 
         if (id != that.id) return false;
+        if (hotelId != that.hotelId) return false;
+        if (wifi != that.wifi) return false;
         if (type != that.type) return false;
         if (price != that.price) return false;
-        if (hotelId != null ? !hotelId.equals(that.hotelId) : that.hotelId != null) return false;
         if (availableTime != null ? !availableTime.equals(that.availableTime) : that.availableTime != null)
             return false;
-        if (wifi != null ? !wifi.equals(that.wifi) : that.wifi != null) return false;
         if (picUrl != null ? !picUrl.equals(that.picUrl) : that.picUrl != null) return false;
 
         return true;
@@ -110,9 +110,9 @@ public class RoomsEntity {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (hotelId != null ? hotelId.hashCode() : 0);
+        result = 31 * result + hotelId;
         result = 31 * result + (availableTime != null ? availableTime.hashCode() : 0);
-        result = 31 * result + (wifi != null ? wifi.hashCode() : 0);
+        result = 31 * result + (int) wifi;
         result = 31 * result + (picUrl != null ? picUrl.hashCode() : 0);
         result = 31 * result + type;
         result = 31 * result + price;

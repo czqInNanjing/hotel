@@ -8,4 +8,7 @@ import org.springframework.data.repository.CrudRepository;
  * @since 27/02/2017
  */
 public interface ModifyApplicationRepository extends CrudRepository<ModifyApplicationEntity, Integer> {
+
+    boolean existsByHotelId(int hotelID);
+
 }

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
     <link rel="stylesheet" href="../../static/css/hotel.css" th:href="@{/css/hotel.css}"/>
-    <title>Member Profile</title>
+    <title>Hotel Index</title>
 </head>
 <body>
 
@@ -28,10 +28,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li ><a href="index.html" th:href="@{index}">Hotel</a></li>
-                <li><a href="statistics.html" th:href="@{statistics}">Statistics<span
+                <li><a href="index.html" th:href="@{index}">Hotel Status<span
                         class="sr-only">(current)</span></a></li>
-                <li class="active"><a href="profile.html" th:href="@{profile}">Profile</a></li>
+                <li><a href="info.html" th:href="@{info}">Hotel Info</a></li>
+                <li  class="active"><a href="statistics.html" th:href="@{statistics}">Statistics</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -47,51 +47,13 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+
+
 <div class="mainpage">
 
-    <div class="table-responsive">
-    <table class="table table-striped">
-        <tr>
-            <th>Item</th>
-            <th>Message</th>
-        </tr>
-        <tr>
-            <td>id</td>
-            <td th:text="${member.id}">0000001</td>
-        </tr>
-        <tr>
-            <td>name</td>
-            <td th:text="${member.name}">Smith</td>
-        </tr>
-        <tr>
-            <td>status</td>
-            <td th:text="(${member.status == 0}) ? 'Not Activated' : 'Activated'">Not Activated</td>
-        </tr>
-        <tr>
-            <td>Remain Days</td>
-            <td th:text="${member.remainDays}">0</td>
-        </tr>
-        <tr>
-            <td>Points</td>
-            <td th:text="${member.points}">0</td>
-        </tr>
-        <tr>
-            <td>Register Date</td>
-            <td th:text="${member.registDate}">2011-2-13</td>
-        </tr>
-        <tr>
-            <td>Credit Card</td>
-            <td th:text="${member.registDate}">None</td>
-        </tr>
-    </table>
-    </div>
-    <p><a href="#" th:href="@{edit}" class="btn btn-primary" role="button">Edit</a>
-        <a href="#" th:href="@{recharge}" class="btn btn-info" role="button">Recharge</a>
-        <a href="#" th:href="@{pointConvert}" class="btn btn-info" role="button">Point Convert</a>
-        <a href="#" class="btn btn-danger" role="button">Delete Account</a>
-    </p>
-</div>
+    Now this page will be used for show the hotel's statistics message
 
+</div>
 
 <div th:include="footer :: copy"></div>
 

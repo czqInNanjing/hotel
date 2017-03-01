@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface OpenApplicationRepository extends CrudRepository<OpenApplicationEntity, Integer> {
 
+    boolean existsByHotelId(int hotelID);
+
     List<OpenApplicationEntity> findByStatus(Byte status);
 
 

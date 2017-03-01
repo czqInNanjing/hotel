@@ -94,7 +94,7 @@
 <div class="row">
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
-            <img src="../../static/img/hotel/hotel1.JPG" alt="hotel1">
+            <img src="../../static/img/hotel/hotel1.JPG" alt="hotel1"/>
             <div class="caption">
                 <h3>Shanghai Hotel</h3>
                 <p>This is a very good hotel with wifi and hot water. The average reputation exceed 4 of 5 points! Why not have a try?</p>
@@ -104,7 +104,7 @@
     </div>
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
-            <img src="../../static/img/hotel/hotel1.JPG" alt="hotel1">
+            <img src="../../static/img/hotel/hotel1.JPG" alt="hotel1"/>
             <div class="caption">
                 <h3>Chengdu Hotel</h3>
                 <p>This is a very good hotel with wifi and hot water. The average reputation exceed 4 of 5 points! Why not have a try?</p>
@@ -114,7 +114,7 @@
     </div>
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
-            <img src="../../static/img/hotel/hotel1.JPG" alt="hotel1">
+            <img src="../../static/img/hotel/hotel1.JPG" alt="hotel1"/>
             <div class="caption">
                 <h3>Guangzhou Hotel</h3>
                 <p>This is a very good hotel with wifi and hot water. The average reputation exceed 4 of 5 points! Why not have a try?</p>
@@ -124,7 +124,7 @@
     </div>
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
-            <img src="../../static/img/hotel/hotel1.JPG" alt="hotel1">
+            <img src="../../static/img/hotel/hotel1.JPG" alt="hotel1"/>
             <div class="caption">
                 <h3>Guangzhou Hotel</h3>
                 <p>This is a very good hotel with wifi and hot water. The average reputation exceed 4 of 5 points! Why not have a try?</p>
@@ -133,8 +133,28 @@
         </div>
     </div>
 </div>
+    <nav aria-label="Page navigation" class="col-md-offset-4 col-md-4">
+        <ul class="pagination pagination-lg">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
-<div th:insert="~{footer :: copy}"></div>
+
+<div th:include="footer :: copy"></div>
 
 
 <!--Scripts-->

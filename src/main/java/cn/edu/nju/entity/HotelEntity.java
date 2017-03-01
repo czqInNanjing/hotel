@@ -4,16 +4,17 @@ import javax.persistence.*;
 
 /**
  * @author Qiang
- * @since 27/02/2017
+ * @since 28/02/2017
  */
 @Entity
 @Table(name = "hotel", schema = "hotel", catalog = "")
 public class HotelEntity {
     private int id;
-    private String name;
-    private String address;
-    private Byte status;
-    private String description;
+    private String name = "Hotel";
+    private String address = "No Set";
+    private Byte status = 0;
+    private String description = "No Description Yet";
+
 
     @Id
     @Column(name = "id", nullable = false)
@@ -26,7 +27,7 @@ public class HotelEntity {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 30)
+    @Column(name = "name", nullable = false, length = 30)
     public String getName() {
         return name;
     }
@@ -46,12 +47,12 @@ public class HotelEntity {
     }
 
     @Basic
-    @Column(name = "status", nullable = true)
-    public Byte getStatus() {
+    @Column(name = "status", nullable = false)
+    public byte getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(byte status) {
         this.status = status;
     }
 
@@ -73,9 +74,9 @@ public class HotelEntity {
         HotelEntity that = (HotelEntity) o;
 
         if (id != that.id) return false;
+        if (status != that.status) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
 
         return true;
@@ -86,7 +87,7 @@ public class HotelEntity {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (int) status;
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }

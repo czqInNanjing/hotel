@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <!--<meta name="viewport" content="width=device-width, initial-scale=1"/>-->
@@ -38,8 +38,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Welcome, Smith <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="../account/index.html" th:href="@{accout/logout}">Sign out</a></li>
-                        <li><a href="../account/register.html" th:href="@{account/register}">Register</a></li>
+                        <li><a href="../account/index.html" th:href="@{logout}">Sign out</a></li>
+                        <li><a href="../account/register.html" th:href="@{register}">Register</a></li>
                     </ul>
                 </li>
             </ul>
@@ -48,8 +48,11 @@
 </nav>
 
 <div class="mainpage">
-    <div>
-        <h2>Recent Book Records</h2>
+    <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Recent Book Records</div>
+
+
         <div class="table-responsive ">
             <table class="table table-hover">
                 <tr>
@@ -59,30 +62,36 @@
                     <th>Room</th>
                     <th>Book Time</th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>2016-3-18 22:25:25</td>
-                    <td>Shanghai Hotel</td>
-                    <td>Big Room1</td>
-                    <td>2016-3-20</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>2016-3-18 22:25:25</td>
-                    <td>Beijing Hotel</td>
-                    <td>Big Room1</td>
-                    <td>2016-3-20</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>2016-3-18 22:25:25</td>
-                    <td>Nanchang Hotel</td>
-                    <td>Big Room1</td>
-                    <td>2016-3-20</td>
+                <tr th:each="reserveMes : ${reserved}">
+                    <td th:text="${${#numbers.formatInteger(reserveMes.id,6)}}">000001</td>
+                    <td th:text="${reserveMes.time}">2016-3-19</td>
+                    <td th:text="${reserveMes.hotel}">Shanghai Hotel</td>
+                    <td th:text="${reserveMes.room}">Big Room1</td>
+                    <td th:text="${reserveMes.bookTime}">2016-3-18 22:25:25</td>
                 </tr>
             </table>
         </div>
     </div>
+
+    <nav aria-label="Page navigation" class="col-md-offset-10 col-md-4">
+        <ul class="pagination pagination-sm">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
     <div>
         <h2>Recent Live Records</h2>
@@ -171,7 +180,7 @@
 </div>
 
 
-<div th:insert="~{footer :: copy}"></div>
+<div th:include="footer :: copy"></div>
 
 
 <!--Scripts-->

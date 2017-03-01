@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 27/02/2017
+ * @since 28/02/2017
  */
 @Entity
 @Table(name = "recharge", schema = "hotel", catalog = "")
@@ -13,8 +13,8 @@ public class RechargeEntity {
     private String id;
     private Timestamp time;
     private String memberId;
-    private Integer former;
-    private Integer later;
+    private int former;
+    private int later;
 
     @Id
     @Column(name = "id", nullable = false, length = 20)
@@ -37,7 +37,7 @@ public class RechargeEntity {
     }
 
     @Basic
-    @Column(name = "member_id", nullable = true, length = 20)
+    @Column(name = "member_id", nullable = false, length = 20)
     public String getMemberId() {
         return memberId;
     }
@@ -47,22 +47,22 @@ public class RechargeEntity {
     }
 
     @Basic
-    @Column(name = "former", nullable = true)
-    public Integer getFormer() {
+    @Column(name = "former", nullable = false)
+    public int getFormer() {
         return former;
     }
 
-    public void setFormer(Integer former) {
+    public void setFormer(int former) {
         this.former = former;
     }
 
     @Basic
-    @Column(name = "later", nullable = true)
-    public Integer getLater() {
+    @Column(name = "later", nullable = false)
+    public int getLater() {
         return later;
     }
 
-    public void setLater(Integer later) {
+    public void setLater(int later) {
         this.later = later;
     }
 
@@ -73,11 +73,11 @@ public class RechargeEntity {
 
         RechargeEntity that = (RechargeEntity) o;
 
+        if (former != that.former) return false;
+        if (later != that.later) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
         if (memberId != null ? !memberId.equals(that.memberId) : that.memberId != null) return false;
-        if (former != null ? !former.equals(that.former) : that.former != null) return false;
-        if (later != null ? !later.equals(that.later) : that.later != null) return false;
 
         return true;
     }
@@ -87,8 +87,8 @@ public class RechargeEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (memberId != null ? memberId.hashCode() : 0);
-        result = 31 * result + (former != null ? former.hashCode() : 0);
-        result = 31 * result + (later != null ? later.hashCode() : 0);
+        result = 31 * result + former;
+        result = 31 * result + later;
         return result;
     }
 }

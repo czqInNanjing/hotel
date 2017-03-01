@@ -19,8 +19,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping(value = "/member")
 public class MemberController {
-    final
-    MemberRepository repo;
+    private final MemberRepository repo;
 
     @Autowired
     public MemberController(MemberRepository repo) {
@@ -48,15 +47,15 @@ public class MemberController {
         return "/member/statistics";
     }
 
-//    @RequestMapping("/register")
-//    public String register() {
-//        return "redirect:/account/register";
-//    }
-//
-//    @RequestMapping("/logout")
-//    public String logout(SessionStatus sessionStatus) {
-//        sessionStatus.setComplete();
-//        return "redirect:/account/index";
-//    }
+    @RequestMapping("/register")
+    public String register() {
+        return "redirect:/register";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return "redirect:/index";
+    }
 
 }

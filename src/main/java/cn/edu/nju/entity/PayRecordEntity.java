@@ -5,16 +5,16 @@ import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 27/02/2017
+ * @since 28/02/2017
  */
 @Entity
 @Table(name = "pay_record", schema = "hotel", catalog = "")
 public class PayRecordEntity {
     private int id;
     private Timestamp time;
-    private Integer bill;
-    private Integer liveId;
-    private Integer after;
+    private int bill;
+    private int after;
+    private int liveId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -37,22 +37,32 @@ public class PayRecordEntity {
     }
 
     @Basic
-    @Column(name = "bill", nullable = true)
-    public Integer getBill() {
+    @Column(name = "bill", nullable = false)
+    public int getBill() {
         return bill;
     }
 
-    public void setBill(Integer bill) {
+    public void setBill(int bill) {
         this.bill = bill;
     }
 
     @Basic
-    @Column(name = "live_id", nullable = true)
-    public Integer getLiveId() {
+    @Column(name = "after", nullable = false)
+    public int getAfter() {
+        return after;
+    }
+
+    public void setAfter(int after) {
+        this.after = after;
+    }
+
+    @Basic
+    @Column(name = "live_id", nullable = false)
+    public int getLiveId() {
         return liveId;
     }
 
-    public void setLiveId(Integer liveId) {
+    public void setLiveId(int liveId) {
         this.liveId = liveId;
     }
 
@@ -64,9 +74,10 @@ public class PayRecordEntity {
         PayRecordEntity that = (PayRecordEntity) o;
 
         if (id != that.id) return false;
+        if (bill != that.bill) return false;
+        if (after != that.after) return false;
+        if (liveId != that.liveId) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
-        if (bill != null ? !bill.equals(that.bill) : that.bill != null) return false;
-        if (liveId != null ? !liveId.equals(that.liveId) : that.liveId != null) return false;
 
         return true;
     }
@@ -75,18 +86,9 @@ public class PayRecordEntity {
     public int hashCode() {
         int result = id;
         result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (bill != null ? bill.hashCode() : 0);
-        result = 31 * result + (liveId != null ? liveId.hashCode() : 0);
+        result = 31 * result + bill;
+        result = 31 * result + after;
+        result = 31 * result + liveId;
         return result;
-    }
-
-    @Basic
-    @Column(name = "after", nullable = true)
-    public Integer getAfter() {
-        return after;
-    }
-
-    public void setAfter(Integer after) {
-        this.after = after;
     }
 }

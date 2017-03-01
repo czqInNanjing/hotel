@@ -5,14 +5,14 @@ import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 27/02/2017
+ * @since 28/02/2017
  */
 @Entity
 @Table(name = "reserved", schema = "hotel", catalog = "")
 public class ReservedEntity {
     private int id;
-    private Integer roomId;
-    private Integer memberId;
+    private int roomId;
+    private int memberId;
     private Timestamp time;
 
     @Id
@@ -26,22 +26,22 @@ public class ReservedEntity {
     }
 
     @Basic
-    @Column(name = "room_id", nullable = true)
-    public Integer getRoomId() {
+    @Column(name = "room_id", nullable = false)
+    public int getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Integer roomId) {
+    public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 
     @Basic
-    @Column(name = "member_id", nullable = true)
-    public Integer getMemberId() {
+    @Column(name = "member_id", nullable = false)
+    public int getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(Integer memberId) {
+    public void setMemberId(int memberId) {
         this.memberId = memberId;
     }
 
@@ -63,8 +63,8 @@ public class ReservedEntity {
         ReservedEntity that = (ReservedEntity) o;
 
         if (id != that.id) return false;
-        if (roomId != null ? !roomId.equals(that.roomId) : that.roomId != null) return false;
-        if (memberId != null ? !memberId.equals(that.memberId) : that.memberId != null) return false;
+        if (roomId != that.roomId) return false;
+        if (memberId != that.memberId) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
 
         return true;
@@ -73,8 +73,8 @@ public class ReservedEntity {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (roomId != null ? roomId.hashCode() : 0);
-        result = 31 * result + (memberId != null ? memberId.hashCode() : 0);
+        result = 31 * result + roomId;
+        result = 31 * result + memberId;
         result = 31 * result + (time != null ? time.hashCode() : 0);
         return result;
     }

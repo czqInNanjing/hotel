@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
  * @author Qiang
- * @since 27/02/2017
+ * @since 28/02/2017
  */
 @Entity
 @Table(name = "account", schema = "hotel", catalog = "")
@@ -13,12 +13,14 @@ public class AccountEntity {
     private String password;
     private int id;
     private int type;
+
     public AccountEntity() {
     }
 
-    public AccountEntity(String mail, String password) {
+    public AccountEntity(String mail, String password, int type) {
         this.mail = mail;
         this.password = password;
+        this.type = type;
     }
 
     @Basic

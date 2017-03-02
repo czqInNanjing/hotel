@@ -18,6 +18,21 @@ public class LiveMesEntity {
     private int payMethod = 0;
     private int memberId = 0;
     private int roomId = 0;
+    private int status;
+    private int hotelId;
+
+    public LiveMesEntity() {
+    }
+
+    public LiveMesEntity(int personNum, String personMes, int payMethod, int memberId, int roomId, int hotelId) {
+        this.personNum = personNum;
+        this.personMes = personMes;
+        this.payMethod = payMethod;
+        this.memberId = memberId;
+        this.roomId = roomId;
+        this.hotelId = hotelId;
+    }
+
     @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
@@ -129,5 +144,25 @@ public class LiveMesEntity {
         result = 31 * result + memberId;
         result = 31 * result + roomId;
         return result;
+    }
+
+    @Basic
+    @Column(name = "status", nullable = false)
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    @Basic
+    @Column(name = "hotel_id", nullable = false)
+    public int getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 }

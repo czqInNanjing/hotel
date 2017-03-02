@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1"/>-->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/hotel.css" th:href="@{/css/hotel.css}"/>
+    <link rel="stylesheet" href="../../static/css/other.css" th:href="@{/css/other.css}"/>
+    <title>Hotel Index</title>
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html" th:href="@{index}">Hostel World</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html" th:href="@{index}">Hotel Status<span
+                        class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="record.html" th:href="@{record}">Live Records</a></li>
+                <li><a href="info.html" th:href="@{info}">Hotel Info</a></li>
+                <li><a href="statistics.html" th:href="@{statistics}">Statistics</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Welcome, Smith <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../account/index.html" th:href="@{logout}">Sign out</a></li>
+                        <li><a href="../account/register.html" th:href="@{register}">Register</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="mainpage">
+
+    <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Current Records</div>
+
+
+        <div class="table-responsive ">
+            <table id="roomTable" class="table table-hover">
+                <tr>
+                    <th>No</th>
+                    <th>In Time</th>
+                    <th>Out Time</th>
+                    <th>Status</th>
+                    <th>Person Num</th>
+                    <th>Person Mes</th>
+                    <th>Pay Method</th>
+                </tr>
+                <tr th:each="record : ${records}">
+                    <td th:text="${#numbers.formatInteger(record.id,7)}">0000001</td>
+                    <!--&lt;!&ndash;<td th:text="${reserveMes.time}">2016-3-19</td>&ndash;&gt;-->
+                    <td th:text="${#dates.format(new java.util.Date(record.inTime),'dd/MM/yyyy HH:mm:ss')}">2016-3-19
+                        12:23:23
+                    </td>
+                    <td th:text="(${record.status == 0}) ? '----' : ${#dates.format(new java.util.Date(record.outTime),'dd/MM/yyyy HH:mm:ss')}">
+                        2016-3-19 12:23:23
+                    </td>
+                    <td th:text="(${record.status == 0}) ? 'Under Use' : 'Left'">Left</td>
+                    <td th:text="${record.personNum}">1</td>
+                    <td th:text="${record.personMes}">ZiQiang Chen</td>
+                    <td>
+                        <div th:switch="${record.payMethod}">
+                            <p th:case="0">Member Card</p>
+                            <p th:case="1">Cash</p>
+                            <p th:case="2">Credit Card</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+    </div>
+    <div>
+        <a href="javascript:" class="btn btn-primary my-pop-1">Add new records</a>
+    </div>
+
+</div>
+
+<footer class="footer" th:include="footer :: copy"></footer>
+
+<div class="cd-user-modal cd-user-modal-1">
+    <div class="cd-user-modal-container">
+
+
+        <div class="panel panel-info">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Add new record</div>
+            <form class="form-horizontal" action="index.html">
+                <div class="form-group">
+                    <label for="inOrOut" class="col-sm-2 control-label">Record Type</label>
+                    <div class="col-sm-10">
+                        <select id="inOrOut" class="form-control">
+                            <option value="0">In Record</option>
+                            <option value="1">Out Record</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="inRecord">
+                    <div class="form-group">
+                        <label for="personNum" class="col-sm-2 control-label">Person Number</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="personNum" id="personNum"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="personMes" class="col-sm-2 control-label">Person Message</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="personMes" id="personMes"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isMember" class="col-sm-2 control-label">Is Member</label>
+                        <div class="col-sm-10">
+                            <select id="isMember" class="form-control">
+                                <option value="0">Member</option>
+                                <option value="1">Not a member</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="memberIDDiv">
+                        <label for="memberId" class="col-sm-2 control-label">member ID</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="memberId" id="memberId"
+                                   placeholder="Member ID"/>
+                        </div>
+                    </div>
+                    <div class="form-group" id="showMemberId">
+                        <label for="payMethod" class="col-sm-2 control-label">Pay Method</label>
+                        <div class="col-sm-10">
+                            <select name="payMethod" id="payMethod" class="form-control">
+                                <option value="0">Member Card</option>
+                                <option value="1">Cash</option>
+                                <option value="2">Credit Card</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roomId" class="col-sm-2 control-label">room ID</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="roomId" id="roomId"
+                                   placeholder="Room ID"/>
+                        </div>
+                    </div>
+                </div>
+                <div id="outRecord">
+                    <div class="form-group">
+                        <label for="recordId" class="col-sm-2 control-label">Record ID</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="recordId" id="recordId"
+                                   placeholder="Record ID"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10   col-md-4">
+                        <button type="submit" class=" btn btn-primary modal-apply">Apply</button>
+                        <a href="#" class="btn btn-danger modal-cancel">Cancel</a>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<!--Scripts-->
+<script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
+<script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script>
+<script th:inline="javascript">
+    $('.modal-apply').on('click', function (e) {
+        e.preventDefault();
+        var $form = $(this).parent().parent().parent();
+        var inOrOut = $("#inOrOut").find("option:selected").val();
+
+
+        var personNum = $form.find('input[name="personNum"]').val();
+        var personMes = $form.find('input[name="personMes"]').val();
+        var isMember =  $("#isMember").find("option:selected").val();
+        var payMethod = $form.find('select[name="payMethod"]').val();
+        var memberId = $form.find('input[name="memberId"]').val();
+        var roomId = $form.find('input[name="roomId"]').val();
+        var recordId = $form.find('input[name="recordId"]').val();
+        var inputs;
+
+
+        console.log('Now is add' + inOrOut);
+        if (inOrOut === '0') { // in record
+            inputs = {personNum:personNum , personMes:personMes, isMember:isMember, payMethod:payMethod, memberId:memberId, roomId:roomId};
+            $.ajax({
+                type: "POST",
+                url: '/hotel/addInRecords',
+                data: inputs,
+                dataType: 'json',
+                success: function (data) {
+//                    console.log($table);
+                    console.log(data.length);
+//                $form_modal.removeClass('is-visible');
+//                $table.load(data);
+                    location.reload();
+
+                }
+            });
+        } else {
+            inputs = {recordId:recordId};
+            $.ajax({
+                type: "POST",
+                url: '/hotel/addOutRecords',
+                data: inputs,
+                dataType: 'json',
+                success: function (data) {
+//                console.log($table);
+                console.log(data.length);
+//                $form_modal.removeClass('is-visible');
+//                $table.load(data);
+                location.reload();
+
+            }
+        });
+        }
+        console.log(inputs);
+//        var $table = $('.table-responsive');
+
+    });
+
+    $("#inOrOut").change(function () {
+        var $selected = $("#inOrOut").find("option:selected");
+        console.log($selected.val());
+        if ($selected.val() === '0') {
+            $('#outRecord').fadeOut();
+            $('#inRecord').fadeIn();
+        } else {
+            $('#inRecord').fadeOut();
+            $('#outRecord').fadeIn();
+        }
+
+    }).change();
+
+    $("#isMember").change(function () {
+        var $selected = $("#isMember").find("option:selected");
+        console.log($selected.val());
+        if ($selected.val() === '0') {
+            $('#memberIDDiv').fadeIn();
+            $("#payMethod").ap('<option value="0">Member Card</option>');
+        } else {
+            $('#memberIDDiv').fadeOut();
+            $("#payMethod").find('option[value="0"]').remove();
+
+        }
+
+    }).change();
+
+
+</script>
+</body>
+</html>

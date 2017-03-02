@@ -1,8 +1,8 @@
 package cn.edu.nju.controller;
 
 import cn.edu.nju.dao.HotelRepository;
-import cn.edu.nju.dao.RoomsRepository;
 import cn.edu.nju.entity.HotelEntity;
+import cn.edu.nju.entity.LiveMesEntity;
 import cn.edu.nju.entity.RoomsEntity;
 import cn.edu.nju.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Qiang
@@ -26,13 +25,11 @@ import java.util.Map;
 @RequestMapping("/hotel")
 public class HotelController {
     private final HotelRepository hotelRepository;
-    private final RoomsRepository roomsRepository;
     private final HotelService hotelService;
 
     @Autowired
-    public HotelController(HotelRepository hotelRepository, RoomsRepository roomsRepository, HotelService hotelService) {
+    public HotelController(HotelRepository hotelRepository, HotelService hotelService) {
         this.hotelRepository = hotelRepository;
-        this.roomsRepository = roomsRepository;
         this.hotelService = hotelService;
     }
 
@@ -48,8 +45,7 @@ public class HotelController {
 
             } else {
                 model.addAttribute("status", 1);
-                List<RoomsEntity> roomsEntities = roomsRepository.findByHotelId(id);
-
+                List<RoomsEntity> roomsEntities = hotelService.findRoomsByHotelId(id);
                 model.addAttribute("rooms", roomsEntities);
             }
 
@@ -60,22 +56,55 @@ public class HotelController {
         return "hotel/index";
     }
 
+    @RequestMapping("/record")
+    public String record(Model model, @SessionAttribute int id) {
+
+        HotelEntity hotel = hotelRepository.findOne(id);
+
+        if (hotel.getStatus() == 0) {
+            model.addAttribute("status", 0);
+
+        } else {
+            model.addAttribute("status", 1);
+            List<LiveMesEntity> liveMesEntities = hotelService.findLiveMesByHotelId(id);
+
+            model.addAttribute("records", liveMesEntities);
+        }
+
+        return "/hotel/record";
+    }
+
+    @RequestMapping(value = "/addInRecords", method = RequestMethod.POST)
+    @ResponseBody
+    public List<LiveMesEntity> addInRecords(int personNum , String personMes,int isMember, int payMethod, int memberId, int roomId, @SessionAttribute(value = "id") int hotelId) {
+
+        // TODO REMOVE futile return
+        return hotelService.addInRecords(personNum, personMes, isMember, payMethod, memberId, roomId, hotelId);
+    }
+    @RequestMapping(value = "/addOutRecords", method = RequestMethod.POST)
+    @ResponseBody
+    public List<LiveMesEntity> addOutRecords(int recordId) {
+
+        // TODO REMOVE futile return
+        return hotelService.addOutRecords(recordId);
+    }
     @RequestMapping("/info")
-    public String info(HttpSession session, Model model, @SessionAttribute int id) {
+    public String info(Model model, @SessionAttribute int id) {
 
         HotelEntity hotel = hotelRepository.findOne(id);
 
         model.addAttribute("hotel", hotel);
 
         if (hotelService.isApplyingForEditing(id)) {
-            model.addAttribute("edit" , true);
+            model.addAttribute("edit", true);
         }
         if (hotelService.isApplyingForOpen(id)) {
-            model.addAttribute("open" , true);
+            model.addAttribute("open", true);
         }
 
         return "/hotel/info";
-}
+    }
+
 
     @RequestMapping("/statistics")
     public String statistics() {
@@ -84,22 +113,22 @@ public class HotelController {
 
 
     @RequestMapping(value = "/open", method = RequestMethod.POST)
-    public String openApplication(HttpSession session,Model model ,String reason, @SessionAttribute int id) {
+    public String openApplication( Model model, String reason, @SessionAttribute int id) {
         hotelService.saveOpenApplication(reason, id);
-        return info(session, model ,id);
+        return info(model, id);
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String editApplication(HttpSession session,Model model ,String name, String address, String description, @SessionAttribute int id) {
+    public String editApplication(Model model, String name, String address, String description, @SessionAttribute int id) {
 
         hotelService.saveModifyApplication(name, address, description, id);
 
-        return info(session, model ,id);
+        return info(model, id);
     }
 
     @RequestMapping(value = "/addRooms", method = RequestMethod.POST)
     @ResponseBody
-    public List<RoomsEntity> addNewRooms(String time, boolean wifi, String picUrl, int area, int type, int price, int number, @SessionAttribute int id){
+    public List<RoomsEntity> addNewRooms(String time, boolean wifi, String picUrl, int area, int type, int price, int number, @SessionAttribute int id) {
 
         // TODO REMOVE futile return
         return hotelService.addRooms(time, wifi, picUrl, area, type, price, number, id);

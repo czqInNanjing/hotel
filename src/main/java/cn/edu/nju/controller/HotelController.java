@@ -1,11 +1,8 @@
 package cn.edu.nju.controller;
 
 import cn.edu.nju.dao.HotelRepository;
-import cn.edu.nju.dao.OpenApplicationRepository;
 import cn.edu.nju.dao.RoomsRepository;
 import cn.edu.nju.entity.HotelEntity;
-import cn.edu.nju.entity.HotelNewEntity;
-import cn.edu.nju.entity.OpenApplicationEntity;
 import cn.edu.nju.entity.RoomsEntity;
 import cn.edu.nju.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Qiang
@@ -98,6 +97,13 @@ public class HotelController {
         return info(session, model ,id);
     }
 
+    @RequestMapping(value = "/addRooms", method = RequestMethod.POST)
+    @ResponseBody
+    public List<RoomsEntity> addNewRooms(String time, boolean wifi, String picUrl, int area, int type, int price, int number, @SessionAttribute int id){
+
+        // TODO REMOVE futile return
+        return hotelService.addRooms(time, wifi, picUrl, area, type, price, number, id);
+    }
 
     @RequestMapping("/register")
     public String register() {

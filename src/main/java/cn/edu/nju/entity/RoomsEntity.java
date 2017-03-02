@@ -15,8 +15,22 @@ public class RoomsEntity {
     private Timestamp availableTime;
     private byte wifi;
     private String picUrl;
-    private int type;
-    private int price;
+    private int type = 0;
+    private int price = 0;
+    private int status = 0;
+
+    public RoomsEntity() {
+    }
+
+    public RoomsEntity(int hotelId, Timestamp availableTime, byte wifi, String picUrl, int type, int price) {
+        this.hotelId = hotelId;
+        this.availableTime = availableTime;
+        this.wifi = wifi;
+        this.picUrl = picUrl;
+        this.type = type;
+        this.price = price;
+    }
+
     @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
@@ -117,5 +131,15 @@ public class RoomsEntity {
         result = 31 * result + type;
         result = 31 * result + price;
         return result;
+    }
+
+    @Basic
+    @Column(name = "status", nullable = false)
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

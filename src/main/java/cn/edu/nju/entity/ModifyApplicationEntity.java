@@ -14,7 +14,7 @@ public class ModifyApplicationEntity {
     private Timestamp time;
     private int hotelId;
     private int newHotelId;
-    private byte status = 0;
+    private int status = 0;
 
     public ModifyApplicationEntity() {
     }
@@ -66,11 +66,11 @@ public class ModifyApplicationEntity {
 
     @Basic
     @Column(name = "status", nullable = false)
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

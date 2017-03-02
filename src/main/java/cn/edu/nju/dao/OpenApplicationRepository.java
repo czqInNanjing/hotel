@@ -13,8 +13,10 @@ public interface OpenApplicationRepository extends CrudRepository<OpenApplicatio
 
     boolean existsByHotelId(int hotelID);
 
-    List<OpenApplicationEntity> findByStatus(Byte status);
+    List<OpenApplicationEntity> findByStatus(int status);
 
 
     List<OpenApplicationEntity> findByHotelId(int hotelID);
+
+    boolean existsByHotelIdAndStatus(int hotelId , int status);
 }

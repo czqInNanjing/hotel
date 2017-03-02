@@ -12,4 +12,5 @@ public interface HotelNewRepository extends CrudRepository<HotelNewEntity, Integ
 
     boolean exists(int id);
 
+    HotelNewEntity findByOldHotel(int id);
 }

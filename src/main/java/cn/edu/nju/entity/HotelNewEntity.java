@@ -12,7 +12,7 @@ public class HotelNewEntity {
     private int id;
     private String name = "Hotel";
     private String address = "No Set";
-    private Byte status = 0;
+    private int status = 0;
     private String description = "No Description Yet";
     private Integer oldHotel;
 
@@ -58,11 +58,11 @@ public class HotelNewEntity {
 
     @Basic
     @Column(name = "status", nullable = false)
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

@@ -13,7 +13,7 @@ public class OpenApplicationEntity {
     private int id;
     private Timestamp time;
     private int hotelId;
-    private byte status;
+    private int status;
     private String reason;
     @GeneratedValue
     @Id
@@ -48,11 +48,11 @@ public class OpenApplicationEntity {
 
     @Basic
     @Column(name = "status", nullable = false)
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

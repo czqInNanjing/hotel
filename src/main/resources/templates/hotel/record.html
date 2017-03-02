@@ -69,7 +69,7 @@
                     <th>Person Mes</th>
                     <th>Pay Method</th>
                 </tr>
-                <tr th:each="record : ${records}">
+                <tr th:each="record : ${records}" th:class="(${record.status == 0}) ? 'success' : 'info'">
                     <td th:text="${#numbers.formatInteger(record.id,7)}">0000001</td>
                     <!--&lt;!&ndash;<td th:text="${reserveMes.time}">2016-3-19</td>&ndash;&gt;-->
                     <td th:text="${#dates.format(new java.util.Date(record.inTime),'dd/MM/yyyy HH:mm:ss')}">2016-3-19
@@ -211,6 +211,9 @@
         var isMember = $("#isMember").find("option:selected").val();
         var payMethod = $form.find('select[name="payMethod"]').val();
         var memberId = $form.find('input[name="memberId"]').val();
+        if (memberId == '') {
+            memberId = '0';
+        }
         var roomId = $form.find('input[name="roomId"]').val();
         var recordId = $form.find('input[name="recordId"]').val();
         var inputs;
@@ -249,12 +252,13 @@
                 data: inputs,
                 dataType: 'json',
                 success: function (data) {
-//                console.log($table);
-                    console.log(data.length);
-//                $form_modal.removeClass('is-visible');
-//                $table.load(data);
-                    location.reload();
-
+//                console.log(data);
+                    if (data.result) {
+                        location.reload();
+                    } else {
+                        var error_msg = '<p class="errtip">	<strong>Error</strong>：'+data.reason+'</p>'
+                        $(".err-msg").html(error_msg);
+                    }
                 }
             });
         }

@@ -13,7 +13,7 @@ public class RoomsEntity {
     private int id;
     private int hotelId;
     private Timestamp availableTime;
-    private byte wifi;
+    private int wifi;
     private String picUrl;
     private int type = 0;
     private int price = 0;
@@ -22,7 +22,7 @@ public class RoomsEntity {
     public RoomsEntity() {
     }
 
-    public RoomsEntity(int hotelId, Timestamp availableTime, byte wifi, String picUrl, int type, int price) {
+    public RoomsEntity(int hotelId, Timestamp availableTime, int wifi, String picUrl, int type, int price) {
         this.hotelId = hotelId;
         this.availableTime = availableTime;
         this.wifi = wifi;
@@ -64,11 +64,11 @@ public class RoomsEntity {
 
     @Basic
     @Column(name = "wifi", nullable = false)
-    public byte getWifi() {
+    public int getWifi() {
         return wifi;
     }
 
-    public void setWifi(byte wifi) {
+    public void setWifi(int wifi) {
         this.wifi = wifi;
     }
 

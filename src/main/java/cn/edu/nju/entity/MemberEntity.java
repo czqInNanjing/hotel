@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 public class MemberEntity {
     private int id;
     private String name = "Name";
-    private byte status = 0;
+    private int status = 0;
     private int deposit = 0;
     private int points = 0;
     private String creditCard = "None";
@@ -41,11 +41,11 @@ public class MemberEntity {
 
     @Basic
     @Column(name = "status", nullable = false)
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

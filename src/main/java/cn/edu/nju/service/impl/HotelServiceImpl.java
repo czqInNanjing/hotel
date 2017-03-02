@@ -68,13 +68,13 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public boolean isApplyingForOpen(int hotelId) {
 
-        return openApplicationRepository.existsByHotelId(hotelId);
+        return openApplicationRepository.existsByHotelIdAndStatus(hotelId , 0);
     }
 
     @Override
     public boolean isApplyingForEditing(int hotelId) {
 
-        return modifyApplicationRepository.existsByHotelId(hotelId);
+        return modifyApplicationRepository.existsByHotelIdAndStatus(hotelId , 0);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class HotelServiceImpl implements HotelService {
 
         List<RoomsEntity> roomsEntities = new ArrayList<>(number);
         for (int i = 0 ; i < number ; i ++) {
-            roomsEntities.add(new RoomsEntity(id,Helper.getTimeStamp(time), (byte) (wifi ? 1 : 0),picUrl,type, price));
+            roomsEntities.add(new RoomsEntity(id,Helper.getTimeStamp(time), wifi ? 1 : 0,picUrl,type, price));
         }
         roomsRepository.save(roomsEntities);
 //        RoomsEntity roomsEntity = new RoomsEntity(id,Helper.getTimeStamp(time), (byte) (wifi ? 1 : 0),picUrl,type, price);
@@ -109,18 +109,31 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public List<LiveMesEntity> addOutRecords(int recordId) {
+    public Map<String, Object> addOutRecords(int recordId) {
+        Map<String, Object> result = new TreeMap<>();
         LiveMesEntity entity = liveMesRepository.findOne(recordId);
         if (entity != null) {
-            entity.setOutTime(new Timestamp(System.currentTimeMillis()));
-            entity.setStatus(1);
-            liveMesRepository.save(entity);
-            RoomsEntity roomsEntity = roomsRepository.findOne(entity.getRoomId());
-            roomsEntity.setStatus(3);
-            roomsRepository.save(roomsEntity);
+            if (entity.getStatus() == 0) {
+                entity.setOutTime(new Timestamp(System.currentTimeMillis()));
+                entity.setStatus(1);
+                liveMesRepository.save(entity);
+                RoomsEntity roomsEntity = roomsRepository.findOne(entity.getRoomId());
+                roomsEntity.setStatus(3);
+//                roomsRepository.save(roomsEntity);
+                result.put("result" , true);
+//                result.put("reason", "Record Not Found!");
+            } else {
+                result.put("result" , false);
+                result.put("reason", "Record Has been added out time!");
+            }
 
+
+
+        } else {
+            result.put("result" , false);
+            result.put("reason", "Record Not Found!");
         }
-        return new ArrayList<>();
+        return result;
     }
 
     @Override

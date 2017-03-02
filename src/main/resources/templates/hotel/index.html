@@ -67,7 +67,7 @@
                     <th>price</th>
                     <th>status</th>
                 </tr>
-                <tr th:each="room : ${rooms}">
+                <tr th:each="room : ${rooms}" th:class="(${room.status == 0}) ? 'success' : ((${room.status == 1}) ? 'info' : 'danger')">
                     <td th:text="${#numbers.formatInteger(room.id,7)}">0000001</td>
                     <!--&lt;!&ndash;<td th:text="${reserveMes.time}">2016-3-19</td>&ndash;&gt;-->
                     <td th:text="${#dates.format(new java.util.Date(room.availableTime),'dd/MM/yyyy')}">2016-3-19</td>

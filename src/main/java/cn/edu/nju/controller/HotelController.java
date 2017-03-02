@@ -41,6 +41,10 @@ public class HotelController {
             int id = (int) session.getAttribute("id");
             HotelEntity hotel = hotelRepository.findOne(id);
 
+            if (hotel == null) {
+                System.err.println(id);
+            }
+
             if (hotel.getStatus() == 0) {
                 model.addAttribute("status", 0);
 
@@ -79,12 +83,12 @@ public class HotelController {
     @ResponseBody
     public Map<String, Object> addInRecords(int personNum , String personMes, int isMember, int payMethod, int memberId, int roomId, @SessionAttribute(value = "id") int hotelId) {
 
-        // TODO REMOVE futile return
+
         return hotelService.addInRecords(personNum, personMes, isMember, payMethod, memberId, roomId, hotelId);
     }
     @RequestMapping(value = "/addOutRecords", method = RequestMethod.POST)
     @ResponseBody
-    public List<LiveMesEntity> addOutRecords(int recordId) {
+    public Map<String, Object> addOutRecords(int recordId) {
 
         // TODO REMOVE futile return
         return hotelService.addOutRecords(recordId);

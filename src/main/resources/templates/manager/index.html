@@ -28,10 +28,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="index.html" th:href="@{index}">Message Approval<span
+                <li class="active"><a class="" href="index.html" th:href="@{index}">Message<span
+                        class="badge">4</span><span
                         class="sr-only">(current)</span></a></li>
                 <li><a href="statistics.html" th:href="@{statistics}">Hotel Statistics</a></li>
-
+                <li><a href="settlement.html" th:href="@{statistics}">Hotel Settlement</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -50,9 +51,111 @@
 
 
 <div class="mainpage">
+    <div>
+        <div class="panel panel-info">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Open Applications</div>
+            <div class="table-responsive ">
+                <table class="table table-hover" id="openTable">
+                    <tr>
+                        <th>Check</th>
+                        <th>No</th>
+                        <th>Time</th>
+                        <th>Hotel</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr th:each="open : ${opens}"
+                        th:class="(${open.status == 0}) ? 'info' :  ((${open.status == 1}) ? 'success' :  'danger')">
+                        <td><input th:if="${open.status==0}" title="order" type="checkbox" th:name="${open.id}"/></td>
+                        <td th:text="${#numbers.formatInteger(open.id,7)}">0000001</td>
+                        <td th:text="${#dates.format(new java.util.Date(open.time),'dd/MM/yyyy')}">2016-3-19</td>
+                        <td th:text="${open.hotelId}">Shanghai Hotel</td>
+                        <td th:text="${open.reason}">Big Room1</td>
+                        <td th:text="(${open.status == 0}) ? 'Not Deal Yet' :  ((${open.status == 1}) ? 'Approved' :  'Denied')">
+                            2016-3-18 22:25:25
+                        </td>
+                        <td>
+                            <!--TODO 已通过时让其无法点击-->
+                            <a  class="btn-primary operation" name="singleApprove"><span
+                                    class="glyphicon glyphicon-ok"
+                                    aria-hidden="true"></span></a>
+                            <a  class="btn-danger operation" name="singleDeny"><span
+                                    class="glyphicon glyphicon-remove"
+                                    aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-    Now this page will be used for show the manager's approval message
 
+        </div>
+        <div class="btn-group">
+            <a href="javascript:" type="button" class="btn btn-primary operation" name="approve">Group Approve</a>
+            <a href="#" type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:" class="operation" name="deny">Deny</a></li>
+            </ul>
+        </div>
+    </div><!-- End of The first open application part -->
+    <div id="editTable">
+        <div class="panel panel-info" >
+            <div class="panel-heading">Edit Applications</div>
+            <div class="table-responsive ">
+                <table class="table table-hover"  >
+                    <tr>
+                        <th>Check</th>
+                        <th>No</th>
+                        <th>Time</th>
+                        <th>Hotel</th>
+                        <th>Status</th>
+                        <th>Detail</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr th:each="edit : ${edits}"
+                        th:class="(${edit.status == 0}) ? 'info' :  ((${edit.status == 1}) ? 'success' :  'danger')">
+                        <td><input th:if="${edit.status==0}" title="order" type="checkbox" th:name="${edit.id}"/></td>
+                        <td th:text="${#numbers.formatInteger(edit.id,7)}">0000001</td>
+                        <td th:text="${#dates.format(new java.util.Date(edit.time),'dd/MM/yyyy')}">2016-3-19</td>
+                        <td th:text="${edit.hotelId}">Shanghai Hotel</td>
+
+                        <td th:text="(${edit.status == 0}) ? 'Not Deal Yet' :  ((${edit.status == 1}) ? 'Approved' :  'Denied')">
+                            2016-3-18 22:25:25
+                        </td>
+                        <td><a href="javascript:" id="detail">For Detail</a></td>
+                        <td>
+                            <a  class="btn-primary operation editTable" name="singleApprove"><span
+                                    class="glyphicon glyphicon-ok"
+                                    aria-hidden="true"></span></a>
+                            <a  class="btn-danger operation editTable" name="singleDeny"><span
+                                    class="glyphicon glyphicon-remove"
+                                    aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+        </div>
+        <div class="btn-group">
+            <a href="javascript:" type="button" class="btn btn-primary operation editTable" name="approve">Group Approve</a>
+            <a href="#" type="button" class="btn btn-primary dropdown-toggle " data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:" class="operation editTable" name="deny">Deny</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--TODO Add some hints-->
+    <div class="alert alert-danger invisible" role="alert"></div>
 </div>
 
 <div th:include="footer :: copy"></div>
@@ -62,5 +165,71 @@
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 <script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
+<script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script>
+<script th:inline="javascript">
+    $('.operation').on('click', function (e) {
+        e.preventDefault();
+        var source = $(this).attr('name');
+        var isSingle = true;
+        var isApprove = true;
+        var openOrModify = true;
+        console.log($(this).attr('class'));
+        if ($(this).attr('class').includes('editTable')) {
+            openOrModify = false;
+        }
+        switch (source) {
+            case 'approve':
+                isSingle = false;
+                isApprove = true;
+                break;
+            case 'deny' :
+                isSingle = false;
+                isApprove = false;
+                break;
+            case 'singleApprove':
+                isSingle = true;
+                isApprove = true;
+                break;
+            case 'singleDeny' :
+                isSingle = true;
+                isApprove = false;
+                break;
+            default:
+                break;
+        }
+
+        var operationArray = [];
+        if (isSingle) {
+            operationArray.push($(this).parent().parent().find('input[type="checkbox"]').attr('name'));
+        } else {
+            var checkList = $("#editTable").find('input[type="checkbox"]:checked');
+            checkList.each(function () {
+                operationArray.push($(this).attr('name'));
+            });
+        }
+
+
+        console.log('is SIngle ' + isSingle);
+        var inputs = {isApprove: isApprove, openOrModify: openOrModify, operationArray: operationArray};
+        console.log(inputs);
+//        var $table = $('.table-responsive');
+        $.ajax({
+            type: "POST",
+            url: '/manager/approve',
+            data: inputs,
+            dataType: 'json',
+            success: function (data) {
+                if (data.result) {
+                    location.reload();
+                } else {
+                    var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>'
+                    $(".alert-danger").html(error_msg).removeClass("invisible");
+//                    $(".alert-danger");
+                }
+
+            }
+        });
+    });
+</script>
 </body>
 </html>

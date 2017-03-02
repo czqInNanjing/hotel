@@ -33,7 +33,7 @@ public interface HotelService {
 
     List<RoomsEntity> addRooms(String time, boolean wifi, String picUrl, int area, int type , int price, int number, int id);
 
-    List<LiveMesEntity> addOutRecords(int recordId);
+    Map<String, Object> addOutRecords(int recordId);
 
     /**
      * This method needs to tackle several things:

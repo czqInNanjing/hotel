@@ -14,6 +14,7 @@
         <class>cn.edu.nju.entity.RoomsEntity</class>
         <class>cn.edu.nju.entity.PayRecordEntity</class>
         <class>cn.edu.nju.entity.RechargeEntity</class>
+        <class>cn.edu.nju.entity.PointConvertEntity</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/hotel"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>

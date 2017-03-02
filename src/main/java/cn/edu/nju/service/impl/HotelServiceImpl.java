@@ -3,6 +3,7 @@ package cn.edu.nju.service.impl;
 import cn.edu.nju.dao.*;
 import cn.edu.nju.entity.*;
 import cn.edu.nju.service.HotelService;
+import cn.edu.nju.service.MemberService;
 import cn.edu.nju.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Qiang
@@ -24,14 +27,16 @@ public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
     private final RoomsRepository roomsRepository;
     private final LiveMesRepository liveMesRepository;
+    private final MemberService memberService;
     @Autowired
-    public HotelServiceImpl(ModifyApplicationRepository modifyApplicationRepository, OpenApplicationRepository openApplicationRepository, HotelNewRepository hotelNewRepository, HotelRepository hotelRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository) {
+    public HotelServiceImpl(ModifyApplicationRepository modifyApplicationRepository, OpenApplicationRepository openApplicationRepository, HotelNewRepository hotelNewRepository, HotelRepository hotelRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository, MemberService memberService) {
         this.modifyApplicationRepository = modifyApplicationRepository;
         this.openApplicationRepository = openApplicationRepository;
         this.hotelNewRepository = hotelNewRepository;
         this.hotelRepository = hotelRepository;
         this.roomsRepository = roomsRepository;
         this.liveMesRepository = liveMesRepository;
+        this.memberService = memberService;
     }
 
     @Override
@@ -111,7 +116,7 @@ public class HotelServiceImpl implements HotelService {
             entity.setStatus(1);
             liveMesRepository.save(entity);
             RoomsEntity roomsEntity = roomsRepository.findOne(entity.getRoomId());
-            roomsEntity.setStatus(1);
+            roomsEntity.setStatus(3);
             roomsRepository.save(roomsEntity);
 
         }
@@ -119,11 +124,29 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public List<LiveMesEntity> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId) {
+    public synchronized Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId) {
+        Map<String, Object> result = new TreeMap<>();
+        RoomsEntity roomsEntity = roomsRepository.findOne(roomId);
+        boolean tmpResult = true;
+        if (isMember == 1) {
+            if (!memberService.isActivated(memberId)) {
+                result.put("result" , false);
+                result.put("reason", "Member Not Exists Or Not Activated.");
+                return result;
+            }
+            if (!memberService.pay(memberId, roomsEntity.getPrice())) {
+                result.put("result" , false);
+                result.put("reason", "Deposit is not enough, please recharge first!") ;
+                return result;
+            }
+        }
+
+
         LiveMesEntity liveMesEntity = new LiveMesEntity(personNum, personMes, payMethod, memberId, roomId,hotelId);
         liveMesRepository.save(liveMesEntity);
-
-
-        return new ArrayList<>();
+        roomsEntity.setStatus(2);
+        roomsRepository.save(roomsEntity);
+        result.put("result" , true);
+        return result;
     }
 }

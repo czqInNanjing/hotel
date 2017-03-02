@@ -136,8 +136,8 @@
                         <label for="isMember" class="col-sm-2 control-label">Is Member</label>
                         <div class="col-sm-10">
                             <select id="isMember" class="form-control">
-                                <option value="0">Member</option>
-                                <option value="1">Not a member</option>
+                                <option value="1">Member</option>
+                                <option value="0">Not a member</option>
                             </select>
                         </div>
                     </div>
@@ -152,7 +152,8 @@
                         <label for="payMethod" class="col-sm-2 control-label">Pay Method</label>
                         <div class="col-sm-10">
                             <select name="payMethod" id="payMethod" class="form-control">
-                                <option value="0">Member Card</option>
+                                <!--add in javascript-->
+                                <!--<option value="0">Member Card</option>-->
                                 <option value="1">Cash</option>
                                 <option value="2">Credit Card</option>
                             </select>
@@ -185,6 +186,7 @@
                     </div>
 
                 </div>
+                <div class="err-msg"></div>
             </form>
         </div>
 
@@ -206,7 +208,7 @@
 
         var personNum = $form.find('input[name="personNum"]').val();
         var personMes = $form.find('input[name="personMes"]').val();
-        var isMember =  $("#isMember").find("option:selected").val();
+        var isMember = $("#isMember").find("option:selected").val();
         var payMethod = $form.find('select[name="payMethod"]').val();
         var memberId = $form.find('input[name="memberId"]').val();
         var roomId = $form.find('input[name="roomId"]').val();
@@ -216,23 +218,31 @@
 
         console.log('Now is add' + inOrOut);
         if (inOrOut === '0') { // in record
-            inputs = {personNum:personNum , personMes:personMes, isMember:isMember, payMethod:payMethod, memberId:memberId, roomId:roomId};
+            inputs = {
+                personNum: personNum,
+                personMes: personMes,
+                isMember: isMember,
+                payMethod: payMethod,
+                memberId: memberId,
+                roomId: roomId
+            };
             $.ajax({
                 type: "POST",
                 url: '/hotel/addInRecords',
                 data: inputs,
                 dataType: 'json',
                 success: function (data) {
-//                    console.log($table);
-                    console.log(data.length);
-//                $form_modal.removeClass('is-visible');
-//                $table.load(data);
-                    location.reload();
-
+                    console.log(data);
+                    if (data.result) {
+                        location.reload();
+                    } else {
+                        var error_msg = '<p class="errtip">	<strong>Error</strong>：'+data.reason+'</p>'
+                        $(".err-msg").html(error_msg);
+                    }
                 }
             });
         } else {
-            inputs = {recordId:recordId};
+            inputs = {recordId: recordId};
             $.ajax({
                 type: "POST",
                 url: '/hotel/addOutRecords',
@@ -240,13 +250,13 @@
                 dataType: 'json',
                 success: function (data) {
 //                console.log($table);
-                console.log(data.length);
+                    console.log(data.length);
 //                $form_modal.removeClass('is-visible');
 //                $table.load(data);
-                location.reload();
+                    location.reload();
 
-            }
-        });
+                }
+            });
         }
         console.log(inputs);
 //        var $table = $('.table-responsive');
@@ -269,9 +279,9 @@
     $("#isMember").change(function () {
         var $selected = $("#isMember").find("option:selected");
         console.log($selected.val());
-        if ($selected.val() === '0') {
+        if ($selected.val() === '1') {
             $('#memberIDDiv').fadeIn();
-            $("#payMethod").ap('<option value="0">Member Card</option>');
+            $("#payMethod").append('<option value="0">Member Card</option>');
         } else {
             $('#memberIDDiv').fadeOut();
             $("#payMethod").find('option[value="0"]').remove();

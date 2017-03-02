@@ -3,6 +3,7 @@ package cn.edu.nju.service;
 import cn.edu.nju.entity.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Qiang
@@ -37,15 +38,18 @@ public interface HotelService {
     /**
      * This method needs to tackle several things:
      * 1. Check if the room is available
-     * 2. if it is a member, check if the member is activated, its deposit is enough,
-     * @param personNum
-     * @param personMes
-     * @param isMember
-     * @param payMethod
-     * @param memberId
-     * @param roomId
-     * @param hotelId
-     * @return
+     * 2. if it is a member, check if the member is activated, its deposit is enough, then subtract the corresponding value from the account
+     * 3. <continue> then add points to the member's account, add pay records
+     * 4. add the live message to the db
+     * 5. mark the specific room 'lived'
+     * @param personNum     number who live in that room
+     * @param personMes     person(s)' message
+     * @param isMember      is a member
+     * @param payMethod     pay method, 0 -- member card   1 -- cash 2-- credit card
+     * @param memberId      member id if a member
+     * @param roomId        room id
+     * @param hotelId       hotel id
+     * @return              success or failure, and reason if fail
      */
-    List<LiveMesEntity> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId);
+    Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId);
 }

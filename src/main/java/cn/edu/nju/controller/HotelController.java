@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Qiang
@@ -76,7 +77,7 @@ public class HotelController {
 
     @RequestMapping(value = "/addInRecords", method = RequestMethod.POST)
     @ResponseBody
-    public List<LiveMesEntity> addInRecords(int personNum , String personMes,int isMember, int payMethod, int memberId, int roomId, @SessionAttribute(value = "id") int hotelId) {
+    public Map<String, Object> addInRecords(int personNum , String personMes, int isMember, int payMethod, int memberId, int roomId, @SessionAttribute(value = "id") int hotelId) {
 
         // TODO REMOVE futile return
         return hotelService.addInRecords(personNum, personMes, isMember, payMethod, memberId, roomId, hotelId);

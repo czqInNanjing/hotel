@@ -15,6 +15,16 @@ public class PayRecordEntity {
     private int bill;
     private int after;
     private int liveId;
+
+
+    public PayRecordEntity() {
+    }
+
+    public PayRecordEntity(int bill, int after) {
+        this.bill = bill;
+        this.after = after;
+    }
+
     @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)

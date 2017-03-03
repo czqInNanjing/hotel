@@ -39,9 +39,9 @@ public interface HotelService {
      * This method needs to tackle several things:
      * 1. Check if the room is available
      * 2. if it is a member, check if the member is activated, its deposit is enough, then subtract the corresponding value from the account
-     * 3. <continue> then add points to the member's account, add pay records
+     * 3. <continue> then add points to the member's account, add pay records and add the amount to the hotel's waiting for settlement
      * 4. add the live message to the db
-     * 5. mark the specific room 'lived'
+     * 5. mark the specific room 'lived
      * @param personNum     number who live in that room
      * @param personMes     person(s)' message
      * @param isMember      is a member

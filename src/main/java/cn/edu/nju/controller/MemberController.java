@@ -1,13 +1,12 @@
 package cn.edu.nju.controller;
 
 import cn.edu.nju.dao.MemberRepository;
+import cn.edu.nju.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
@@ -19,11 +18,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping(value = "/member")
 public class MemberController {
-    private final MemberRepository repo;
 
+    private final MemberService memberService;
     @Autowired
-    public MemberController(MemberRepository repo) {
-        this.repo = repo;
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @RequestMapping({"/", "/index"})
@@ -35,12 +34,14 @@ public class MemberController {
 
 
     @RequestMapping("/profile")
-    public String profile(HttpSession session, Model model) {
-        if (session.getAttribute("id") != null) {
-            model.addAttribute("member", repo.findOne((int) session.getAttribute("id")));
-        }
+    public String profile(@SessionAttribute int id, Model model) {
+
+        model.addAttribute("member", memberService.getMemberProfile(id));
+
         return "/member/profile";
     }
+
+
 
     @RequestMapping("/statistics")
     public String statistics() {

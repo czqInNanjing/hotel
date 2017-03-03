@@ -28,8 +28,9 @@ public class HotelServiceImpl implements HotelService {
     private final RoomsRepository roomsRepository;
     private final LiveMesRepository liveMesRepository;
     private final MemberService memberService;
+    private final SettlementRepository settlementRepository;
     @Autowired
-    public HotelServiceImpl(ModifyApplicationRepository modifyApplicationRepository, OpenApplicationRepository openApplicationRepository, HotelNewRepository hotelNewRepository, HotelRepository hotelRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository, MemberService memberService) {
+    public HotelServiceImpl(ModifyApplicationRepository modifyApplicationRepository, OpenApplicationRepository openApplicationRepository, HotelNewRepository hotelNewRepository, HotelRepository hotelRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository, MemberService memberService, SettlementRepository settlementRepository) {
         this.modifyApplicationRepository = modifyApplicationRepository;
         this.openApplicationRepository = openApplicationRepository;
         this.hotelNewRepository = hotelNewRepository;
@@ -37,6 +38,7 @@ public class HotelServiceImpl implements HotelService {
         this.roomsRepository = roomsRepository;
         this.liveMesRepository = liveMesRepository;
         this.memberService = memberService;
+        this.settlementRepository = settlementRepository;
     }
 
     @Override
@@ -142,16 +144,29 @@ public class HotelServiceImpl implements HotelService {
         RoomsEntity roomsEntity = roomsRepository.findOne(roomId);
         boolean tmpResult = true;
         if (isMember == 1) {
+            //check if member exists
             if (!memberService.isActivated(memberId)) {
                 result.put("result" , false);
                 result.put("reason", "Member Not Exists Or Not Activated.");
                 return result;
             }
-            if (!memberService.pay(memberId, roomsEntity.getPrice())) {
-                result.put("result" , false);
-                result.put("reason", "Deposit is not enough, please recharge first!") ;
-                return result;
+            // pay by member card  (add to settlements)
+            if (payMethod == 0) {
+                if (memberService.pay(memberId, roomsEntity.getPrice())) {
+                    addToHotelSettlements(hotelId, roomsEntity.getPrice());
+                } else {
+                    result.put("result" , false);
+                    result.put("reason", "Deposit is not enough, please recharge first!") ;
+                    return result;
+                }
             }
+            // add points
+            memberService.addPoints(memberId, roomsEntity.getPrice());
+
+
+
+
+
         }
 
 
@@ -162,4 +177,21 @@ public class HotelServiceImpl implements HotelService {
         result.put("result" , true);
         return result;
     }
+
+    /**
+     *  add the amount that was payed by the member card to the settlement
+     */
+    private void addToHotelSettlements(int hotelId, int amount) {
+        SettlementEntity entity = settlementRepository.findByHotelIdAndStatus(hotelId, 0);
+        if (entity != null ) {
+            entity.setAmount(entity.getAmount() + amount);
+            settlementRepository.save(entity);
+        } else {
+            entity = new SettlementEntity(hotelId, amount);
+            settlementRepository.save(entity);
+        }
+
+
+    }
+
 }

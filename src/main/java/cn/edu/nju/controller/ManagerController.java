@@ -1,16 +1,14 @@
 package cn.edu.nju.controller;
 
-import cn.edu.nju.service.impl.ManagerService;
+import cn.edu.nju.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author Qiang
@@ -28,12 +26,21 @@ public class ManagerController {
     }
 
     @RequestMapping({"/", "/index"})
-    public String index(@SessionAttribute int id, Model model) {
-        model.addAttribute("opens", managerService.getAllOpenApplication());
-        model.addAttribute("edits" , managerService.getAllModifyApplication());
+    public String index(Model model) {
+        model.addAttribute("opens", managerService.getAllOpenApplication(false, -1));
+        model.addAttribute("edits" , managerService.getAllModifyApplication(false, -1));
 
         return "/manager/index";
     }
+
+    @RequestMapping(value = "/settlements", method = RequestMethod.GET)
+    public String settlements(Model model) {
+        model.addAttribute("settlements", managerService.getAllSettlements(false, -1));
+//        model.addAttribute("edits" , managerService.getAllModifyApplication());
+
+        return "/manager/settlement";
+    }
+
 
 
     @RequestMapping(value = "/approve" , method = RequestMethod.POST)
@@ -42,7 +49,11 @@ public class ManagerController {
         return managerService.approve(isApprove, openOrModify, operationArray);
     }
 
-
+    @RequestMapping(value = "/settlements" , method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> settlements(boolean isApprove, @RequestParam("operationArray[]") List<Integer> operationArray){
+        return managerService.settle(isApprove, operationArray);
+    }
 
 
     @RequestMapping("/statistics")

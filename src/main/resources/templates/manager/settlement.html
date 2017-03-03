@@ -32,7 +32,7 @@
                         class="badge">4</span><span
                         class="sr-only">(current)</span></a></li>
                 <li><a href="statistics.html" th:href="@{statistics}">Hotel Statistics</a></li>
-                <li class="active"><a href="settlement.html" th:href="@{statistics}">Hotel Settlement</a></li>
+                <li class="active"><a href="settlement.html" th:href="@{settlements}">Hotel Settlement</a></li>
 
 
             </ul>
@@ -55,27 +55,25 @@
 
     <div class="panel panel-info">
         <!-- Default panel contents -->
-        <div class="panel-heading">Open Applications</div>
+        <div class="panel-heading">Settle Approvals</div>
         <div class="table-responsive ">
             <table class="table table-hover" id="openTable">
                 <tr>
                     <th>Check</th>
                     <th>No</th>
-                    <th>Time</th>
                     <th>Hotel</th>
-                    <th>Reason</th>
+                    <th>Amount($)</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
-                <tr th:each="open : ${opens}"
-                    th:class="(${open.status == 0}) ? 'info' :  ((${open.status == 1}) ? 'success' :  'danger')">
-                    <td><input th:if="${open.status==0}" title="order" type="checkbox" th:name="${open.id}"/></td>
-                    <td th:text="${#numbers.formatInteger(open.id,7)}">0000001</td>
-                    <td th:text="${#dates.format(new java.util.Date(open.time),'dd/MM/yyyy')}">2016-3-19</td>
-                    <td th:text="${open.hotelId}">Shanghai Hotel</td>
-                    <td th:text="${open.reason}">Big Room1</td>
-                    <td th:text="(${open.status == 0}) ? 'Not Deal Yet' :  ((${open.status == 1}) ? 'Approved' :  'Denied')">
-                        2016-3-18 22:25:25
+                <tr th:each="settle : ${settlements}"
+                    th:class="(${settle.status == 0}) ? 'info' :  ((${settle.status == 1}) ? 'success' :  'danger')">
+                    <td><input th:if="${settle.status==0}" title="order" type="checkbox" th:name="${settle.id}"/></td>
+                    <td th:text="${#numbers.formatInteger(settle.id,7)}">0000001</td>
+                    <td th:text="${settle.hotelId}">Shanghai Hotel</td>
+                    <td th:text="${settle.amount}">500</td>
+                    <td th:text="(${settle.status == 0}) ? 'Not Deal Yet' :  ((${settle.status == 1}) ? 'Approved' :  'Denied')">
+                        Not Deal Yet
                     </td>
                     <td>
                         <a class="btn-primary operation" name="singleApprove"><span
@@ -121,11 +119,7 @@
         var source = $(this).attr('name');
         var isSingle = true;
         var isApprove = true;
-        var openOrModify = true;
-        console.log($(this).attr('class'));
-        if ($(this).attr('class').includes('editTable')) {
-            openOrModify = false;
-        }
+//        console.log($(this).attr('class'));
         switch (source) {
             case 'approve':
                 isSingle = false;
@@ -158,13 +152,12 @@
         }
 
 
-        console.log('is SIngle ' + isSingle);
-        var inputs = {isApprove: isApprove, openOrModify: openOrModify, operationArray: operationArray};
+//        console.log('is SIngle ' + isSingle);
+        var inputs = {isApprove: isApprove, operationArray: operationArray};
         console.log(inputs);
-//        var $table = $('.table-responsive');
         $.ajax({
             type: "POST",
-            url: '/manager/approve',
+            url: '/manager/settlements',
             data: inputs,
             dataType: 'json',
             success: function (data) {

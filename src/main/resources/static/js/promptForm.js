@@ -8,7 +8,11 @@ jQuery(document).ready(function($){
     var $form_modal = $('.cd-user-modal-1'),
         $my_pop = $('.my-pop-1'),
         $form_modal_2 = $('.cd-user-modal-2'),
-        $my_pop_2 = $('.my-pop-2');
+        $my_pop_2 = $('.my-pop-2'),
+        $form_modal_3 = $('.cd-user-modal-3'),
+        $my_pop_3 = $('.my-pop-3'),
+        $form_modal_4 = $('.cd-user-modal-4'),
+        $my_pop_4 = $('.my-pop-4');
 
 
     //弹出窗口
@@ -18,17 +22,27 @@ jQuery(document).ready(function($){
     $my_pop_2.on('click', function(event){
         $form_modal_2.addClass('is-visible');
     });
+    $my_pop_3.on('click', function(event){
+        $form_modal_3.addClass('is-visible');
+    });
+    $my_pop_4.on('click', function(event){
+        $form_modal_4.addClass('is-visible');
+    });
 
     //关闭弹出窗口
     $('.modal-cancel').on('click', function(event){
         $form_modal.removeClass('is-visible');
         $form_modal_2.removeClass('is-visible');
+        $form_modal_3.removeClass('is-visible');
+        $form_modal_4.removeClass('is-visible');
     });
     //使用Esc键关闭弹出窗口
     $(document).keyup(function(event){
         if(event.which=='27'){
             $form_modal.removeClass('is-visible');
             $form_modal_2.removeClass('is-visible');
+            $form_modal_3.removeClass('is-visible');
+            $form_modal_4.removeClass('is-visible');
         }
     });
 

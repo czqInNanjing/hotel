@@ -18,7 +18,7 @@ public class MemberEntity {
     private String creditCard = "None";
     private Timestamp registDate = new Timestamp(System.currentTimeMillis());
     private int remainDays = 0;
-    @GeneratedValue
+//    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

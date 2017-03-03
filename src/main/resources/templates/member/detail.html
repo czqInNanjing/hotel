@@ -1,10 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Hotel Detail Page</title>
+    <meta charset="UTF-8"/>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1"/>-->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/hotel.css" th:href="@{/css/hotel.css}"/>
+    <link rel="stylesheet" href="../../static/css/other.css" th:href="@{/css/other.css}"/>
+    <title>Hotel Detail</title>
 </head>
 <body>
 
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html" th:href="@{index}">Hostel World</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html" th:href="@{index}">Hotel<span
+                        class="sr-only">(current)</span></a></li>
+                <li><a href="statistics.html" th:href="@{statistics}">Statistics</a></li>
+                <li><a href="profile.html" th:href="@{profile}">Profile</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Welcome, Smith <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../account/index.html" th:href="@{logout}">Sign out</a></li>
+                        <li><a href="../account/register.html" th:href="@{register}">Register</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="mainpage">
+    <div class="jumbotron">
+        <div class="container">
+            <h1 th:text="${hotel.name}">Chengdu Hotel</h1>
+            <p th:text="${hotel.description}">This is the best hotel you will have ever experienced!</p>
+            <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+        Launch demo modal
+    </button>
+
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <!--TODO Change button style based on the modal-footer
+                     Add alert missable-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="row">-->
+        <!--<div th:each="hotel : ${hotels}" class="col-sm-6 col-md-4">-->
+            <!--<div class="thumbnail">-->
+                <!--<img src="../../static/img/hotel/hotel1.JPG" alt="hotel pic" th:src="${hotel.picUrl}"/>-->
+                <!--<div class="caption">-->
+                    <!--<h3 th:text="${hotel.name}">Shanghai Hotel</h3>-->
+                    <!--<p th:text="${hotel.description}">This is a very good hotel with wifi and hot water. The average reputation exceed 4 of 5 points! Why not have a try?</p>-->
+                    <!--<p><a href="#" class="btn btn-primary my-pop-1" role="button" th:name="${hotel.id}">Book Now</a>-->
+                        <!--<a href="detail.html" th:href="@{/order/details(hotelId=${hotel.id})}" class="btn btn-info" role="button">More</a></p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <nav aria-label="Page navigation" class="col-md-offset-4 col-md-4">
+        <ul class="pagination pagination-lg">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div th:include="footer :: copy"></div>
+
+
+
+
+<!--Scripts-->
+<script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
+<script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script>
 </body>
 </html>

@@ -5,7 +5,14 @@ import cn.edu.nju.entity.*;
 import cn.edu.nju.service.HotelService;
 import cn.edu.nju.service.MemberService;
 import cn.edu.nju.util.Helper;
+import cn.edu.nju.util.SystemDefault;
+import cn.edu.nju.vo.HotelDetailVO;
+import cn.edu.nju.vo.RoomVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -42,34 +49,81 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    public List<HotelEntity> getAllHotels() {
+        List<HotelEntity> result = new ArrayList<>();
+        hotelRepository.findAll().forEach(result::add);
+        return result;
+    }
+
+    @Override
     public HotelEntity getHotelByHotelId(int hotelId) {
         return hotelRepository.findOne(hotelId);
     }
 
     @Override
-    public List<RoomsEntity> findRoomsByHotelId(int hotelId) {
-        return roomsRepository.findByHotelId(hotelId);
+    public HotelDetailVO getHotelDetailVOByHotelId(int hotelId) {
+        HotelEntity entity = hotelRepository.findOne(hotelId);
+        HotelDetailVO detailVO = new HotelDetailVO();
+        BeanUtils.copyProperties(entity, detailVO);
+        List<RoomsEntity> roomsEntities = findRoomsByHotelId(hotelId, true, -1);
+        List<RoomVO> roomVOS = new ArrayList<>(roomsEntities.size());
+        roomsEntities.forEach(roomsEntity -> {
+            RoomVO vo = new RoomVO();
+            BeanUtils.copyProperties(roomsEntities, vo);
+            roomVOS.add(vo);
+        });
+
+        detailVO.setVos(roomVOS);
+        return detailVO;
     }
 
-    @Override
-    public List<RoomsEntity> findRoomsByHotelIdAndPage(int hotelId, int page) {
-        //TODO
-        return null;
-    }
+
 
     @Override
-    public List<LiveMesEntity> findLiveMesByHotelId(int hotelId) {
-        return liveMesRepository.findByHotelId(hotelId);
+    public List<RoomsEntity> findRoomsByHotelId(int hotelId, boolean onlyAvailable, int page) {
+        List<RoomsEntity> result = new ArrayList<>();
+        Page<RoomsEntity> pages;
+        if (page >= 0) {
+            if (onlyAvailable) {
+                pages = roomsRepository.findByHotelIdAndStatus(hotelId,0, new PageRequest(page , SystemDefault.SIZE_PER_PAGE));
+            } else {
+                pages = roomsRepository.findByHotelId(hotelId, new PageRequest(page , SystemDefault.SIZE_PER_PAGE));
+            }
+
+            pages.forEach(result::add);
+
+        } else {
+            if (onlyAvailable) {
+                roomsRepository.findByStatus(0).forEach(result::add);
+            } else {
+                roomsRepository.findAll().forEach(result::add);
+            }
+        }
+        return result;
     }
 
+
+
     @Override
-    public List<LiveMesEntity> findLiveMesByHotelIdAndPage(int hotelId, int page) {
-        return null;
+    public List<LiveMesEntity> findLiveMesByHotelId(int hotelId, int page) {
+        List<LiveMesEntity> result = new ArrayList<>();
+        Page<LiveMesEntity> pages;
+        if (page >= 0) {
+
+            pages = liveMesRepository.findByHotelId(hotelId, new PageRequest(page , SystemDefault.SIZE_PER_PAGE));
+            pages.forEach(result::add);
+
+        } else {
+            liveMesRepository.findByHotelId(hotelId).forEach(result::add);
+
+        }
+        return result;
     }
+
+
 
     @Override
     public boolean isApplyingForOpen(int hotelId) {
-
         return openApplicationRepository.existsByHotelIdAndStatus(hotelId , 0);
     }
 

@@ -1,6 +1,9 @@
 package cn.edu.nju.dao;
 
 import cn.edu.nju.entity.RoomsEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -12,6 +15,8 @@ import java.util.List;
 public interface RoomsRepository extends CrudRepository<RoomsEntity, Integer> {
 
     List<RoomsEntity> findByHotelId(int hotelId);
+    Page<RoomsEntity> findByHotelId(int hotelId, Pageable pageRequest);
+    Page<RoomsEntity> findByHotelIdAndStatus(int hotelId, int status, Pageable pageRequest);
 
-
+    List<RoomsEntity> findByStatus(int status);
 }

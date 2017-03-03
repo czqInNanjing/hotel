@@ -236,24 +236,24 @@
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 <!--<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>-->
 <script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script>
-<script th:inline="javascript">
-    $(document).ready(function(){
-        var edit =/*[[${edit}]]*/ 'false';
-        console.log(edit);
-        if (edit === true) {
-            var $editPop = $('.my-pop-1');
-            $editPop.attr("disabled" , 'disabled');
-            $editPop.text('Edit Waiting For Approval');
-        }
-        var open= /*[[${open}]]*/ 'false';
-        console.log(open);
-        if (open === true) {
-            var $openPop = $('.my-pop-2');
-            $openPop.attr("disabled" , 'disabled');
-            $openPop.text('Open Application Waiting For Approval');
-        }
+<!--<script th:inline="javascript">-->
+    <!--$(document).ready(function(){-->
+        <!--var edit =/*[[${edit}]]*/ 'false';-->
+        <!--console.log(edit);-->
+        <!--if (edit === true) {-->
+            <!--var $editPop = $('.my-pop-1');-->
+            <!--$editPop.attr("disabled" , 'disabled');-->
+            <!--$editPop.text('Edit Waiting For Approval');-->
+        <!--}-->
+        <!--var open= /*[[${open}]]*/ 'false';-->
+        <!--console.log(open);-->
+        <!--if (open === true) {-->
+            <!--var $openPop = $('.my-pop-2');-->
+            <!--$openPop.attr("disabled" , 'disabled');-->
+            <!--$openPop.text('Open Application Waiting For Approval');-->
+        <!--}-->
 
-    });
-</script>
+    <!--});-->
+<!--</script>-->
 </body>
 </html>

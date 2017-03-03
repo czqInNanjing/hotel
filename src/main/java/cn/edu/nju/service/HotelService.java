@@ -1,6 +1,7 @@
 package cn.edu.nju.service;
 
 import cn.edu.nju.entity.*;
+import cn.edu.nju.vo.HotelDetailVO;
 
 import java.util.List;
 import java.util.Map;
@@ -12,15 +13,27 @@ import java.util.Map;
 public interface HotelService {
 
 
+    List<HotelEntity> getAllHotels();
+
     HotelEntity getHotelByHotelId(int hotelId);
 
-    List<RoomsEntity> findRoomsByHotelId(int hotelId);
+    HotelDetailVO getHotelDetailVOByHotelId(int hotelId);
 
-    List<RoomsEntity> findRoomsByHotelIdAndPage(int hotelId, int page);
+    /**
+     *
+     * @param hotelId hotel id
+     * @param onlyAvailable whether return only the available room
+     * @param page  0-based, -1 if return all
+     */
+    List<RoomsEntity> findRoomsByHotelId(int hotelId, boolean onlyAvailable, int page);
 
-    List<LiveMesEntity> findLiveMesByHotelId(int hotelId);
+    /**
+     *
+     * @param hotelId hotel id
+     * @param page  0-based, -1 if return all
+     */
+    List<LiveMesEntity> findLiveMesByHotelId(int hotelId, int page);
 
-    List<LiveMesEntity> findLiveMesByHotelIdAndPage(int hotelId, int page);
 
     boolean isApplyingForOpen(int hotelId);
 

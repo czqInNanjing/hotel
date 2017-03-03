@@ -4,17 +4,19 @@ import cn.edu.nju.dao.HotelRepository;
 import cn.edu.nju.entity.HotelEntity;
 import cn.edu.nju.entity.LiveMesEntity;
 import cn.edu.nju.entity.RoomsEntity;
+import cn.edu.nju.service.FileService;
 import cn.edu.nju.service.HotelService;
+import cn.edu.nju.service.StorageService;
 import cn.edu.nju.util.SystemDefault;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +27,29 @@ import java.util.Map;
 @Controller
 @RequestMapping("/hotel")
 public class HotelController {
+
+
+
     private final HotelRepository hotelRepository;
     private final HotelService hotelService;
+    private final
+    StorageService fileService;
 
     @Autowired
-    public HotelController(HotelRepository hotelRepository, HotelService hotelService) {
+    public HotelController(StorageService storageService, HotelRepository hotelRepository, HotelService hotelService) {
+        this.fileService = storageService;
         this.hotelRepository = hotelRepository;
         this.hotelService = hotelService;
     }
 
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public Map<String, Object> uploadHandler(@RequestParam("file[]")MultipartFile file, HttpServletRequest request){
+        ;
+        System.out.println(file.getSize());;
+        fileService.store(file);
+        return null;
+    }
     @RequestMapping(value = {"/", "/index"})
     public String index(@SessionAttribute(SystemDefault.USER_ID) int id, Model model) {
 
@@ -49,7 +65,7 @@ public class HotelController {
 
         } else {
             model.addAttribute("status", 1);
-            List<RoomsEntity> roomsEntities = hotelService.findRoomsByHotelId(id);
+            List<RoomsEntity> roomsEntities = hotelService.findRoomsByHotelId(id, false, -1 );
             model.addAttribute("rooms", roomsEntities);
         }
 
@@ -67,13 +83,17 @@ public class HotelController {
 
         } else {
             model.addAttribute("status", 1);
-            List<LiveMesEntity> liveMesEntities = hotelService.findLiveMesByHotelId(id);
+            //TODO
+            List<LiveMesEntity> liveMesEntities = hotelService.findLiveMesByHotelId(id, -1);
 
             model.addAttribute("records", liveMesEntities);
         }
 
         return "/hotel/record";
     }
+
+
+
 
     @RequestMapping(value = "/addInRecords", method = RequestMethod.POST)
     @ResponseBody

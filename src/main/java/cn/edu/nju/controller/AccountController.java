@@ -6,6 +6,7 @@ import cn.edu.nju.dao.MemberRepository;
 import cn.edu.nju.entity.AccountEntity;
 import cn.edu.nju.entity.HotelEntity;
 import cn.edu.nju.entity.MemberEntity;
+import cn.edu.nju.util.SystemDefault;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -25,7 +26,6 @@ import javax.servlet.http.HttpSession;
  * @since 25/02/2017
  */
 @Controller
-@SessionAttributes("id")
 public class AccountController {
     private final AccountRepository repository;
     private final MemberRepository memberRepository;
@@ -50,7 +50,7 @@ public class AccountController {
 
         if (result != null) {
 
-            session.setAttribute("id", result.getId());
+            session.setAttribute(SystemDefault.USER_ID, result.getId());
             switch (result.getType()) {
                 case 0:
                     return "redirect:/member/index";
@@ -118,7 +118,8 @@ public class AccountController {
     }
 
     @RequestMapping("/register")
-    public String register() {
+    public String register(SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
         return "account/register";
     }
 

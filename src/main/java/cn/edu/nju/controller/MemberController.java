@@ -2,6 +2,7 @@ package cn.edu.nju.controller;
 
 import cn.edu.nju.dao.MemberRepository;
 import cn.edu.nju.service.MemberService;
+import cn.edu.nju.util.SystemDefault;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +35,7 @@ public class MemberController {
 
 
     @RequestMapping("/profile")
-    public String profile(@SessionAttribute int id, Model model) {
+    public String profile(@SessionAttribute(SystemDefault.USER_ID) int id, Model model) {
 
         model.addAttribute("member", memberService.getMemberProfile(id));
 

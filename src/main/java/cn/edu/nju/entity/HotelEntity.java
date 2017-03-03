@@ -14,6 +14,7 @@ public class HotelEntity {
     private String address = "No Set";
     private int status = 0;
     private String description = "No Description Yet";
+    private String picUrl = "";
 
     @GeneratedValue
     @Id
@@ -90,5 +91,15 @@ public class HotelEntity {
         result = 31 * result + (int) status;
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "pic_url", nullable = true, length = 6000)
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 }

@@ -29,7 +29,7 @@ public interface HotelService {
 
     void saveOpenApplication(String reason, int id);
 
-    void saveModifyApplication(String name, String address, String description, int hotelId);
+    void saveModifyApplication(String name, String address, String description, int hotelId, String picUrl);
 
     List<RoomsEntity> addRooms(String time, boolean wifi, String picUrl, int area, int type , int price, int number, int id);
 

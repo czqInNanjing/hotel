@@ -88,8 +88,8 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public void saveModifyApplication(String name, String address, String description, int hotelId) {
-        HotelNewEntity newEntity = new HotelNewEntity(name,address,description,hotelId);
+    public void saveModifyApplication(String name, String address, String description, int hotelId, String picUrl) {
+        HotelNewEntity newEntity = new HotelNewEntity(name,address,description,hotelId,picUrl);
         newEntity = hotelNewRepository.save(newEntity);
         ModifyApplicationEntity modifyApplicationEntity = new ModifyApplicationEntity(hotelId, newEntity.getId());
         modifyApplicationRepository.save(modifyApplicationEntity);
@@ -142,6 +142,7 @@ public class HotelServiceImpl implements HotelService {
     public synchronized Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId) {
         Map<String, Object> result = new TreeMap<>();
         RoomsEntity roomsEntity = roomsRepository.findOne(roomId);
+        //TODO check if room has been reserved ? or has been used
         boolean tmpResult = true;
         if (isMember == 1) {
             //check if member exists

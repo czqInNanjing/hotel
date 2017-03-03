@@ -208,7 +208,11 @@
                 operationArray.push($(this).attr('name'));
             });
         }
-
+        if (operationArray.length == 0) {
+            var error_msg = '<p class="errtip">	<strong>Error</strong>：' + 'No rows are selected' + '</p>';
+            $(".alert-danger").html(error_msg).removeClass("invisible");
+            return;
+        }
 
         console.log('is SIngle ' + isSingle);
         var inputs = {isApprove: isApprove, openOrModify: openOrModify, operationArray: operationArray};

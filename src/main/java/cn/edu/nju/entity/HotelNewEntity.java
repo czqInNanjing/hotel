@@ -15,16 +15,18 @@ public class HotelNewEntity {
     private int status = 0;
     private String description = "No Description Yet";
     private Integer oldHotel;
+    private String picUrl = "";
 
     public HotelNewEntity() {
     }
-
-    public HotelNewEntity(String name, String address, String description, Integer oldHotel) {
+    public HotelNewEntity(String name, String address, String description, Integer oldHotel, String picUrl) {
         this.name = name;
         this.address = address;
         this.description = description;
         this.oldHotel = oldHotel;
+        this.picUrl = picUrl;
     }
+
     @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
@@ -110,5 +112,15 @@ public class HotelNewEntity {
 
     public void setOldHotel(Integer oldHotel) {
         this.oldHotel = oldHotel;
+    }
+
+    @Basic
+    @Column(name = "pic_url", nullable = true, length = 6000)
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 }

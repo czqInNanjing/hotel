@@ -69,6 +69,35 @@ public class MemberController {
         return "/member/detail";
     }
 
+    @PostMapping("/edit")
+    @ResponseBody
+    public Map<String, Object> edit(@SessionAttribute(SystemDefault.USER_ID) int id, String name, String mail, String creditCard){
+        return memberService.edit(id, name, mail, creditCard);
+    }
+
+    @PostMapping("/recharge")
+    @ResponseBody
+    public Map<String, Object> recharge(@SessionAttribute(SystemDefault.USER_ID) int id, int amount){
+        return memberService.recharge(id, amount);
+    }
+
+    @PostMapping("/convert")
+    @ResponseBody
+    public Map<String, Object> convert(@SessionAttribute(SystemDefault.USER_ID) int id, int amount){
+        return memberService.convertPoints(id, amount);
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public Map<String, Object> convert(@SessionAttribute(SystemDefault.USER_ID) int id, String password){
+        Map<String, Object> result = memberService.deleteAccount(id, password);
+        if ( (Boolean) result.get("result")) {
+            register();
+            return null;
+        }
+        return result;
+    }
+
     @RequestMapping("/register")
     public String register() {
         return "redirect:/register";

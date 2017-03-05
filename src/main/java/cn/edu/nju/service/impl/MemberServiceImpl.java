@@ -1,10 +1,8 @@
 package cn.edu.nju.service.impl;
 
 import cn.edu.nju.dao.*;
-import cn.edu.nju.entity.MemberEntity;
-import cn.edu.nju.entity.PayRecordEntity;
-import cn.edu.nju.entity.ReservedEntity;
-import cn.edu.nju.entity.RoomsEntity;
+import cn.edu.nju.entity.*;
+import cn.edu.nju.service.AccountService;
 import cn.edu.nju.service.MemberService;
 import cn.edu.nju.vo.MemberInfoVO;
 import org.springframework.beans.BeanUtils;
@@ -27,9 +25,9 @@ public class MemberServiceImpl implements MemberService {
     private final AccountRepository accountRepository;
     private final ReservedRepository reservedRepository;
     private final RoomsRepository roomsRepository;
-
+    private final AccountService accountService;
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository, AccountService accountService) {
         this.memberRepository = memberRepository;
         this.rechargeRepository = rechargeRepository;
         this.pointConvertRepository = pointConvertRepository;
@@ -37,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
         this.accountRepository = accountRepository;
         this.reservedRepository = reservedRepository;
         this.roomsRepository = roomsRepository;
+        this.accountService = accountService;
     }
 
     @Override
@@ -64,14 +63,28 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean recharge(int id, int amount) {
+    public Map<String, Object> recharge(int id, int amount) {
+        Map<String,Object> result = new TreeMap<>();
         MemberEntity entity = memberRepository.findOne(id);
         if (entity != null) {
             entity.setDeposit(entity.getDeposit() + amount);
             memberRepository.save(entity);
-            return true;
+            result.put("result", true);
+
+            if (entity.getDeposit() >= 1000 && entity.getStatus() == 0) {
+                entity.setStatus(1);
+                entity.setRemainDays(365);
+                memberRepository.save(entity);
+                result.put("reason", "Your account has been activated.");
+            } else {
+                result.put("reason", "You have recharged "+ amount + " dollars.");
+            }
+
+
+            return result;
         }
-        return false;
+        result.put("result", true);
+        return result;
     }
 
     @Override
@@ -149,5 +162,44 @@ public class MemberServiceImpl implements MemberService {
 
 
         return null;
+    }
+
+    @Override
+    public Map<String, Object> edit(int id, String name, String mail, String creditCard) {
+        Map<String,Object> result = new TreeMap<>();
+        AccountEntity accountEntity = accountRepository.findOne(id);
+
+        accountEntity.setMail(mail);
+        if (accountRepository.findByMail(mail) != null) {
+            result.put("result", false);
+            result.put("reason", "Mail has been occupied");
+            return result;
+        }
+        accountRepository.save(accountEntity);
+        MemberEntity memberEntity = memberRepository.findOne(id);
+        memberEntity.setName(name);
+        memberEntity.setCreditCard(creditCard);
+        memberRepository.save(memberEntity);
+        result.put("result", true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> deleteAccount(int id, String password) {
+        Map<String,Object> result = new TreeMap<>();
+        //check password
+        if (accountRepository.existsByIdAndPassword(id, password)) {
+            reservedRepository.deleteByMemberId(id);
+            memberRepository.delete(id);
+            accountRepository.delete(id);
+            result.put("result", true);
+            return result;
+        }
+
+
+        result.put("result", false);
+        result.put("reason", "password is error!");
+
+        return result;
     }
 }

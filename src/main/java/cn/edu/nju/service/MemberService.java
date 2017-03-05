@@ -18,7 +18,7 @@ public interface MemberService {
      * @return          whether success
      */
     boolean pay(int id, int amount);
-    boolean recharge(int id, int amount);
+    Map<String, Object> recharge(int id, int amount);
     void addPoints(int id, int amount);
 
     /**
@@ -38,4 +38,8 @@ public interface MemberService {
      * @return
      */
     Map<String,Object> reserve(int id, int roomId);
+
+    Map<String,Object> edit(int id, String name, String mail, String creditCard);
+
+    Map<String,Object> deleteAccount(int id, String password);
 }

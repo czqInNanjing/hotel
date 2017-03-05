@@ -8,4 +8,8 @@ import org.springframework.data.repository.CrudRepository;
  * @since 27/02/2017
  */
 public interface ReservedRepository extends CrudRepository<ReservedEntity, Integer> {
+
+    void deleteByMemberId(int memberId);
+
+
 }

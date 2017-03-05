@@ -29,7 +29,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li ><a href="index.html" th:href="@{index}">Hotel</a></li>
+                <li><a href="index.html" th:href="@{index}">Hotel</a></li>
                 <li><a href="statistics.html" th:href="@{statistics}">Statistics<span
                         class="sr-only">(current)</span></a></li>
                 <li class="active"><a href="profile.html" th:href="@{profile}">Profile</a></li>
@@ -51,209 +51,308 @@
 <div class="mainpage">
 
     <div class="table-responsive">
-    <table class="table table-striped">
-        <tr>
-            <th>Item</th>
-            <th>Message</th>
-        </tr>
-        <tr>
-            <td>id</td>
-            <td th:text="${member.id}">0000001</td>
-        </tr>
-        <tr>
-            <td>mail</td>
-            <td th:text="${member.mail}">czqofnju@qq.com</td>
-        </tr>
-        <tr>
-            <td>name</td>
-            <td th:text="${member.name}">Smith</td>
-        </tr>
-        <tr>
-            <td>status</td>
-            <td th:text="(${member.status == 0}) ? 'Not Activated' : 'Activated'">Not Activated</td>
-        </tr>
-        <tr>
-            <td>Remain Days</td>
-            <td th:text="${member.remainDays}">0</td>
-        </tr>
-        <tr>
-            <td>Points</td>
-            <td th:text="${member.points}">0</td>
-        </tr>
-        <tr>
-            <td>Register Date</td>
-            <td th:text="${member.registDate}">2011-2-13</td>
-        </tr>
-        <tr>
-            <td>Credit Card</td>
-            <td th:text="${member.registDate}">None</td>
-        </tr>
-    </table>
+        <table class="table table-striped">
+            <tr>
+                <th>Item</th>
+                <th>Message</th>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td th:text="${member.id}">0000001</td>
+            </tr>
+            <tr>
+                <td>mail</td>
+                <td th:text="${member.mail}">czqofnju@qq.com</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td th:text="${member.name}">Smith</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td th:text="(${member.status == 0}) ? 'Not Activated' : 'Activated'">Not Activated</td>
+            </tr>
+            <tr>
+                <td>Deposit</td>
+                <td th:text="${member.deposit}">0</td>
+            </tr>
+            <tr>
+                <td>Remain Days</td>
+                <td th:text="${member.remainDays}">0</td>
+            </tr>
+            <tr>
+                <td>Points</td>
+                <td th:text="${member.points}">0</td>
+            </tr>
+            <tr>
+                <td>Register Date</td>
+                <td th:text="${member.registDate}">2011-2-13</td>
+            </tr>
+            <tr>
+                <td>Credit Card</td>
+                <td th:text="${member.creditCard}">None</td>
+            </tr>
+        </table>
     </div>
-    <p><a href="javascript:"  class="btn btn-primary my-pop-1" role="button">Edit</a>
-        <a href="javascript:"  class="btn btn-info my-pop-2" role="button">Recharge</a>
-        <a href="javascript:"  class="btn btn-info my-pop-3" role="button">Point Convert</a>
-        <a href="javascript:" class="btn btn-danger my-pop-4" role="button">Delete Account</a>
+    <p>
+        <button type="button" class="btn btn-info editButton" data-toggle="modal"
+                data-target="#editModal">Edit
+        </button>
+        <button type="button" class="btn btn-primary rechargeButton" data-toggle="modal"
+                data-target="#rechargeModal">Recharge
+        </button>
+        <button type="button" class="btn btn-success pointConvertButton" data-toggle="modal"
+                data-target="#pointConvertModal">Point Convert
+        </button>
+        <button type="button" class="btn btn-danger deleteButton" data-toggle="modal"
+                data-target="#deleteModal">Delete Account
+        </button>
     </p>
 </div>
 
 
-
-
 <div th:include="footer :: copy"></div>
 
-<div class="cd-user-modal cd-user-modal-1">
-    <div class="cd-user-modal-container">
 
-
-        <div class="panel panel-info">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Edit Message</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Reserve Room</h4>
+            </div>
             <form class="form-horizontal" action="profile.html" th:action="@{/member/edit}" method="post">
-                <div class="form-group">
-                    <label for="name" class="col-sm-2 control-label">Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Your Name" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="mail" class="col-sm-2 control-label">Mail</label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control" name="mail" id="mail" placeholder="E-mail" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="creditCard" class="col-sm-2 control-label">Credit Card</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="creditCard" id="creditCard" placeholder="Your Credit Card" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10   col-md-4">
-                        <button type="submit" class=" btn btn-primary">Apply</button>
-                        <a href="#" class="btn btn-danger modal-cancel">Cancel</a>
+                <div class="modal-body">
 
-                    </div>
 
+                    <div class="form-group">
+                        <label for="nameM" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" id="nameM" placeholder="Your Name"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mailM" class="col-sm-2 control-label">Mail</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" name="mail" id="mailM" placeholder="E-mail"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="creditCardM" class="col-sm-2 control-label">Credit Card</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="creditCard" id="creditCardM"
+                                   placeholder="Your Credit Card"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary edit">Save changes</button>
                 </div>
             </form>
+
+
+            <div class="err-msg"></div>
         </div>
 
     </div>
 
 </div>
 
-<div class="cd-user-modal cd-user-modal-2">
-    <div class="cd-user-modal-container">
+<div class="modal fade" id="pointConvertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Recharge</h4>
+            </div>
+            <form class="form-horizontal" action="profile.html" th:action="@{/member/edit}" method="post">
+                <div class="modal-body">
 
 
-        <div class="panel panel-info">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Hotel Open Application</div>
-            <form class="form-horizontal" action="profile.html" th:action="@{/hotel/open}" method="post">
-                <div class="form-group">
-                    <label for="reason" class="col-sm-2 control-label">Reason</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="reason" id="reason" placeholder="Your Reason" />
+                    <div class="form-group">
+                        <label for="nameM" class="col-sm-2 control-label">Your points</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control"
+                                   th:placeholder="${member.points}" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pointConvertValue" class="col-sm-2 control-label">Amount</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="convertValue" id="pointConvertValue"
+                                   placeholder="1 point can be converted to 1 $"/>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10   col-md-4">
-                        <button type="submit" class=" btn btn-primary">Apply</button>
-                        <a href="#" class="btn btn-danger modal-cancel">Cancel</a>
-
-                    </div>
-
-                </div>
-            </form>
-        </div>
-
-    </div>
-
-</div>
-<div class="cd-user-modal cd-user-modal-3">
-    <div class="cd-user-modal-container">
 
 
-        <div class="panel panel-info">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Hotel Open Application</div>
-            <form class="form-horizontal" action="profile.html" th:action="@{/hotel/open}" method="post">
-                <div class="form-group">
-                    <label for="reason" class="col-sm-2 control-label">Reason</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="reason" id="reason" placeholder="Your Reason" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10   col-md-4">
-                        <button type="submit" class=" btn btn-primary">Apply</button>
-                        <a href="#" class="btn btn-danger modal-cancel">Cancel</a>
-
-                    </div>
-
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary convert">Recharge</button>
                 </div>
             </form>
+
+
+            <div class="err-msg"></div>
         </div>
 
     </div>
 
 </div>
 
-<div class="cd-user-modal cd-user-modal-4">
-    <div class="cd-user-modal-container">
 
-
-        <div class="panel panel-info">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Hotel Open Application</div>
-            <form class="form-horizontal" action="profile.html" th:action="@{/hotel/open}" method="post">
-                <div class="form-group">
-                    <label for="reason" class="col-sm-2 control-label">Reason</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="reason" id="reason" placeholder="Your Reason" />
+<div class="modal fade" id="rechargeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Recharge</h4>
+            </div>
+            <form class="form-horizontal" action="profile.html" th:action="@{/member/edit}" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Credit Card</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control"
+                                   th:placeholder="${member.creditCard}" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rechargeValue" class="col-sm-2 control-label">Amount</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="rechargeValue" id="rechargeValue"
+                                   placeholder="How much do you want to recharge"/>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10   col-md-4">
-                        <button type="submit" class=" btn btn-primary">Apply</button>
-                        <a href="#" class="btn btn-danger modal-cancel">Cancel</a>
 
-                    </div>
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary recharge">Recharge</button>
                 </div>
             </form>
+
+
+            <div class="err-msg"></div>
         </div>
 
     </div>
 
 </div>
 
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete Account</h4>
+            </div>
+            <form class="form-horizontal" action="profile.html" th:action="@{/member/edit}" method="post">
+                <div class="modal-body">
+
+
+                    <div class="form-group text-danger">
+                        <p class="col-md-offset-2">Are you sure to delete the account? The Operation cannot
+                            be undo!</p>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordM" class="col-sm-2 control-label">Your Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="password" id="passwordM"
+                                   placeholder="Your Password"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger delete">Yes, I know the consequence</button>
+                </div>
+
+            </form>
+
+            <div class="err-msg"></div>
+        </div>
+
+    </div>
+
+</div>
 
 
 <!--Scripts-->
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-<!--<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>-->
-<script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script>
-<!--<script th:inline="javascript">-->
-    <!--$(document).ready(function(){-->
-        <!--var edit =/*[[${edit}]]*/ 'false';-->
-        <!--console.log(edit);-->
-        <!--if (edit === true) {-->
-            <!--var $editPop = $('.my-pop-1');-->
-            <!--$editPop.attr("disabled" , 'disabled');-->
-            <!--$editPop.text('Edit Waiting For Approval');-->
-        <!--}-->
-        <!--var open= /*[[${open}]]*/ 'false';-->
-        <!--console.log(open);-->
-        <!--if (open === true) {-->
-            <!--var $openPop = $('.my-pop-2');-->
-            <!--$openPop.attr("disabled" , 'disabled');-->
-            <!--$openPop.text('Open Application Waiting For Approval');-->
-        <!--}-->
+<script th:inline="javascript">
+    var $edit = $('#editModal');
+    var $recharge = $('#rechargeModal');
+    var $convert = $('#pointConvertModal');
+    var $delete = $('#deleteModal');
+    var inputs = [];
+    var url = '';
 
-    <!--});-->
-<!--</script>-->
+    $('.edit').on('click' , function () {
+        var name = $edit.find('input[name="name"]').val();
+        var mail = $edit.find('input[name="mail"]').val();
+        var creditCard = $edit.find('input[name="creditCard"]').val();
+
+        inputs = {name:name, mail:mail, creditCard:creditCard};
+        url = '/member/edit';
+        callAjax(inputs,url, false);
+    });
+    $('.recharge').on('click' , function () {
+        var amount = $recharge.find('input[name="rechargeValue"]').val();
+        inputs = {amount:amount};
+        url = '/member/recharge';
+        callAjax(inputs,url, false);
+    });
+    $('.convert').on('click' , function () {
+        var amount = $convert.find('input[name="convertValue"]').val();
+        inputs = {amount:amount};
+        url = '/member/convert';
+        callAjax(inputs,url, false);
+    });
+    $('.delete').on('click' , function () {
+        var password = $delete.find('input[name="password"]').val();
+        inputs = {password:password};
+        url = '/member/delete';
+        callAjax(inputs,url, true);
+    });
+
+    function callAjax(inputs, url, isdelete) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: inputs,
+            dataType: 'json',
+            success: function (data) {
+                if (data.result) {
+                    if (isdelete) {
+                        window.location.replace("http://localhost:8080/");
+                    } else {
+                        location.reload();
+                        if (data.reason) {
+                            $('.mainpage').append('<div class="alert alert-info alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Great!</strong> ' +data.reason +  ' </div>');
+                        }
+                    }
+                } else {
+                    var error_msg = '<p class="errtip">	<strong>Error</strong>：'+data.reason+'</p>'
+                    $(".err-msg").html(error_msg);
+                }
+            }
+        });
+
+
+
+    }
+
+
+</script>
 </body>
 </html>

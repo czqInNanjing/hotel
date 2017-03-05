@@ -18,6 +18,9 @@ public class RoomsEntity {
     private int type = 0;
     private int price = 0;
     private int status = 0;
+    private Integer area;
+    private Integer breakfast;
+    private String name;
 
     public RoomsEntity() {
     }
@@ -141,5 +144,35 @@ public class RoomsEntity {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Basic
+    @Column(name = "area", nullable = true)
+    public Integer getArea() {
+        return area;
+    }
+
+    public void setArea(Integer area) {
+        this.area = area;
+    }
+
+    @Basic
+    @Column(name = "breakfast", nullable = true)
+    public Integer getBreakfast() {
+        return breakfast;
+    }
+
+    public void setBreakfast(Integer breakfast) {
+        this.breakfast = breakfast;
+    }
+
+    @Basic
+    @Column(name = "name", nullable = true, length = 60)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

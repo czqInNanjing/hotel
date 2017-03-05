@@ -15,4 +15,7 @@ public class SystemDefault {
     //+++++++++++++++++  Following are the member attr ++++++++++++++++++++
     public static final String HOTELS = "hotels";
     public static final String HOTEL_DETAIL = "hotel";
+    public static int SIZE_PER_PAGE_OF_HOTEL = 6;
+    public static final String CURRENT_PAGE = "current";
+    public static final String HOTEL_ID = "hotelId";
 }

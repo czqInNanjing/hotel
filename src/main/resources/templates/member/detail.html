@@ -61,74 +61,75 @@
     </div>
 
 
+    <div class="row">
+        <div th:each="room : ${hotel.vos}" class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <img src="../../static/img/hotel/hotel1.JPG" alt="hotel pic" th:src="${room.picUrl}"/>
+                <div class="caption">
+                    <h3 th:text="${room.name}">Room Name</h3>
+                    <table class="table table-condensed">
+                        <tr>
+                            <td>Room Id</td>
+                            <td th:text="${room.id}">1</td>
+                        </tr>
+                        <tr>
+                            <td>Max Person</td>
+                            <td th:text="${room.type}">1</td>
+                        </tr>
+                        <tr>
+                            <td>wifi</td>
+                            <td th:text="${room.wifi == 0} ? 'No Available' : 'Available'">Available</td>
+                        </tr>
+                        <tr>
+                            <td>breakfast</td>
+                            <td th:text="${room.breakfast == 0} ? 'No Available' : 'Available'">Available</td>
+                        </tr>
+                        <tr>
+                            <td>available date</td>
+                            <td th:text="${#dates.format(new java.util.Date(room.availableTime),'dd/MM/yyyy')}">
+                                2016-3-19
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>price</td>
+                            <td th:text="${room.price}">300</td>
+                        </tr>
+                    </table>
 
+                    <p>
+                        <button type="button" class="btn btn-info reserveButton" data-toggle="modal"
+                                data-target="#reserveModal" th:name="${room.id}">
+                            Reserve
+                        </button>
+                    </p>
 
-
-
-
-
-
-
-
-
-
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-        Launch demo modal
-    </button>
-
-
-
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <!--TODO Change button style based on the modal-footer
-                     Add alert missable-->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
-    <!--<div class="row">-->
-        <!--<div th:each="hotel : ${hotels}" class="col-sm-6 col-md-4">-->
-            <!--<div class="thumbnail">-->
-                <!--<img src="../../static/img/hotel/hotel1.JPG" alt="hotel pic" th:src="${hotel.picUrl}"/>-->
-                <!--<div class="caption">-->
-                    <!--<h3 th:text="${hotel.name}">Shanghai Hotel</h3>-->
-                    <!--<p th:text="${hotel.description}">This is a very good hotel with wifi and hot water. The average reputation exceed 4 of 5 points! Why not have a try?</p>-->
-                    <!--<p><a href="#" class="btn btn-primary my-pop-1" role="button" th:name="${hotel.id}">Book Now</a>-->
-                        <!--<a href="detail.html" th:href="@{/order/details(hotelId=${hotel.id})}" class="btn btn-info" role="button">More</a></p>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+
+
     <nav aria-label="Page navigation" class="col-md-offset-4 col-md-4">
         <ul class="pagination pagination-lg">
             <li>
-                <a href="#" aria-label="Previous">
+                <!--disabled still not work-->
+                <a id="previous" href="#" th:disabled="${current == 0} ? 'disabled' : 'not'"
+                   th:href="@{/member/detail(hotelId=${hotelId},page=${current} - 1)}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
+            <li><a href="#" th:href="@{/member/detail(hotelId=${hotelId},page=${current})}"
+                   th:text="${current} + 1">1</a></li>
+            <li><a href="#" th:href="@{/member/detail(hotelId=${hotelId},page=${current} + 1)}"
+                   th:text="${current} + 2">2</a></li>
+            <li><a href="#" th:href="@{/member/detail(hotelId=${hotelId},page=${current} + 2)}"
+                   th:text="${current} + 3">3</a></li>
+            <li><a href="#" th:href="@{/member/detail(hotelId=${hotelId},page=${current} + 3)}"
+                   th:text="${current} + 4">4</a></li>
+            <li><a href="#" th:href="@{/member/detail(hotelId=${hotelId},page=${current} + 4)}"
+                   th:text="${current} + 5">5</a></li>
             <li>
-                <a href="#" aria-label="Next">
+                <a href="#" th:href="@{/member/detail(hotelId=${hotelId},page=${current} + 1)}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -136,15 +137,63 @@
     </nav>
 </div>
 
+
+
+<div class="modal fade" id="reserveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Reserve Room</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure to reserve this room?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary reserve">Save changes</button>
+            </div>
+            <div class="err-msg"></div>
+        </div>
+
+    </div>
+
+</div>
+
 <div th:include="footer :: copy"></div>
-
-
-
-
 <!--Scripts-->
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
-<script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script>
+<script th:inline="javascript">
+    var roomId = 0;
+    var inputs = [];
+    $('.reserveButton').on('click', function (e) {
+        e.preventDefault();
+        roomId = $(this).attr("name");
+    });
+
+
+    $('.reserve').on('click', function (e) {
+        e.preventDefault();
+        inputs = {roomId: roomId};
+        $.ajax({
+            type: "POST",
+            url: '/member/reserve',
+            data: inputs,
+            dataType: 'json',
+            success: function (data) {
+                if (data.result) {
+                    location.reload();
+                } else {
+                    var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>';
+                    $(".err-msg").html(error_msg);
+                }
+
+            }
+        });
+    });
+
+</script>
 </body>
 </html>

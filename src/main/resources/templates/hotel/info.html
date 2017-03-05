@@ -101,19 +101,19 @@
                 <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Hotel Name" required />
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Hotel Name" required="required" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="address" class="col-sm-2 control-label">Address</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" required />
+                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" required="required" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="description" class="col-sm-2 control-label">Description</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="description" id="description" placeholder="Description" required />
+                        <input type="text" class="form-control" name="description" id="description" placeholder="Description" required="required" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -181,11 +181,11 @@
 
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-<!--<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>-->
-<script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script><script src="../../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
-<!--<script src="../../static/js/vendor/jquery.ui.widget.js" th:src="@{/js/vendor/jquery.ui.widget.js}"></script>-->
-<!--<script src="../../static/js/jquery.iframe-transport.js" th:src="@{/js/jquery.iframe-transport.js}"></script>-->
-<!--<script src="../../static/js/jquery.fileupload.js" th:src="@{/js/jquery.fileupload.js}"></script>-->
+<script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script>
+<script src="../../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../../static/js/vendor/jquery.ui.widget.js" th:src="@{/js/vendor/jquery.ui.widget.js}"></script>
+<script src="../../static/js/jquery.iframe-transport.js" th:src="@{/js/jquery.iframe-transport.js}"></script>
+<script src="../../static/js/jquery.fileupload.js" th:src="@{/js/jquery.fileupload.js}"></script>
 
 <script th:inline="javascript">
     var filePath ='' ;
@@ -197,9 +197,7 @@
                 $('#fileupload').text(data.result.name);
                 filePath = data.result.path;
                 document.getElementById('picUrl').value = filePath;
-                console.log(document.getElementById('picUrl').value);
-//                $('#picUrl').setAttribute("value" , filePath);
-                $('#fileupload').text(data.result.name).appendTo(document.body);
+                console.log('pic url ' + document.getElementById('picUrl').value);
             },
 
             progressall: function (e, data) {
@@ -208,22 +206,21 @@
                     'width',
                     progress + '%'
                 );
-            },
-            formData : {'picUrl': filePath}
+            }
 
         });
     });
 
     $(document).ready(function(){
         var edit =/*[[${edit}]]*/ 'false';
-        console.log(edit);
+        console.log('edit' +edit);
         if (edit === true) {
             var $editPop = $('.my-pop-1');
             $editPop.attr("disabled" , 'disabled');
             $editPop.text('Edit Waiting For Approval');
         }
         var open= /*[[${open}]]*/ 'false';
-        console.log(open);
+        console.log('open' + open);
         if (open === true) {
             var $openPop = $('.my-pop-2');
             $openPop.attr("disabled" , 'disabled');

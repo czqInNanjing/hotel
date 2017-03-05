@@ -30,4 +30,12 @@ public interface MemberService {
     Map<String , Object> convertPoints(int id, int points);
 
     MemberInfoVO getMemberProfile(int id);
+
+    /**
+     * reserve a room for specific user
+     * @param id
+     * @param roomId
+     * @return
+     */
+    Map<String,Object> reserve(int id, int roomId);
 }

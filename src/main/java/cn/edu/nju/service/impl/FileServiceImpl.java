@@ -35,7 +35,7 @@ public class FileServiceImpl implements FileService {
                 e.printStackTrace();
             }
         }
-        return resultPath;
+        return resultPath.substring(resultPath.indexOf("/img"));
 
     }
 }

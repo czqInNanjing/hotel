@@ -3,6 +3,8 @@ package cn.edu.nju.service.impl;
 import cn.edu.nju.dao.*;
 import cn.edu.nju.entity.MemberEntity;
 import cn.edu.nju.entity.PayRecordEntity;
+import cn.edu.nju.entity.ReservedEntity;
+import cn.edu.nju.entity.RoomsEntity;
 import cn.edu.nju.service.MemberService;
 import cn.edu.nju.vo.MemberInfoVO;
 import org.springframework.beans.BeanUtils;
@@ -23,14 +25,18 @@ public class MemberServiceImpl implements MemberService {
     private final PointConvertRepository pointConvertRepository;
     private final PayRecordRepository payRecordRepository;
     private final AccountRepository accountRepository;
+    private final ReservedRepository reservedRepository;
+    private final RoomsRepository roomsRepository;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository) {
         this.memberRepository = memberRepository;
         this.rechargeRepository = rechargeRepository;
         this.pointConvertRepository = pointConvertRepository;
         this.payRecordRepository = payRecordRepository;
         this.accountRepository = accountRepository;
+        this.reservedRepository = reservedRepository;
+        this.roomsRepository = roomsRepository;
     }
 
     @Override
@@ -110,5 +116,38 @@ public class MemberServiceImpl implements MemberService {
         vo.setMail(mail);
 
         return vo;
+    }
+
+    @Override
+    public Map<String, Object> reserve(int id, int roomId) {
+        Map<String, Object> result = new TreeMap<>();
+        RoomsEntity entity = roomsRepository.findOne(roomId);
+
+        if (entity != null) {
+            if (entity.getStatus() == 0) {
+                entity.setStatus(1);
+                roomsRepository.save(entity);
+            } else {
+                result.put("result", false);
+                result.put("reason", "Room has been occupied");
+                return result;
+            }
+
+            ReservedEntity reservedEntity = new ReservedEntity();
+            reservedEntity.setMemberId(id);
+            reservedEntity.setRoomId(roomId);
+            reservedRepository.save(reservedEntity);
+
+            result.put("result", true);
+//            result.put("reason", "Room has been occupied");
+            return result;
+        }
+
+
+
+
+
+
+        return null;
     }
 }

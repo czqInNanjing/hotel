@@ -146,7 +146,7 @@ public class HotelController {
     @ResponseBody
     public List<RoomsEntity> addNewRooms(String time, boolean wifi, String picUrl, int area, int type, int price, int number, @SessionAttribute(SystemDefault.USER_ID) int id) {
 
-        // TODO REMOVE futile return
+        // TODO REMOVE futile return && allow to upload new room pic
         return hotelService.addRooms(time, wifi, picUrl, area, type, price, number, id);
     }
 

@@ -9,14 +9,39 @@ import java.sql.Timestamp;
 public class RoomVO {
 
 
-
+    private int id;
     private Timestamp availableTime;
     private int wifi;
     private String picUrl;
     private int type = 0;
     private int price = 0;
     private int status = 0;
+    private Integer breakfast;
+    private String name;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getBreakfast() {
+        return breakfast;
+    }
+
+    public void setBreakfast(Integer breakfast) {
+        this.breakfast = breakfast;
+    }
 
     public RoomVO() {
     }

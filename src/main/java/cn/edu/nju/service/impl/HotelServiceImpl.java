@@ -12,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -56,20 +55,36 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    public List<HotelEntity> getHotelsByPage(int page) {
+        List<HotelEntity> result = new ArrayList<>();
+        Page<HotelEntity> pages;
+        if (page >= 0) {
+
+            pages = hotelRepository.findAll(new PageRequest(page, SystemDefault.SIZE_PER_PAGE_OF_HOTEL));
+            pages.forEach(result::add);
+
+        } else {
+            hotelRepository.findAll().forEach(result::add);
+
+        }
+        return result;
+    }
+
+    @Override
     public HotelEntity getHotelByHotelId(int hotelId) {
         return hotelRepository.findOne(hotelId);
     }
 
     @Override
-    public HotelDetailVO getHotelDetailVOByHotelId(int hotelId) {
+    public HotelDetailVO getHotelDetailVOByHotelId(int hotelId, int page) {
         HotelEntity entity = hotelRepository.findOne(hotelId);
         HotelDetailVO detailVO = new HotelDetailVO();
         BeanUtils.copyProperties(entity, detailVO);
-        List<RoomsEntity> roomsEntities = findRoomsByHotelId(hotelId, true, -1);
+        List<RoomsEntity> roomsEntities = findRoomsByHotelId(hotelId, true, page);
         List<RoomVO> roomVOS = new ArrayList<>(roomsEntities.size());
         roomsEntities.forEach(roomsEntity -> {
             RoomVO vo = new RoomVO();
-            BeanUtils.copyProperties(roomsEntities, vo);
+            BeanUtils.copyProperties(roomsEntity, vo);
             roomVOS.add(vo);
         });
 

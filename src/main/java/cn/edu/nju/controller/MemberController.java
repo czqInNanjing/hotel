@@ -7,9 +7,10 @@ import cn.edu.nju.vo.HotelDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+
+import java.util.Map;
 
 /**
  * @author Qiang
@@ -28,8 +29,10 @@ public class MemberController {
     }
 
     @RequestMapping({"/", "/index"})
-    public String index(Model model) {
-        model.addAttribute(SystemDefault.HOTELS, hotelService.getAllHotels());
+    public String index(Model model,@RequestParam(value = "page", defaultValue = "0") int page) {
+        model.addAttribute(SystemDefault.HOTELS, hotelService.getHotelsByPage(page));
+
+        model.addAttribute(SystemDefault.CURRENT_PAGE, page);
         return "/member/index";
     }
 
@@ -42,7 +45,12 @@ public class MemberController {
         return "/member/profile";
     }
 
+    @PostMapping("/reserve")
+    @ResponseBody
+    public Map<String, Object> reserve(@SessionAttribute(SystemDefault.USER_ID) int id, int roomId) {
+        return memberService.reserve(id, roomId);
 
+    }
 
     @RequestMapping("/statistics")
     public String statistics() {
@@ -51,12 +59,13 @@ public class MemberController {
 
 
     @RequestMapping("/detail")
-    public String detail(Model model, @SessionAttribute(SystemDefault.USER_ID) int id, int hotelId) {
-        HotelDetailVO hotelDetailVO = hotelService.getHotelDetailVOByHotelId(hotelId);
+    public String detail(Model model, int hotelId,@RequestParam(value = "page", defaultValue = "0") int page) {
+        HotelDetailVO hotelDetailVO = hotelService.getHotelDetailVOByHotelId(hotelId,page);
         if (hotelDetailVO != null) {
             model.addAttribute(SystemDefault.HOTEL_DETAIL, hotelDetailVO);
         }
-
+        model.addAttribute(SystemDefault.HOTEL_ID, hotelId);
+        model.addAttribute(SystemDefault.CURRENT_PAGE, page);
         return "/member/detail";
     }
 

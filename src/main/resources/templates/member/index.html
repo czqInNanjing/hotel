@@ -100,9 +100,8 @@
                     <h3 th:text="${hotel.name}">Shanghai Hotel</h3>
                     <p th:text="${hotel.description}">This is a very good hotel with wifi and hot water. The average
                         reputation exceed 4 of 5 points! Why not have a try?</p>
-                    <p><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bookModal" th:name="${hotel.id}">
-                        Book Now
-                    </button>
+                    <p>
+
                         <!--<a data-target="#bookModal" href="#" class="btn btn-primary" role="button" "></a>-->
                         <a href="detail.html" th:href="@{/member/detail(hotelId=${hotel.id})}" class="btn btn-info"
                            role="button">More</a></p>
@@ -112,39 +111,21 @@
     </div>
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <nav aria-label="Page navigation" class="col-md-offset-4 col-md-4">
         <ul class="pagination pagination-lg">
             <li>
-                <a href="#" aria-label="Previous">
+                <a id="previous" href="#" th:disabled="${current == 0} ? 'disabled' : 'not'"
+                   th:href="@{/member/index(page=${current} - 1)}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
+            <li><a href="#" th:href="@{/member/index(page=${current})}" th:text="${current} + 1">1</a></li>
+            <li><a href="#" th:href="@{/member/index(page=${current} + 1)}" th:text="${current} + 2">2</a></li>
+            <li><a href="#" th:href="@{/member/index(page=${current} + 2)}" th:text="${current} + 3">3</a></li>
+            <li><a href="#" th:href="@{/member/index(page=${current} + 3)}" th:text="${current} + 4">4</a></li>
+            <li><a href="#" th:href="@{/member/index(page=${current} + 4)}" th:text="${current} + 5">5</a></li>
             <li>
-                <a href="#" aria-label="Next">
+                <a href="#" th:href="@{/member/index(page=${current} + 1)}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -158,6 +139,23 @@
 <!--Scripts-->
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var current = /*[[${current}]]*/ 0;
+//        console.log(current);
+        var $pageList = $('a');
+        if (current == 0) {
+            $('#previous').attr("disabled", 'disabled');
+        }
+        $pageList.each(function () {
+            console.log($(this).text());
+            if ($(this).text() == (current + 1)) {
+//                console.log($(this).text());
+                $(this).parent().addClass("active");
+            }
+        })
+
+    });
+</script>
 </body>
 </html>

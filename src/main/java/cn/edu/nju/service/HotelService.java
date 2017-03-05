@@ -15,9 +15,11 @@ public interface HotelService {
 
     List<HotelEntity> getAllHotels();
 
+    List<HotelEntity> getHotelsByPage(int page);
+
     HotelEntity getHotelByHotelId(int hotelId);
 
-    HotelDetailVO getHotelDetailVOByHotelId(int hotelId);
+    HotelDetailVO getHotelDetailVOByHotelId(int hotelId, int page);
 
     /**
      *

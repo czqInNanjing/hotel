@@ -189,9 +189,7 @@ public class MemberServiceImpl implements MemberService {
         Map<String,Object> result = new TreeMap<>();
         //check password
         if (accountRepository.existsByIdAndPassword(id, password)) {
-            reservedRepository.deleteByMemberId(id);
-            memberRepository.delete(id);
-            accountRepository.delete(id);
+            deleteAccount(id);
             result.put("result", true);
             return result;
         }
@@ -202,4 +200,13 @@ public class MemberServiceImpl implements MemberService {
 
         return result;
     }
+
+    @Override
+    public void deleteAccount(int id) {
+        reservedRepository.deleteByMemberId(id);
+        memberRepository.delete(id);
+        accountRepository.delete(id);
+    }
+
+
 }

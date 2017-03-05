@@ -42,4 +42,5 @@ public interface MemberService {
     Map<String,Object> edit(int id, String name, String mail, String creditCard);
 
     Map<String,Object> deleteAccount(int id, String password);
+    void deleteAccount(int id);
 }

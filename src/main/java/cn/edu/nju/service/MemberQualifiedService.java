@@ -9,9 +9,6 @@ import java.util.List;
 public interface MemberQualifiedService {
 
     void memberQualifiedExecutor();
-
-
-    List<Integer> getAllDueMemberId();
     void subtractAllRemainDays();
 
 

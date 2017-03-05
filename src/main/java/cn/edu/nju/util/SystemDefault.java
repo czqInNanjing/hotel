@@ -18,4 +18,5 @@ public class SystemDefault {
     public static int SIZE_PER_PAGE_OF_HOTEL = 6;
     public static final String CURRENT_PAGE = "current";
     public static final String HOTEL_ID = "hotelId";
+    public static int ACTIVATED_AMOUNT = 1000;
 }

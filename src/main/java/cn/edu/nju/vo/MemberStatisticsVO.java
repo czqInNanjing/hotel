@@ -1,8 +1,5 @@
 package cn.edu.nju.vo;
 
-import cn.edu.nju.entity.LiveMesEntity;
-import cn.edu.nju.entity.ReservedEntity;
-
 import java.util.List;
 
 /**
@@ -11,25 +8,25 @@ import java.util.List;
  */
 public class MemberStatisticsVO {
 
-    private List<ReservedEntity> reservedEntities;
-    private List<LiveMesEntity> liveMesEntities;
+    private List<ReservedVO> reservedVOS;
+    private List<LiveMesVO> liveMesVOS;
     private List<ConsumptionVO> consumptionVOS;
 
 
-    public List<ReservedEntity> getReservedEntities() {
-        return reservedEntities;
+    public List<ReservedVO> getReservedVOS() {
+        return reservedVOS;
     }
 
-    public void setReservedEntities(List<ReservedEntity> reservedEntities) {
-        this.reservedEntities = reservedEntities;
+    public void setReservedVOS(List<ReservedVO> reservedVOS) {
+        this.reservedVOS = reservedVOS;
     }
 
-    public List<LiveMesEntity> getLiveMesEntities() {
-        return liveMesEntities;
+    public List<LiveMesVO> getLiveMesVOS() {
+        return liveMesVOS;
     }
 
-    public void setLiveMesEntities(List<LiveMesEntity> liveMesEntities) {
-        this.liveMesEntities = liveMesEntities;
+    public void setLiveMesVOS(List<LiveMesVO> liveMesVOS) {
+        this.liveMesVOS = liveMesVOS;
     }
 
     public List<ConsumptionVO> getConsumptionVOS() {

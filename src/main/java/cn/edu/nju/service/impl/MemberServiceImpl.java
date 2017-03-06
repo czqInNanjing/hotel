@@ -5,9 +5,7 @@ import cn.edu.nju.entity.*;
 import cn.edu.nju.service.AccountService;
 import cn.edu.nju.service.MemberService;
 import cn.edu.nju.util.SystemDefault;
-import cn.edu.nju.vo.ConsumptionVO;
-import cn.edu.nju.vo.MemberInfoVO;
-import cn.edu.nju.vo.MemberStatisticsVO;
+import cn.edu.nju.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +31,9 @@ public class MemberServiceImpl implements MemberService {
     private final RoomsRepository roomsRepository;
     private final AccountService accountService;
     private final LiveMesRepository liveMesRepository;
+    private final HotelRepository hotelRepository;
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository, AccountService accountService, LiveMesRepository liveMesRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository, AccountService accountService, LiveMesRepository liveMesRepository, HotelRepository hotelRepository) {
         this.memberRepository = memberRepository;
         this.rechargeRepository = rechargeRepository;
         this.pointConvertRepository = pointConvertRepository;
@@ -44,6 +43,7 @@ public class MemberServiceImpl implements MemberService {
         this.roomsRepository = roomsRepository;
         this.accountService = accountService;
         this.liveMesRepository = liveMesRepository;
+        this.hotelRepository = hotelRepository;
     }
 
     @Override
@@ -253,36 +253,63 @@ public class MemberServiceImpl implements MemberService {
 
 
 
-    private static MemberStatisticsVO buildMemberStatisticsVO(List<ReservedEntity> reservedEntities, List<LiveMesEntity> liveMesEntities, List<RechargeEntity> rechargeEntities, List<PayRecordEntity> payRecordEntities, List<PointConvertEntity> pointConvertEntities) {
+    private MemberStatisticsVO buildMemberStatisticsVO(List<ReservedEntity> reservedEntities, List<LiveMesEntity> liveMesEntities, List<RechargeEntity> rechargeEntities, List<PayRecordEntity> payRecordEntities, List<PointConvertEntity> pointConvertEntities) {
 
         MemberStatisticsVO vo = new MemberStatisticsVO();
-        vo.setLiveMesEntities(liveMesEntities);
-        vo.setReservedEntities(reservedEntities);
 
-        List<ConsumptionVO> vos = new ArrayList<>();
+        List<LiveMesVO> liveMesVOS = new ArrayList<>(liveMesEntities.size());
+
+        liveMesEntities.forEach(entity ->  {
+            LiveMesVO liveMesVO = new LiveMesVO();
+            BeanUtils.copyProperties(entity, liveMesVO);
+            liveMesVO.setHotelName(hotelRepository.findOne(entity.getHotelId()).getName());
+            liveMesVO.setRoomName(roomsRepository.findOne(entity.getRoomId()).getName());
+            liveMesVO.setTotal(roomsRepository.findOne(entity.getRoomId()).getPrice());
+            liveMesVOS.add(liveMesVO);
+        });
+
+        List<ReservedVO> reservedVOS = new ArrayList<>(reservedEntities.size());
+
+        reservedEntities.forEach(entity ->  {
+            ReservedVO reservedVO = new ReservedVO();
+            BeanUtils.copyProperties(entity, reservedVO);
+
+            RoomsEntity roomsEntity= roomsRepository.findOne(entity.getRoomId());
+            reservedVO.setRoomName(roomsEntity.getName());
+            reservedVO.setHotelName(hotelRepository.findOne(roomsEntity.getHotelId()).getName());
+            reservedVOS.add(reservedVO);
+        });
+
+
+        List<ConsumptionVO> consumptionVOS = new ArrayList<>();
 
         rechargeEntities.forEach(entity -> {
             ConsumptionVO consumptionVO = new ConsumptionVO();
             BeanUtils.copyProperties(entity, consumptionVO);
             consumptionVO.setAmount(entity.getAfter() - entity.getFormer());
             consumptionVO.setType(SystemDefault.RECHARGE_ENTITY);
-            vos.add(consumptionVO);
+            consumptionVOS.add(consumptionVO);
         });
         pointConvertEntities.forEach(entity -> {
             ConsumptionVO consumptionVO = new ConsumptionVO();
             BeanUtils.copyProperties(entity, consumptionVO);
             consumptionVO.setType(SystemDefault.POINT_CONVERT_ENTITY);
-            vos.add(consumptionVO);
+            consumptionVOS.add(consumptionVO);
         });
         payRecordEntities.forEach(entity -> {
             ConsumptionVO consumptionVO = new ConsumptionVO();
             BeanUtils.copyProperties(entity, consumptionVO);
             consumptionVO.setAmount(entity.getBill());
             consumptionVO.setType(SystemDefault.PAY_RECORD_ENTITY);
-            vos.add(consumptionVO);
+            consumptionVOS.add(consumptionVO);
         });
 
-        vo.setConsumptionVOS(vos);
+
+
+
+        vo.setLiveMesVOS(liveMesVOS);
+        vo.setReservedVOS(reservedVOS);
+        vo.setConsumptionVOS(consumptionVOS);
 
 
 

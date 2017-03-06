@@ -149,6 +149,13 @@
                                        placeholder="Member ID"/>
                             </div>
                         </div>
+                        <div id="discountGroup" class="form-group">
+                            <label for="discount" class="col-sm-2 control-label ">Discount</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="discount" id="discount"
+                                       disabled="disabled"/>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="hasReserved" class="col-sm-2 control-label">Has Reserved</label>
                             <div class="col-sm-10">
@@ -209,9 +216,9 @@
 <!--Scripts-->
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
 <script src="../../static/js/promptForm.js" th:src="@{/js/promptForm.js}"></script>
 <script th:inline="javascript">
+    $('#discountGroup').hide();
     $('.modal-apply').on('click', function (e) {
         e.preventDefault();
         var $form = $(this).parent().parent().parent();
@@ -232,7 +239,7 @@
         var inputs;
 
 
-        console.log('Now is add' + inOrOut);
+//        console.log('Now is add' + inOrOut);
         if (inOrOut === '0') { // in record
             inputs = {
                 personNum: personNum,
@@ -249,7 +256,7 @@
                 data: inputs,
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
+//                    console.log(data);
                     if (data.result) {
                         location.reload();
                     } else {
@@ -266,7 +273,7 @@
                 data: inputs,
                 dataType: 'json',
                 success: function (data) {
-//                console.log(data);
+                console.log(data);
                     if (data.result) {
                         location.reload();
                     } else {
@@ -294,9 +301,37 @@
 
     }).change();
 
+    $('#memberId').focusout(function () {
+        var memberId = $('#memberId').val();
+        console.log('lose focus');
+        $.ajax({
+            url :'/member/getDiscount',
+            data:{memberId: memberId},
+            dataType: "text",
+            success: function (data) {
+                console.log('s' + data);
+                if (parseInt(data) >= 0) {
+                    console.log('s' + data);
+                    document.getElementById('discount').setAttribute('value' , data + '%');
+                    $('#discountGroup').fadeIn();
+                } else {
+                    $('#discountGroup').fadeOut();
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+    });
+
     $("#isMember").change(function () {
         var $selected = $("#isMember").find("option:selected");
-        console.log($selected.val());
+//        console.log($selected.val());
         if ($selected.val() === '1') {
             $('#memberIDDiv').fadeIn();
             $("#payMethod").append('<option value="0">Member Card</option>');

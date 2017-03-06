@@ -92,6 +92,18 @@
                 <td>Credit Card</td>
                 <td th:text="${member.creditCard}">None</td>
             </tr>
+            <tr>
+                <td>Accumulate Consumption</td>
+                <td th:text="${member.accumulate}">0</td>
+            </tr>
+            <tr>
+                <td>Member Level</td>
+                <td th:text="'level ' +  ${member.memberLevel}">0</td>
+            </tr>
+            <tr>
+                <td>Discount</td>
+                <td th:text="'You can enjoy ' + ${member.discount}  + '% discount'">0</td>
+            </tr>
         </table>
     </div>
     <p>

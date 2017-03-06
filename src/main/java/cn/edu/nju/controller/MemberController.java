@@ -1,9 +1,11 @@
 package cn.edu.nju.controller;
 
+import cn.edu.nju.entity.MemberEntity;
 import cn.edu.nju.service.HotelService;
 import cn.edu.nju.service.MemberService;
 import cn.edu.nju.util.SystemDefault;
 import cn.edu.nju.vo.HotelDetailVO;
+import cn.edu.nju.vo.MemberInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -92,6 +94,17 @@ public class MemberController {
     @ResponseBody
     public Map<String, Object> cancelReservation(@SessionAttribute(SystemDefault.USER_ID) int id, int recordToCancel){
         return memberService.cancelReservation(id, recordToCancel);
+    }
+
+    @GetMapping("/getDiscount")
+    @ResponseBody
+    public int getDiscount(int memberId ){
+        MemberInfoVO entity  = memberService.getMemberProfile(memberId);
+        if (entity != null) {
+            return entity.getDiscount();
+        } else {
+            return -1;
+        }
     }
 
     @PostMapping("/delete")

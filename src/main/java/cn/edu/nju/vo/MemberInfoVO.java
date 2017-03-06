@@ -16,6 +16,35 @@ public class MemberInfoVO {
     private String creditCard = "None";
     private Timestamp registDate = new Timestamp(System.currentTimeMillis());
     private int remainDays = 0;
+    private int accumulate = 0;
+    private int memberLevel = 0;
+    private int discount = 0;
+    public int getAccumulate() {
+        return accumulate;
+    }
+
+    public void setAccumulate(int accumulate) {
+        this.accumulate = accumulate;
+    }
+
+    public int getMemberLevel() {
+        return memberLevel;
+    }
+
+    public void setMemberLevel(int memberLevel) {
+        this.memberLevel = memberLevel;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+
+
 
     public MemberInfoVO() {
     }

@@ -4,6 +4,7 @@ import cn.edu.nju.dao.*;
 import cn.edu.nju.entity.*;
 import cn.edu.nju.service.AccountService;
 import cn.edu.nju.service.MemberService;
+import cn.edu.nju.util.Helper;
 import cn.edu.nju.util.SystemDefault;
 import cn.edu.nju.vo.*;
 import org.springframework.beans.BeanUtils;
@@ -58,8 +59,12 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity entity = memberRepository.findOne(id);
         if (entity != null) {
             if (entity.getDeposit() > amount) {
-                int after = entity.getDeposit() - amount;
+                int after = (entity.getDeposit() - amount)* (100 -entity.getDiscount())/100;
                 entity.setDeposit(after);
+                entity.setAccumulate(entity.getAccumulate() + amount);
+                List<Integer> levelAndAccount = Helper.getLevelAndDiscount(entity.getAccumulate());
+                entity.setMemberLevel(levelAndAccount.get(0));
+                entity.setDiscount(levelAndAccount.get(1));
 //                entity.setPoints(entity.addPoints() + amount);
                 memberRepository.save(entity);
                 PayRecordEntity payRecordEntity = new PayRecordEntity(amount, after);

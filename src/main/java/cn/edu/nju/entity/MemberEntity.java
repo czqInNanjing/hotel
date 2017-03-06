@@ -18,7 +18,15 @@ public class MemberEntity {
     private String creditCard = "None";
     private Timestamp registDate = new Timestamp(System.currentTimeMillis());
     private int remainDays = 0;
-//    @GeneratedValue
+    private int accumulate = 0;
+    private int memberLevel;
+    private int discount = 2;
+
+    public void setAccumulate(int accumulate) {
+        this.accumulate = accumulate;
+    }
+
+    //    @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {
@@ -129,5 +137,33 @@ public class MemberEntity {
         result = 31 * result + (registDate != null ? registDate.hashCode() : 0);
         result = 31 * result + remainDays;
         return result;
+    }
+
+    @Basic
+    @Column(name = "accumulate", nullable = true)
+    public int getAccumulate() {
+        return accumulate;
+    }
+
+
+
+    @Basic
+    @Column(name = "member_level", nullable = true)
+    public int getMemberLevel() {
+        return memberLevel;
+    }
+
+    public void setMemberLevel(int memberLevel) {
+        this.memberLevel = memberLevel;
+    }
+
+    @Basic
+    @Column(name = "discount", nullable = true)
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 }

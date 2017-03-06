@@ -14,4 +14,6 @@ import java.util.List;
 public interface LiveMesRepository extends PagingAndSortingRepository<LiveMesEntity, Integer> {
     List<LiveMesEntity> findByHotelId(int hotelId);
     Page<LiveMesEntity> findByHotelId(int hotelId, Pageable pageable);
+
+    List<LiveMesEntity> findByMemberId(int id);
 }

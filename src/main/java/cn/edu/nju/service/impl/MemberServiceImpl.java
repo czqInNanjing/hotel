@@ -5,12 +5,15 @@ import cn.edu.nju.entity.*;
 import cn.edu.nju.service.AccountService;
 import cn.edu.nju.service.MemberService;
 import cn.edu.nju.util.SystemDefault;
+import cn.edu.nju.vo.ConsumptionVO;
 import cn.edu.nju.vo.MemberInfoVO;
+import cn.edu.nju.vo.MemberStatisticsVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -29,8 +32,9 @@ public class MemberServiceImpl implements MemberService {
     private final ReservedRepository reservedRepository;
     private final RoomsRepository roomsRepository;
     private final AccountService accountService;
+    private final LiveMesRepository liveMesRepository;
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository, AccountService accountService) {
+    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository, AccountService accountService, LiveMesRepository liveMesRepository) {
         this.memberRepository = memberRepository;
         this.rechargeRepository = rechargeRepository;
         this.pointConvertRepository = pointConvertRepository;
@@ -39,6 +43,7 @@ public class MemberServiceImpl implements MemberService {
         this.reservedRepository = reservedRepository;
         this.roomsRepository = roomsRepository;
         this.accountService = accountService;
+        this.liveMesRepository = liveMesRepository;
     }
 
     @Override
@@ -74,6 +79,14 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.save(entity);
             result.put(SystemDefault.HTTP_RESULT, true);
 
+            // add the recharge record
+            RechargeEntity rechargeEntity = new RechargeEntity();
+            rechargeEntity.setMemberId(id);
+            rechargeEntity.setFormer(entity.getDeposit() - amount);
+            rechargeEntity.setAfter(entity.getDeposit());
+            rechargeRepository.save(rechargeEntity);
+
+
             if (entity.getDeposit() >= 1000 && entity.getStatus() == 0) {
                 entity.setStatus(1);
                 entity.setRemainDays(365);
@@ -108,7 +121,19 @@ public class MemberServiceImpl implements MemberService {
         if (entity != null) {
             if (points <= entity.getPoints()) {
                 entity.setPoints(entity.getPoints() - points);
-                memberRepository.save(entity);
+                entity.setDeposit(entity.getDeposit() + points);
+                entity = memberRepository.save(entity);
+
+
+                // convert point
+                PointConvertEntity pointConvertEntity = new PointConvertEntity();
+                pointConvertEntity.setAmount(points);
+                pointConvertEntity.setPoint(points);
+                pointConvertEntity.setAfter(entity.getDeposit());
+                pointConvertRepository.save(pointConvertEntity);
+
+
+
                 result.put(SystemDefault.HTTP_RESULT, true);
                 result.put(SystemDefault.HTTP_REASON, "You have successfully converted " + points + " points");
             } else {
@@ -214,10 +239,54 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String statistics(Model model, int id) {
         List<ReservedEntity> reservedEntities = reservedRepository.findByMemberId(id);
+        List<LiveMesEntity> liveMesEntities = liveMesRepository.findByMemberId(id);
+        List<RechargeEntity> rechargeEntities = rechargeRepository.findByMemberId(id);
+        List<PayRecordEntity> payRecordEntities = payRecordRepository.findByMemberId(id);
+        List<PointConvertEntity> pointConvertEntities = pointConvertRepository.findByMemberId(id);
+
+
+        model.addAttribute("statistics", buildMemberStatisticsVO(reservedEntities, liveMesEntities, rechargeEntities, payRecordEntities, pointConvertEntities));
+        return "/member/statistics";
+    }
 
 
 
-        return null;
+
+
+    private static MemberStatisticsVO buildMemberStatisticsVO(List<ReservedEntity> reservedEntities, List<LiveMesEntity> liveMesEntities, List<RechargeEntity> rechargeEntities, List<PayRecordEntity> payRecordEntities, List<PointConvertEntity> pointConvertEntities) {
+
+        MemberStatisticsVO vo = new MemberStatisticsVO();
+        vo.setLiveMesEntities(liveMesEntities);
+        vo.setReservedEntities(reservedEntities);
+
+        List<ConsumptionVO> vos = new ArrayList<>();
+
+        rechargeEntities.forEach(entity -> {
+            ConsumptionVO consumptionVO = new ConsumptionVO();
+            BeanUtils.copyProperties(entity, consumptionVO);
+            consumptionVO.setAmount(entity.getAfter() - entity.getFormer());
+            consumptionVO.setType(SystemDefault.RECHARGE_ENTITY);
+            vos.add(consumptionVO);
+        });
+        pointConvertEntities.forEach(entity -> {
+            ConsumptionVO consumptionVO = new ConsumptionVO();
+            BeanUtils.copyProperties(entity, consumptionVO);
+            consumptionVO.setType(SystemDefault.POINT_CONVERT_ENTITY);
+            vos.add(consumptionVO);
+        });
+        payRecordEntities.forEach(entity -> {
+            ConsumptionVO consumptionVO = new ConsumptionVO();
+            BeanUtils.copyProperties(entity, consumptionVO);
+            consumptionVO.setAmount(entity.getBill());
+            consumptionVO.setType(SystemDefault.PAY_RECORD_ENTITY);
+            vos.add(consumptionVO);
+        });
+
+        vo.setConsumptionVOS(vos);
+
+
+
+        return vo;
     }
 
 

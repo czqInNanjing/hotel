@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 02/03/2017
+ * @since 06/03/2017
  */
 @Entity
 @Table(name = "point_convert", schema = "hotel", catalog = "")
@@ -15,6 +15,8 @@ public class PointConvertEntity {
     private int memberId;
     private int point;
     private int amount;
+    private Integer after;
+
     @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
@@ -66,6 +68,16 @@ public class PointConvertEntity {
         this.amount = amount;
     }
 
+    @Basic
+    @Column(name = "after", nullable = true)
+    public Integer getAfter() {
+        return after;
+    }
+
+    public void setAfter(Integer after) {
+        this.after = after;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,6 +90,7 @@ public class PointConvertEntity {
         if (point != that.point) return false;
         if (amount != that.amount) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
+        if (after != null ? !after.equals(that.after) : that.after != null) return false;
 
         return true;
     }
@@ -89,6 +102,7 @@ public class PointConvertEntity {
         result = 31 * result + memberId;
         result = 31 * result + point;
         result = 31 * result + amount;
+        result = 31 * result + (after != null ? after.hashCode() : 0);
         return result;
     }
 }

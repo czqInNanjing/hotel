@@ -23,4 +23,12 @@ public class SystemDefault {
     public static final String CURRENT_PAGE = "current";
     public static final String HOTEL_ID = "hotelId";
     public static int ACTIVATED_AMOUNT = 1000;
+
+
+
+    public static final int RECHARGE_ENTITY = 0;
+    public static final int POINT_CONVERT_ENTITY = 1;
+    public static final int PAY_RECORD_ENTITY = 2;
+
+
 }

@@ -5,24 +5,24 @@ import java.sql.Timestamp;
 
 /**
  * @author Qiang
- * @since 28/02/2017
+ * @since 06/03/2017
  */
 @Entity
 @Table(name = "recharge", schema = "hotel", catalog = "")
 public class RechargeEntity {
-    private String id;
+    private int id;
     private Timestamp time;
-    private String memberId;
+    private int memberId;
     private int former;
-    private int later;
+    private int after;
     @GeneratedValue
     @Id
-    @Column(name = "id", nullable = false, length = 20)
-    public String getId() {
+    @Column(name = "id", nullable = false)
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -37,12 +37,12 @@ public class RechargeEntity {
     }
 
     @Basic
-    @Column(name = "member_id", nullable = false, length = 20)
-    public String getMemberId() {
+    @Column(name = "member_id", nullable = false)
+    public int getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(String memberId) {
+    public void setMemberId(int memberId) {
         this.memberId = memberId;
     }
 
@@ -57,13 +57,13 @@ public class RechargeEntity {
     }
 
     @Basic
-    @Column(name = "later", nullable = false)
-    public int getLater() {
-        return later;
+    @Column(name = "after", nullable = false)
+    public int getAfter() {
+        return after;
     }
 
-    public void setLater(int later) {
-        this.later = later;
+    public void setAfter(int later) {
+        this.after = later;
     }
 
     @Override
@@ -73,22 +73,20 @@ public class RechargeEntity {
 
         RechargeEntity that = (RechargeEntity) o;
 
+        if (id != that.id) return false;
+        if (memberId != that.memberId) return false;
         if (former != that.former) return false;
-        if (later != that.later) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (time != null ? !time.equals(that.time) : that.time != null) return false;
-        if (memberId != null ? !memberId.equals(that.memberId) : that.memberId != null) return false;
-
-        return true;
+        if (after != that.after) return false;
+        return time != null ? time.equals(that.time) : that.time == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (memberId != null ? memberId.hashCode() : 0);
+        result = 31 * result + memberId;
         result = 31 * result + former;
-        result = 31 * result + later;
+        result = 31 * result + after;
         return result;
     }
 }

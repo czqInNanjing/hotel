@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -91,7 +90,7 @@ public class HotelController {
     public Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, @SessionAttribute(SystemDefault.USER_ID) int hotelId) {
 
 
-        return hotelService.addInRecords(personNum, personMes, isMember, payMethod, memberId, roomId, hotelId);
+        return hotelService.addInRecords(personNum, personMes, isMember, payMethod, memberId, roomId, hotelId, );
     }
 
     @RequestMapping(value = "/addOutRecords", method = RequestMethod.POST)

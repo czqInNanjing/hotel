@@ -141,7 +141,7 @@ public class ManagerServiceImpl implements ManagerService {
             modifyApplicationRepository.save(modifyApplicationEntities);
         }
         Map<String, Object> result = new TreeMap<>();
-        result.put("result", true);
+        result.put(SystemDefault.HTTP_RESULT, true);
 
         return result;
     }
@@ -163,7 +163,7 @@ public class ManagerServiceImpl implements ManagerService {
         });
         settlementRepository.save(settlementEntities);
         Map<String, Object> result = new TreeMap<>();
-        result.put("result", true);
+        result.put(SystemDefault.HTTP_RESULT, true);
 
         return result;
     }

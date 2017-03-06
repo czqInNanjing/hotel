@@ -11,10 +11,14 @@ public class SystemDefault {
     public static final int LIST_DEFAULT_SIZE = 300;
     public static final String USER_ID = "userID";
 
-
+    public static final String HTTP_RESULT = "result";
+    public static final String HTTP_REASON = "reason";
     //+++++++++++++++++  Following are the member attr ++++++++++++++++++++
     public static final String HOTELS = "hotels";
     public static final String HOTEL_DETAIL = "hotel";
+    public static final int ROOM_ACTIVE = 0;
+    public static final int ROOM_RESERVED = 1;
+    public static final int ROOM_OCCUPIED = 2;
     public static int SIZE_PER_PAGE_OF_HOTEL = 6;
     public static final String CURRENT_PAGE = "current";
     public static final String HOTEL_ID = "hotelId";

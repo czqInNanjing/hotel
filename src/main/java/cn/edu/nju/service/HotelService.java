@@ -64,7 +64,8 @@ public interface HotelService {
      * @param memberId      member id if a member
      * @param roomId        room id
      * @param hotelId       hotel id
+     * @param hasReserved
      * @return              success or failure, and reason if fail
      */
-    Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId);
+    Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId, boolean hasReserved);
 }

@@ -14,6 +14,8 @@ public class ReservedEntity {
     private int roomId;
     private int memberId;
     private Timestamp time;
+    private Integer status = 0;
+
     @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
@@ -77,5 +79,15 @@ public class ReservedEntity {
         result = 31 * result + memberId;
         result = 31 * result + (time != null ? time.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "status", nullable = true)
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

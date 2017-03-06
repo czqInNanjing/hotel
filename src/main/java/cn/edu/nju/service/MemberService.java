@@ -1,6 +1,7 @@
 package cn.edu.nju.service;
 
 import cn.edu.nju.vo.MemberInfoVO;
+import org.springframework.ui.Model;
 
 import java.util.Map;
 
@@ -43,4 +44,6 @@ public interface MemberService {
 
     Map<String,Object> deleteAccount(int id, String password);
     void deleteAccount(int id);
+
+    String statistics(Model model, int id);
 }

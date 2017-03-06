@@ -4,11 +4,14 @@ import cn.edu.nju.dao.*;
 import cn.edu.nju.entity.*;
 import cn.edu.nju.service.AccountService;
 import cn.edu.nju.service.MemberService;
+import cn.edu.nju.util.SystemDefault;
 import cn.edu.nju.vo.MemberInfoVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -69,21 +72,21 @@ public class MemberServiceImpl implements MemberService {
         if (entity != null) {
             entity.setDeposit(entity.getDeposit() + amount);
             memberRepository.save(entity);
-            result.put("result", true);
+            result.put(SystemDefault.HTTP_RESULT, true);
 
             if (entity.getDeposit() >= 1000 && entity.getStatus() == 0) {
                 entity.setStatus(1);
                 entity.setRemainDays(365);
                 memberRepository.save(entity);
-                result.put("reason", "Your account has been activated.");
+                result.put(SystemDefault.HTTP_REASON, "Your account has been activated.");
             } else {
-                result.put("reason", "You have recharged "+ amount + " dollars.");
+                result.put(SystemDefault.HTTP_REASON, "You have recharged "+ amount + " dollars.");
             }
 
 
             return result;
         }
-        result.put("result", true);
+        result.put(SystemDefault.HTTP_RESULT, true);
         return result;
     }
 
@@ -106,11 +109,11 @@ public class MemberServiceImpl implements MemberService {
             if (points <= entity.getPoints()) {
                 entity.setPoints(entity.getPoints() - points);
                 memberRepository.save(entity);
-                result.put("result", true);
-                result.put("reason", "You have successfully converted " + points + " points");
+                result.put(SystemDefault.HTTP_RESULT, true);
+                result.put(SystemDefault.HTTP_REASON, "You have successfully converted " + points + " points");
             } else {
-                result.put("result", false);
-                result.put("reason", "Points Not enough");
+                result.put(SystemDefault.HTTP_RESULT, false);
+                result.put(SystemDefault.HTTP_REASON, "Points Not enough");
             }
 
 
@@ -138,11 +141,11 @@ public class MemberServiceImpl implements MemberService {
 
         if (entity != null) {
             if (entity.getStatus() == 0) {
-                entity.setStatus(1);
+                entity.setStatus(SystemDefault.ROOM_RESERVED);
                 roomsRepository.save(entity);
             } else {
-                result.put("result", false);
-                result.put("reason", "Room has been occupied");
+                result.put(SystemDefault.HTTP_RESULT, false);
+                result.put(SystemDefault.HTTP_REASON, "Room has been occupied");
                 return result;
             }
 
@@ -151,8 +154,8 @@ public class MemberServiceImpl implements MemberService {
             reservedEntity.setRoomId(roomId);
             reservedRepository.save(reservedEntity);
 
-            result.put("result", true);
-//            result.put("reason", "Room has been occupied");
+            result.put(SystemDefault.HTTP_RESULT, true);
+//            result.put(SystemDefault.HTTP_REASON, "Room has been occupied");
             return result;
         }
 
@@ -171,8 +174,8 @@ public class MemberServiceImpl implements MemberService {
 
         accountEntity.setMail(mail);
         if (accountRepository.findByMail(mail) != null) {
-            result.put("result", false);
-            result.put("reason", "Mail has been occupied");
+            result.put(SystemDefault.HTTP_RESULT, false);
+            result.put(SystemDefault.HTTP_REASON, "Mail has been occupied");
             return result;
         }
         accountRepository.save(accountEntity);
@@ -180,7 +183,7 @@ public class MemberServiceImpl implements MemberService {
         memberEntity.setName(name);
         memberEntity.setCreditCard(creditCard);
         memberRepository.save(memberEntity);
-        result.put("result", true);
+        result.put(SystemDefault.HTTP_RESULT, true);
         return result;
     }
 
@@ -190,13 +193,13 @@ public class MemberServiceImpl implements MemberService {
         //check password
         if (accountRepository.existsByIdAndPassword(id, password)) {
             deleteAccount(id);
-            result.put("result", true);
+            result.put(SystemDefault.HTTP_RESULT, true);
             return result;
         }
 
 
-        result.put("result", false);
-        result.put("reason", "password is error!");
+        result.put(SystemDefault.HTTP_RESULT, false);
+        result.put(SystemDefault.HTTP_REASON, "password is error!");
 
         return result;
     }
@@ -206,6 +209,15 @@ public class MemberServiceImpl implements MemberService {
         reservedRepository.deleteByMemberId(id);
         memberRepository.delete(id);
         accountRepository.delete(id);
+    }
+
+    @Override
+    public String statistics(Model model, int id) {
+        List<ReservedEntity> reservedEntities = reservedRepository.findByMemberId(id);
+
+
+
+        return null;
     }
 
 

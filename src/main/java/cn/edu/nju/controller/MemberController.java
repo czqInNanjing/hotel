@@ -53,8 +53,9 @@ public class MemberController {
     }
 
     @RequestMapping("/statistics")
-    public String statistics() {
-        return "/member/statistics";
+    public String statistics(Model model, @SessionAttribute(SystemDefault.USER_ID) int id) {
+
+        return memberService.statistics(model, id);
     }
 
 
@@ -91,7 +92,7 @@ public class MemberController {
     @ResponseBody
     public Map<String, Object> convert(@SessionAttribute(SystemDefault.USER_ID) int id, String password){
         Map<String, Object> result = memberService.deleteAccount(id, password);
-        if ( (Boolean) result.get("result")) {
+        if ( (Boolean) result.get(SystemDefault.HTTP_RESULT)) {
             register();
             return null;
         }

@@ -34,7 +34,7 @@ public class FileController {
 
 
         Map<String, Object> result = new TreeMap<>();
-        result.put("result", true);
+        result.put(SystemDefault.HTTP_RESULT, true);
         result.put("path", savedPath);
         result.put("name", file.getOriginalFilename());
         return result;

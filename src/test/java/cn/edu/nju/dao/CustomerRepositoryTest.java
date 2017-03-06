@@ -24,7 +24,7 @@ import java.util.Random;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@Commit
+//@Commit
 public class CustomerRepositoryTest {
 
     @Autowired

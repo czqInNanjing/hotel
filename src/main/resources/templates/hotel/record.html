@@ -141,13 +141,25 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group" id="memberIDDiv">
-                        <label for="memberId" class="col-sm-2 control-label">member ID</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="memberId" id="memberId"
-                                   placeholder="Member ID"/>
+                    <div id="memberIDDiv">
+                        <div class="form-group">
+                            <label for="memberId" class="col-sm-2 control-label">member ID</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="memberId" id="memberId"
+                                       placeholder="Member ID"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="hasReserved" class="col-sm-2 control-label">Has Reserved</label>
+                            <div class="col-sm-10">
+                                <select id="hasReserved" class="form-control">
+                                    <option value="true">Reserved</option>
+                                    <option value="false">Not reserved</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+
                     <div class="form-group" id="showMemberId">
                         <label for="payMethod" class="col-sm-2 control-label">Pay Method</label>
                         <div class="col-sm-10">
@@ -211,6 +223,7 @@
         var isMember = $("#isMember").find("option:selected").val();
         var payMethod = $form.find('select[name="payMethod"]').val();
         var memberId = $form.find('input[name="memberId"]').val();
+        var hasReserved = $("#hasReserved").find("option:selected").val();
         if (memberId == '') {
             memberId = '0';
         }
@@ -227,7 +240,8 @@
                 isMember: isMember,
                 payMethod: payMethod,
                 memberId: memberId,
-                roomId: roomId
+                roomId: roomId,
+                hasReserved: hasReserved
             };
             $.ajax({
                 type: "POST",
@@ -239,7 +253,7 @@
                     if (data.result) {
                         location.reload();
                     } else {
-                        var error_msg = '<p class="errtip">	<strong>Error</strong>：'+data.reason+'</p>'
+                        var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>'
                         $(".err-msg").html(error_msg);
                     }
                 }
@@ -256,7 +270,7 @@
                     if (data.result) {
                         location.reload();
                     } else {
-                        var error_msg = '<p class="errtip">	<strong>Error</strong>：'+data.reason+'</p>'
+                        var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>'
                         $(".err-msg").html(error_msg);
                     }
                 }

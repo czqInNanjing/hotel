@@ -87,10 +87,10 @@ public class HotelController {
 
     @RequestMapping(value = "/addInRecords", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, @SessionAttribute(SystemDefault.USER_ID) int hotelId) {
+    public Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, boolean hasReserved, @SessionAttribute(SystemDefault.USER_ID) int hotelId) {
 
 
-        return hotelService.addInRecords(personNum, personMes, isMember, payMethod, memberId, roomId, hotelId, );
+        return hotelService.addInRecords(personNum, personMes, isMember, payMethod, memberId, roomId, hotelId, hasReserved);
     }
 
     @RequestMapping(value = "/addOutRecords", method = RequestMethod.POST)

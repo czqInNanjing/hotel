@@ -10,5 +10,5 @@ import java.util.List;
  * @since 06/03/2017
  */
 public interface CustomPayRecordRepository {
-    List<PayRecordEntity> findByMemberId(int memberId);
+    List<PayRecordEntity> findPayRecordByMemberId(int memberId);
 }

@@ -241,7 +241,7 @@ public class MemberServiceImpl implements MemberService {
         List<ReservedEntity> reservedEntities = reservedRepository.findByMemberId(id);
         List<LiveMesEntity> liveMesEntities = liveMesRepository.findByMemberId(id);
         List<RechargeEntity> rechargeEntities = rechargeRepository.findByMemberId(id);
-        List<PayRecordEntity> payRecordEntities = payRecordRepository.findByMemberId(id);
+        List<PayRecordEntity> payRecordEntities = payRecordRepository.findPayRecordByMemberId(id);
         List<PointConvertEntity> pointConvertEntities = pointConvertRepository.findByMemberId(id);
 
 

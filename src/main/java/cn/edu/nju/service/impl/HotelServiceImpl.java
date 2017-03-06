@@ -35,8 +35,10 @@ public class HotelServiceImpl implements HotelService {
     private final LiveMesRepository liveMesRepository;
     private final MemberService memberService;
     private final SettlementRepository settlementRepository;
+    private final ReservedRepository reservedRepository;
+
     @Autowired
-    public HotelServiceImpl(ModifyApplicationRepository modifyApplicationRepository, OpenApplicationRepository openApplicationRepository, HotelNewRepository hotelNewRepository, HotelRepository hotelRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository, MemberService memberService, SettlementRepository settlementRepository) {
+    public HotelServiceImpl(ModifyApplicationRepository modifyApplicationRepository, OpenApplicationRepository openApplicationRepository, HotelNewRepository hotelNewRepository, HotelRepository hotelRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository, MemberService memberService, SettlementRepository settlementRepository, ReservedRepository reservedRepository) {
         this.modifyApplicationRepository = modifyApplicationRepository;
         this.openApplicationRepository = openApplicationRepository;
         this.hotelNewRepository = hotelNewRepository;
@@ -45,6 +47,7 @@ public class HotelServiceImpl implements HotelService {
         this.liveMesRepository = liveMesRepository;
         this.memberService = memberService;
         this.settlementRepository = settlementRepository;
+        this.reservedRepository = reservedRepository;
     }
 
     @Override
@@ -93,16 +96,15 @@ public class HotelServiceImpl implements HotelService {
     }
 
 
-
     @Override
     public List<RoomsEntity> findRoomsByHotelId(int hotelId, boolean onlyAvailable, int page) {
         List<RoomsEntity> result = new ArrayList<>();
         Page<RoomsEntity> pages;
         if (page >= 0) {
             if (onlyAvailable) {
-                pages = roomsRepository.findByHotelIdAndStatus(hotelId,0, new PageRequest(page , SystemDefault.SIZE_PER_PAGE));
+                pages = roomsRepository.findByHotelIdAndStatus(hotelId, 0, new PageRequest(page, SystemDefault.SIZE_PER_PAGE));
             } else {
-                pages = roomsRepository.findByHotelId(hotelId, new PageRequest(page , SystemDefault.SIZE_PER_PAGE));
+                pages = roomsRepository.findByHotelId(hotelId, new PageRequest(page, SystemDefault.SIZE_PER_PAGE));
             }
 
             pages.forEach(result::add);
@@ -118,14 +120,13 @@ public class HotelServiceImpl implements HotelService {
     }
 
 
-
     @Override
     public List<LiveMesEntity> findLiveMesByHotelId(int hotelId, int page) {
         List<LiveMesEntity> result = new ArrayList<>();
         Page<LiveMesEntity> pages;
         if (page >= 0) {
 
-            pages = liveMesRepository.findByHotelId(hotelId, new PageRequest(page , SystemDefault.SIZE_PER_PAGE));
+            pages = liveMesRepository.findByHotelId(hotelId, new PageRequest(page, SystemDefault.SIZE_PER_PAGE));
             pages.forEach(result::add);
 
         } else {
@@ -136,16 +137,15 @@ public class HotelServiceImpl implements HotelService {
     }
 
 
-
     @Override
     public boolean isApplyingForOpen(int hotelId) {
-        return openApplicationRepository.existsByHotelIdAndStatus(hotelId , 0);
+        return openApplicationRepository.existsByHotelIdAndStatus(hotelId, 0);
     }
 
     @Override
     public boolean isApplyingForEditing(int hotelId) {
 
-        return modifyApplicationRepository.existsByHotelIdAndStatus(hotelId , 0);
+        return modifyApplicationRepository.existsByHotelIdAndStatus(hotelId, 0);
     }
 
     @Override
@@ -158,7 +158,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public void saveModifyApplication(String name, String address, String description, int hotelId, String picUrl) {
-        HotelNewEntity newEntity = new HotelNewEntity(name,address,description,hotelId,picUrl);
+        HotelNewEntity newEntity = new HotelNewEntity(name, address, description, hotelId, picUrl);
         newEntity = hotelNewRepository.save(newEntity);
         ModifyApplicationEntity modifyApplicationEntity = new ModifyApplicationEntity(hotelId, newEntity.getId());
         modifyApplicationRepository.save(modifyApplicationEntity);
@@ -168,8 +168,8 @@ public class HotelServiceImpl implements HotelService {
     public List<RoomsEntity> addRooms(String time, boolean wifi, String picUrl, int area, int type, int price, int number, int id) {
 
         List<RoomsEntity> roomsEntities = new ArrayList<>(number);
-        for (int i = 0 ; i < number ; i ++) {
-            roomsEntities.add(new RoomsEntity(id,Helper.getTimeStamp(time), wifi ? 1 : 0,picUrl,type, price));
+        for (int i = 0; i < number; i++) {
+            roomsEntities.add(new RoomsEntity(id, Helper.getTimeStamp(time), wifi ? 1 : 0, picUrl, type, price));
         }
         roomsRepository.save(roomsEntities);
 //        RoomsEntity roomsEntity = new RoomsEntity(id,Helper.getTimeStamp(time), (byte) (wifi ? 1 : 0),picUrl,type, price);
@@ -191,33 +191,48 @@ public class HotelServiceImpl implements HotelService {
                 RoomsEntity roomsEntity = roomsRepository.findOne(entity.getRoomId());
                 roomsEntity.setStatus(3);
 //                roomsRepository.save(roomsEntity);
-                result.put("result" , true);
-//                result.put("reason", "Record Not Found!");
+                result.put(SystemDefault.HTTP_RESULT, true);
+//                result.put(SystemDefault.HTTP_REASON, "Record Not Found!");
             } else {
-                result.put("result" , false);
-                result.put("reason", "Record Has been added out time!");
+                result.put(SystemDefault.HTTP_RESULT, false);
+                result.put(SystemDefault.HTTP_REASON, "Record Has been added out time!");
             }
 
 
-
         } else {
-            result.put("result" , false);
-            result.put("reason", "Record Not Found!");
+            result.put(SystemDefault.HTTP_RESULT, false);
+            result.put(SystemDefault.HTTP_REASON, "Record Not Found!");
         }
         return result;
     }
 
     @Override
-    public synchronized Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId) {
+    public synchronized Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId, boolean hasReserved) {
         Map<String, Object> result = new TreeMap<>();
         RoomsEntity roomsEntity = roomsRepository.findOne(roomId);
-        //TODO check if room has been reserved ? or has been used
-        boolean tmpResult = true;
+        boolean changeReservedStatus = false;
+        if (roomsEntity.getStatus() == SystemDefault.ROOM_OCCUPIED) {
+            result.put(SystemDefault.HTTP_RESULT, false);
+            result.put(SystemDefault.HTTP_REASON, "Room has been occupied.");
+            return result;
+        }
+
+        if (isMember == 1 && hasReserved) {
+            if (roomsEntity.getStatus() == SystemDefault.ROOM_ACTIVE) {
+                result.put(SystemDefault.HTTP_RESULT, false);
+                result.put(SystemDefault.HTTP_REASON, "Not any reserved record found.");
+                return result;
+            } else {
+                changeReservedStatus = true;
+            }
+        }
+
+
         if (isMember == 1) {
             //check if member exists
             if (!memberService.isActivated(memberId)) {
-                result.put("result" , false);
-                result.put("reason", "Member Not Exists Or Not Activated.");
+                result.put(SystemDefault.HTTP_RESULT, false);
+                result.put(SystemDefault.HTTP_REASON, "Member Not Exists Or Not Activated.");
                 return result;
             }
             // pay by member card  (add to settlements)
@@ -225,8 +240,8 @@ public class HotelServiceImpl implements HotelService {
                 if (memberService.pay(memberId, roomsEntity.getPrice())) {
                     addToHotelSettlements(hotelId, roomsEntity.getPrice());
                 } else {
-                    result.put("result" , false);
-                    result.put("reason", "Deposit is not enough, please recharge first!") ;
+                    result.put(SystemDefault.HTTP_RESULT, false);
+                    result.put(SystemDefault.HTTP_REASON, "Deposit is not enough, please recharge first!");
                     return result;
                 }
             }
@@ -234,26 +249,30 @@ public class HotelServiceImpl implements HotelService {
             memberService.addPoints(memberId, roomsEntity.getPrice());
 
 
-
-
-
         }
 
 
-        LiveMesEntity liveMesEntity = new LiveMesEntity(personNum, personMes, payMethod, memberId, roomId,hotelId);
+        LiveMesEntity liveMesEntity = new LiveMesEntity(personNum, personMes, payMethod, memberId, roomId, hotelId);
         liveMesRepository.save(liveMesEntity);
         roomsEntity.setStatus(2);
         roomsRepository.save(roomsEntity);
-        result.put("result" , true);
+        reservedRepository.findByRoomId(roomId).forEach(reservedEntity -> {
+            reservedEntity.setStatus(1);
+            reservedRepository.save(reservedEntity);
+        });
+        if (changeReservedStatus) {
+            result.put(SystemDefault.HTTP_RESULT, true);
+        }
+
         return result;
     }
 
     /**
-     *  add the amount that was payed by the member card to the settlement
+     * add the amount that was payed by the member card to the settlement
      */
     private void addToHotelSettlements(int hotelId, int amount) {
         SettlementEntity entity = settlementRepository.findByHotelIdAndStatus(hotelId, 0);
-        if (entity != null ) {
+        if (entity != null) {
             entity.setAmount(entity.getAmount() + amount);
             settlementRepository.save(entity);
         } else {

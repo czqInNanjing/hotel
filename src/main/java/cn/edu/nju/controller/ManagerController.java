@@ -17,7 +17,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/manager")
 public class ManagerController {
-    //TODO when reserved room, the in room record must cancel the reserved record
     private final ManagerService managerService;
 
     @Autowired

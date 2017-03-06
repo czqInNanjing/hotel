@@ -249,8 +249,23 @@ public class MemberServiceImpl implements MemberService {
         return "/member/statistics";
     }
 
-
-
+    @Override
+    public Map<String, Object> cancelReservation(int id, int recordToCancel) {
+        Map<String, Object> result = new TreeMap<>();
+        ReservedEntity entity = reservedRepository.findOne(recordToCancel);
+        if (entity != null) {
+            RoomsEntity roomsEntity = roomsRepository.findOne(entity.getRoomId());
+            roomsEntity.setStatus(SystemDefault.ROOM_ACTIVE);
+            roomsRepository.save(roomsEntity);
+            reservedRepository.delete(recordToCancel);
+            result.put(SystemDefault.HTTP_RESULT, true);
+            return result;
+        }
+        result.put(SystemDefault.HTTP_RESULT, false);
+        result.put(SystemDefault.HTTP_REASON, "Reservation Record Not Found!");
+        return result;
+//        return null;
+    }
 
 
     private MemberStatisticsVO buildMemberStatisticsVO(List<ReservedEntity> reservedEntities, List<LiveMesEntity> liveMesEntities, List<RechargeEntity> rechargeEntities, List<PayRecordEntity> payRecordEntities, List<PointConvertEntity> pointConvertEntities) {

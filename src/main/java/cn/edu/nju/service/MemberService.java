@@ -46,4 +46,6 @@ public interface MemberService {
     void deleteAccount(int id);
 
     String statistics(Model model, int id);
+
+    Map<String,Object> cancelReservation(int id, int recordToCancel);
 }

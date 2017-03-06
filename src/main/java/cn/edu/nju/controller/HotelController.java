@@ -73,7 +73,7 @@ public class HotelController {
 
         } else {
             model.addAttribute("status", 1);
-            //TODO
+            //TODO pageable
             List<LiveMesEntity> liveMesEntities = hotelService.findLiveMesByHotelId(id, -1);
 
             model.addAttribute("records", liveMesEntities);

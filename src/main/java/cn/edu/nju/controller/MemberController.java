@@ -88,6 +88,12 @@ public class MemberController {
         return memberService.convertPoints(id, amount);
     }
 
+    @PostMapping("/cancelReservation")
+    @ResponseBody
+    public Map<String, Object> cancelReservation(@SessionAttribute(SystemDefault.USER_ID) int id, int recordToCancel){
+        return memberService.cancelReservation(id, recordToCancel);
+    }
+
     @PostMapping("/delete")
     @ResponseBody
     public Map<String, Object> convert(@SessionAttribute(SystemDefault.USER_ID) int id, String password){

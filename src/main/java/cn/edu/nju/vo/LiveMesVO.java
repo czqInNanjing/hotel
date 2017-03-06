@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * @since 06/03/2017
  */
 public class LiveMesVO {
-
+    private int id;
     private Timestamp inTime = new Timestamp(System.currentTimeMillis());
     private Timestamp outTime = new Timestamp(System.currentTimeMillis());
     private int personNum = 1;
@@ -28,6 +28,14 @@ public class LiveMesVO {
         this.roomName = roomName;
         this.payMethod = payMethod;
         this.total = total;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Timestamp getInTime() {

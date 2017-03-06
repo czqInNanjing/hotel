@@ -48,114 +48,130 @@
 </nav>
 
 <div class="mainpage">
-        <div class="panel panel-info">
-            <div class="panel-heading" role="tab" id="headingOne">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                       aria-expanded="true" aria-controls="collapseOne">
-                        Recent Book Records
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                    <div class="table-responsive ">
-                        <table class="table table-hover">
-                            <tr>
-                                <th>No</th>
-                                <th>Time</th>
-                                <th>Hotel</th>
-                                <th>Room</th>
-                                <th>Status</th>
-                                <th>Operation</th>
-                            </tr>
-                            <tr th:each="reserveMes : ${reservedVOS}">
-                                <td th:text="${${#numbers.formatInteger(reserveMes.id,7)}}">000001</td>
-                                <td th:text="${#dates.format(new java.util.Date(reserveMes.time),'dd/MM/yyyy hh:mm:ss')}">
-                                    2016-3-19 13:48:28
-                                </td>
-                                <td th:text="${reserveMes.hotelName}">Shanghai Hotel</td>
-                                <td th:text="${reserveMes.roomName}">Big Room1</td>
-                                <td th:text="${(reserveMes.status == 0) ? 'Wait for use' : 'Expired' }">Wait for use
-                                </td>
-                                <td><a th:unless="${reserveMes.status==0}" class="">Cancel</a></td>
-                            </tr>
-                        </table>
-                    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                   aria-expanded="true" aria-controls="collapseOne">
+                    Recent Book Records
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                <div class="table-responsive ">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>No</th>
+                            <th>Time</th>
+                            <th>Hotel</th>
+                            <th>Room</th>
+                            <th>Status</th>
+                            <th>Operation</th>
+                        </tr>
+                        <tr th:each="reserveMes : ${statistics.reservedVOS}">
+                            <td th:text="${#numbers.formatInteger(reserveMes.id,7)}">000001</td>
+                            <td th:text="${#dates.format(new java.util.Date(reserveMes.time),'dd/MM/yyyy hh:mm:ss')}">
+                                2016-3-19 13:48:28
+                            </td>
+                            <td th:text="${reserveMes.hotelName}">Shanghai Hotel</td>
+                            <td th:text="${reserveMes.roomName}">Big Room1</td>
+                            <td th:text="${(reserveMes.status == 0) ? 'Wait for use' : 'Expired' }">Wait for use
+                            </td>
+                            <td>
+                                <a href="javascript:" type="button" th:if="${reserveMes.status==0}"
+                                        class="cancelButton" data-toggle="modal" th:name="${reserveMes.id}"
+                                        data-target="#cancelModal">Cancel
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
-        <div class="panel panel-info">
-            <div class="panel-heading" role="tab" id="headingTwo">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
-                       aria-expanded="true" aria-controls="collapseTwo">
-                        Recent Consumption Records
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="panel-body">
-                    <div class="table-responsive ">
-                        <table class="table table-hover">
-                            <tr>
-                                <th>No</th>
-                                <th>Time</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Deposit</th>
-                            </tr>
-                            <tr th:each="consume : ${consumptionVOS}" th:class="(${consume.type == 0}) ? 'success' : ((${room.status == 1}) ? 'info' : 'danger')">
-                                <td th:text="${${#numbers.formatInteger(consume.id,7)}}">1</td>
-                                <td th:text="${#dates.format(new java.util.Date(consume.time),'dd/MM/yyyy hh:mm:ss')}">2016-3-18 22:25:25</td>
-                                <td th:text="(${consume.type == 0}) ? 'Recharge' : ((${room.status == 1}) ? 'Point Convert' : 'Consumption')">Consumption</td>
-                                <td th:text="${consume.amount}">-500</td>
-                                <td th:text="${consume.after}">800</td>
-                            </tr>
-                        </table>
-                    </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    Recent Consumption Records
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+                <div class="table-responsive ">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>No</th>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Deposit</th>
+                        </tr>
+                        <tr th:each="consume : ${statistics.consumptionVOS}"
+                            th:class="(${consume.type == 0}) ? 'success' : ((${room.status == 1}) ? 'info' : 'danger')">
+                            <td th:text="${${#numbers.formatInteger(consume.id,7)}}">1</td>
+                            <td th:text="${#dates.format(new java.util.Date(consume.time),'dd/MM/yyyy hh:mm:ss')}">
+                                2016-3-18 22:25:25
+                            </td>
+                            <td th:text="(${consume.type == 0}) ? 'Recharge' : ((${room.status == 1}) ? 'Point Convert' : 'Consumption')">
+                                Consumption
+                            </td>
+                            <td th:text="${consume.amount}">-500</td>
+                            <td th:text="${consume.after}">800</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="panel panel-info">
-            <div class="panel-heading" role="tab" id="headingThree">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
-                       aria-expanded="true" aria-controls="collapseThree">
-                        Recent Live Records
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-                <div class="panel-body">
-                    <div class="table-responsive ">
-                        <table class="table table-hover">
-                            <tr>
-                                <th>No</th>
-                                <th>In Time</th>
-                                <th>Out Time</th>
-                                <th>Hotel</th>
-                                <th>Room</th>
-                                <th>Num Of Person</th>
-                                <th>Pay Method</th>
-                                <th>Total($)</th>
-                            </tr>
-                            <tr th:each="liveMes : ${liveMesVOS}">
-                                <td  th:text="${${#numbers.formatInteger(liveMes.id,7)}}">0000001</td>
-                                <td th:text="${#dates.format(new java.util.Date(liveMes.inTime),'dd/MM/yyyy hh:mm:ss')}">2016-3-18 22:25:25</td>
-                                <td th:text="${#dates.format(new java.util.Date(liveMes.outTime),'dd/MM/yyyy hh:mm:ss')}">2016-3-19 10:25:25</td>
-                                <td th:text="${liveMes.hotelName}">Shanghai Hotel</td>
-                                <td th:text="${liveMes.roomName}">Big Room1</td>
-                                <td th:text="${liveMes.personNum}">2</td>
-                                <th th:text="(${liveMes.payMethod == 0}) ? 'Member Card' : ((${room.status == 1}) ? 'Cash' : 'Credit Card')">Credit Card</th>
-                                <th th:text="${liveMes.total}">300</th>
-                            </tr>
-                        </table>
-                    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
+                   aria-expanded="true" aria-controls="collapseThree">
+                    Recent Live Records
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+                <div class="table-responsive ">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>No</th>
+                            <th>In Time</th>
+                            <th>Out Time</th>
+                            <th>Hotel</th>
+                            <th>Room</th>
+                            <th>Num Of Person</th>
+                            <th>Pay Method</th>
+                            <th>Total($)</th>
+                        </tr>
+                        <tr th:each="liveMes : ${statistics.liveMesVOS}">
+                            <td th:text="${#numbers.formatInteger(liveMes.id,7)}">0000001</td>
+                            <td th:text="${#dates.format(new java.util.Date(liveMes.inTime),'dd/MM/yyyy hh:mm:ss')}">
+                                2016-3-18 22:25:25
+                            </td>
+                            <td th:text="${#dates.format(new java.util.Date(liveMes.outTime),'dd/MM/yyyy hh:mm:ss')}">
+                                2016-3-19 10:25:25
+                            </td>
+                            <td th:text="${liveMes.hotelName}">Shanghai Hotel</td>
+                            <td th:text="${liveMes.roomName}">Big Room1</td>
+                            <td th:text="${liveMes.personNum}">2</td>
+                            <th th:text="(${liveMes.payMethod == 0}) ? 'Member Card' : ((${liveMes.payMethod == 1}) ? 'Cash' : 'Credit Card')">
+                                Credit Card
+                            </th>
+                            <th th:text="${liveMes.total}">300</th>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
 
     <nav aria-label="Page navigation" class="col-md-offset-10 col-md-4">
         <ul class="pagination pagination-sm">
@@ -176,12 +192,92 @@
             </li>
         </ul>
     </nav>
-    <div th:include="footer :: copy"></div>
+</div>
 
 
-    <!--Scripts-->
-    <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
-    <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-    <script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete Account</h4>
+            </div>
+            <form class="form-horizontal" action="profile.html" th:action="@{/member/edit}" method="post">
+                <div class="modal-body">
+
+
+                    <div class="form-group text-danger">
+                        <p class="col-md-offset-2">Are you sure to cancel the reservation? The Operation cannot
+                            be undo!</p>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger delete">Yes</button>
+                </div>
+
+            </form>
+
+            <div class="err-msg"></div>
+        </div>
+
+    </div>
+
+</div>
+<div th:include="footer :: copy"></div>
+
+
+<!--Scripts-->
+<script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script th:inline="javascript">
+    var $cancel = $('#cancelModal');
+    var $cancelButton = $('.cancelButton');
+    var recordToCancel = 0;
+    var inputs = [];
+    var url = '';
+    $cancelButton.on('click' , function () {
+        recordToCancel = $(this).attr('name');
+    });
+    $cancel.on('click' , function () {
+        inputs = {recordToCancel:recordToCancel};
+        url = '/member/cancelReservation';
+        callAjax(inputs,url, false);
+    });
+
+    function callAjax(inputs, url, isdelete) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: inputs,
+            dataType: 'json',
+            success: function (data) {
+                if (data.result) {
+                    if (isdelete) {
+                        //TODO 暴力返回主页，待修改
+                        window.location.replace("http://localhost:8080/");
+                    } else {
+                        location.reload();
+                        if (data.reason) {
+                            $('.mainpage').append('<div class="alert alert-info alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Great!</strong> ' +data.reason +  ' </div>');
+                        }
+                    }
+                } else {
+                    var error_msg = '<p class="errtip">	<strong>Error</strong>：'+data.reason+'</p>'
+                    $(".err-msg").html(error_msg);
+                }
+            }
+        });
+
+
+
+    }
+
+
+</script>
+
+
 </body>
 </html>

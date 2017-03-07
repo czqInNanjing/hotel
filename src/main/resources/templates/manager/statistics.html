@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
     <link rel="stylesheet" href="../../static/css/hotel.css" th:href="@{/css/hotel.css}"/>
-    <title>Hotel Index</title>
+    <script src="../../static/js/echarts.min.js" th:src="@{/js/echarts.min.js}"></script>
+    <title>Manager Statistics</title>
 </head>
 <body>
 
@@ -52,7 +53,15 @@
 
 <div class="mainpage">
 
-    Now this page will be used for show the hotel's statistics message
+    <h2> Hotel Status</h2>
+    <div id="hotel" style="width: 1100px;height:400px;"></div>
+
+    <h2> Member Status</h2>
+    <div id="member" style="width: 1100px;height:400px;"></div>
+
+    <h2> Finance Status</h2>
+    <div id="finance" style="width: 1100px;height:400px;"></div>
+    <div class="err-msg"></div>
 
 </div>
 
@@ -62,6 +71,234 @@
 <!--Scripts-->
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    var hotelChart = echarts.init(document.getElementById('hotel'));
+    var memberChart = echarts.init(document.getElementById('member'));
+    var financeChart = echarts.init(document.getElementById('finance'));
+    var newData = {};
+
+    // first chart
+    var hotelOption = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        legend: {
+            data:['Reserved','Under Use','Available']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : ['Hotel Name','Hotel Name','Hotel Name','Hotel Name','Hotel Name','Hotel Name','Hotel Name']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'Reserved',
+                type:'bar',
+                stack: 'Room Status',
+                data:[620, 732, 701, 734, 1090, 1130, 1120]
+            },
+            {
+                name:'Under Use',
+                type:'bar',
+                stack: 'Room Status',
+                data:[120, 132, 101, 134, 290, 230, 220]
+            },
+            {
+                name:'Available',
+                type:'bar',
+                stack: 'Room Status',
+                data:[60, 72, 71, 74, 190, 130, 110]
+            }
+        ]
+    };
+    hotelChart.setOption(hotelOption);
+
+    $.ajax({
+        url: '/manager/hotelStatus',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+//            console.log(data);
+            if (data.result) {
+                hotelOption.xAxis[0].data = Object.keys(data.hotelNameList).map(function(k) { return data.hotelNameList[k] });
+                hotelOption.series[0].data = Array.from(data.reserved);
+                hotelOption.series[1].data = Array.from(data.underUse);
+                hotelOption.series[2].data = Array.from(data.available);
+//                console.log(hotelOption);
+                hotelChart.setOption(hotelOption);
+            } else {
+                var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>';
+                $(".err-msg").html(error_msg);
+            }
+
+        }
+
+    });
+
+    // ******************************** second chart  *******************************
+    var liveOption = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        legend: {
+            data:['Reserved Time','Live Time','RechargeTime']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                name: 'UserID',
+                type : 'category',
+                data : ['User ID','User ID','User ID','User ID','User ID','User ID','User ID']
+            }
+        ],
+        yAxis : [
+            {
+                name: 'Time Count',
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'Reserved Time',
+                type:'bar',
+                stack: 'Member Status',
+                data:[620, 732, 701, 734, 1090, 1130, 1120]
+            },
+            {
+                name:'Live Time',
+                type:'bar',
+                stack: 'Member Status',
+                data:[120, 132, 101, 134, 290, 230, 220]
+            },
+            {
+                name:'RechargeTime',
+                type:'bar',
+                stack: 'Member Status',
+                data:[60, 72, 71, 74, 190, 130, 110]
+            }
+        ]
+    };
+    memberChart.setOption(liveOption);
+    $.ajax({
+        url: '/manager/memberStatus',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            if (data.result) {
+                liveOption.xAxis[0].data = Object.keys(data.userIdList).map(function(k) { return data.userIdList[k] });
+                liveOption.series[0].data = Array.from(data.reservedTime);
+                liveOption.series[1].data = Array.from(data.liveTime);
+                liveOption.series[2].data = Array.from(data.rechargeTime);
+                console.log(liveOption);
+                memberChart.setOption(liveOption);
+            } else {
+                var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>';
+                $(".err-msg").html(error_msg);
+            }
+
+        }
+
+    });
+
+    var financeOption = {
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data:['Member Card','Cash','Credit Card']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    name: 'Time',
+                    type : 'category',
+                    data : ["12-7","12-8","12-9","12-10","12-11","12-12"]
+                }
+            ],
+        yAxis : [
+            {
+                name: 'Income',
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'Member Card',
+                type:'bar',
+                stack: 'Day Income',
+                data:[620, 732, 701, 734, 1090, 1130, 1120]
+            },
+            {
+                name:'Cash',
+                type:'bar',
+                stack: 'Day Income',
+                data:[120, 132, 101, 134, 290, 230, 220]
+            },
+            {
+                name:'Credit Card',
+                type:'bar',
+                stack: 'Day Income',
+                data:[60, 72, 71, 74, 190, 130, 110]
+            }
+        ]
+    };
+
+    financeChart.setOption(financeOption);
+    $.ajax({
+        url: '/manager/financeStatus',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            if (data.result) {
+                financeOption.xAxis[0].data = Object.keys(data.date).map(function(k) { return data.date[k] });
+                financeOption.series[0].data = Array.from(data.memberCardList);
+                financeOption.series[1].data = Array.from(data.cashList);
+                financeOption.series[2].data = Array.from(data.creditCardList);
+                console.log(liveOption);
+                financeChart.setOption(liveOption);
+            } else {
+                var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>';
+                $(".err-msg").html(error_msg);
+            }
+            financeChart.setOption(financeOption);
+        }
+
+    });
+
+
+</script>
 </body>
 </html>

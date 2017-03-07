@@ -31,4 +31,7 @@ public class SystemDefault {
     public static final int PAY_RECORD_ENTITY = 2;
 
 
+    public static final int PAY_METHOD_MEMBER_CARD = 0;
+    public static final int PAY_METHOD_CASH = 1;
+    public static final int PAY_METHOD_CREDIT_CARD = 2;
 }

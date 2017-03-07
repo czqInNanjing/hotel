@@ -91,4 +91,12 @@ public interface HotelService {
      * @return first is the search result, the second is the list<ConsumptionVO>, which consists of the consumption type and the consumption type
      */
     Map<String,Object> getHotelConsumptionStatus(int id);
+
+
+    /**
+     * return the hotel's room status, the return list contains the num of rooms reserved, under use and available respectively
+     * @param id
+     * @return
+     */
+    List<Integer> getRoomStatus(int id);
 }

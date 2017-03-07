@@ -17,6 +17,6 @@ public interface RoomsRepository extends CrudRepository<RoomsEntity, Integer> {
     List<RoomsEntity> findByHotelId(int hotelId);
     Page<RoomsEntity> findByHotelId(int hotelId, Pageable pageRequest);
     Page<RoomsEntity> findByHotelIdAndStatus(int hotelId, int status, Pageable pageRequest);
-
+    List<RoomsEntity> findByHotelIdAndStatus(int hotelId, int status);
     List<RoomsEntity> findByStatus(int status);
 }

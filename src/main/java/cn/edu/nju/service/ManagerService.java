@@ -44,4 +44,21 @@ public interface ManagerService {
     Map<String,Object> settle(boolean isApprove, List<Integer> operationArray);
 
 
+    /**
+     * Return the hotel status of the whole Hostel World
+     * @return
+     */
+    Map<String,Object> getHotelStatus();
+
+    /**
+     * Return the member status of the whole Hostel World
+     * @return
+     */
+    Map<String,Object> getMemberStatus();
+
+    /**
+     * Return the Finance Status of the whole Hostel World
+     * @return
+     */
+    Map<String,Object> getFinanceStatus();
 }

@@ -371,6 +371,18 @@ public class HotelServiceImpl implements HotelService {
         return result;
     }
 
+    @Override
+    public List<Integer> getRoomStatus(int id) {
+        int numOfActive = roomsRepository.findByHotelIdAndStatus(id, SystemDefault.ROOM_ACTIVE).size();
+        int numOfReserved = roomsRepository.findByHotelIdAndStatus(id, SystemDefault.ROOM_RESERVED).size();
+        int numOfUnderUse = roomsRepository.findByHotelIdAndStatus(id, SystemDefault.ROOM_OCCUPIED).size();
+                List<Integer> result = new ArrayList<>();
+        result.add(numOfReserved);
+        result.add(numOfUnderUse);
+        result.add(numOfActive);
+        return result;
+    }
+
     /**
      * add the amount that was payed by the member card to the settlement
      */

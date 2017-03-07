@@ -70,4 +70,27 @@ public class ManagerController {
         sessionStatus.setComplete();
         return "redirect:/index";
     }
+
+
+    @GetMapping("/hotelStatus")
+    @ResponseBody
+    public Map<String, Object> getHotelStatus() {
+
+        return managerService.getHotelStatus();
+
+    }
+    @GetMapping("/memberStatus")
+    @ResponseBody
+    public Map<String, Object> getMemberStatus() {
+
+        return managerService.getMemberStatus();
+
+    }
+    @GetMapping("/financeStatus")
+    @ResponseBody
+    public Map<String, Object> getFinanceStatus() {
+
+        return managerService.getFinanceStatus();
+
+    }
 }

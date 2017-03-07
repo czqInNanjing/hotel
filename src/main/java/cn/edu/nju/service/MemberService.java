@@ -3,6 +3,7 @@ package cn.edu.nju.service;
 import cn.edu.nju.vo.MemberInfoVO;
 import org.springframework.ui.Model;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,4 +49,11 @@ public interface MemberService {
     String statistics(Model model, int id);
 
     Map<String,Object> cancelReservation(int id, int recordToCancel);
+
+    /**
+     * Return the specific user status ,the return list contains the num of user reserved, live and recharge
+     * @param id
+     * @return
+     */
+    List<Integer> getMemberStatus(int id);
 }

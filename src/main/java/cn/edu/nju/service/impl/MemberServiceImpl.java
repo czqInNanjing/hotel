@@ -30,11 +30,11 @@ public class MemberServiceImpl implements MemberService {
     private final AccountRepository accountRepository;
     private final ReservedRepository reservedRepository;
     private final RoomsRepository roomsRepository;
-    private final AccountService accountService;
+
     private final LiveMesRepository liveMesRepository;
     private final HotelRepository hotelRepository;
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository, AccountService accountService, LiveMesRepository liveMesRepository, HotelRepository hotelRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, RechargeRepository rechargeRepository, PointConvertRepository pointConvertRepository, PayRecordRepository payRecordRepository, AccountRepository accountRepository, ReservedRepository reservedRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository, HotelRepository hotelRepository) {
         this.memberRepository = memberRepository;
         this.rechargeRepository = rechargeRepository;
         this.pointConvertRepository = pointConvertRepository;
@@ -42,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
         this.accountRepository = accountRepository;
         this.reservedRepository = reservedRepository;
         this.roomsRepository = roomsRepository;
-        this.accountService = accountService;
+
         this.liveMesRepository = liveMesRepository;
         this.hotelRepository = hotelRepository;
     }
@@ -269,7 +269,23 @@ public class MemberServiceImpl implements MemberService {
         result.put(SystemDefault.HTTP_RESULT, false);
         result.put(SystemDefault.HTTP_REASON, "Reservation Record Not Found!");
         return result;
-//        return null;
+
+    }
+
+    @Override
+    public List<Integer> getMemberStatus(int id) {
+        int numOfReserved = reservedRepository.findByMemberId(id).size();
+        int numOfLive = liveMesRepository.findByMemberId(id).size();
+
+        int numOfRecharge = rechargeRepository.findByMemberId(id).size();
+
+        List<Integer> result = new ArrayList<>(3);
+        result.add(numOfReserved);
+        result.add(numOfLive);
+        result.add(numOfRecharge);
+
+
+        return result;
     }
 
 

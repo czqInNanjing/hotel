@@ -36,9 +36,10 @@ public class HotelServiceImpl implements HotelService {
     private final MemberService memberService;
     private final SettlementRepository settlementRepository;
     private final ReservedRepository reservedRepository;
+    private final PayRecordRepository payRecordRepository;
 
     @Autowired
-    public HotelServiceImpl(ModifyApplicationRepository modifyApplicationRepository, OpenApplicationRepository openApplicationRepository, HotelNewRepository hotelNewRepository, HotelRepository hotelRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository, MemberService memberService, SettlementRepository settlementRepository, ReservedRepository reservedRepository) {
+    public HotelServiceImpl(ModifyApplicationRepository modifyApplicationRepository, OpenApplicationRepository openApplicationRepository, HotelNewRepository hotelNewRepository, HotelRepository hotelRepository, RoomsRepository roomsRepository, LiveMesRepository liveMesRepository, MemberService memberService, SettlementRepository settlementRepository, ReservedRepository reservedRepository, PayRecordRepository payRecordRepository) {
         this.modifyApplicationRepository = modifyApplicationRepository;
         this.openApplicationRepository = openApplicationRepository;
         this.hotelNewRepository = hotelNewRepository;
@@ -48,6 +49,7 @@ public class HotelServiceImpl implements HotelService {
         this.memberService = memberService;
         this.settlementRepository = settlementRepository;
         this.reservedRepository = reservedRepository;
+        this.payRecordRepository = payRecordRepository;
     }
 
     @Override
@@ -111,9 +113,9 @@ public class HotelServiceImpl implements HotelService {
 
         } else {
             if (onlyAvailable) {
-                roomsRepository.findByStatus(0).forEach(result::add);
+                roomsRepository.findByHotelIdAndStatus(hotelId, 0).forEach(result::add);
             } else {
-                roomsRepository.findAll().forEach(result::add);
+                roomsRepository.findByHotelId(hotelId).forEach(result::add);
             }
         }
         return result;
@@ -210,6 +212,7 @@ public class HotelServiceImpl implements HotelService {
     public synchronized Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId, boolean hasReserved) {
         Map<String, Object> result = new TreeMap<>();
         RoomsEntity roomsEntity = roomsRepository.findOne(roomId);
+        PayRecordEntity payRecordEntity = null;
         boolean changeReservedStatus = false;
         if (roomsEntity.getStatus() == SystemDefault.ROOM_OCCUPIED) {
             result.put(SystemDefault.HTTP_RESULT, false);
@@ -237,7 +240,8 @@ public class HotelServiceImpl implements HotelService {
             }
             // pay by member card  (add to settlements)
             if (payMethod == 0) {
-                if (memberService.pay(memberId, roomsEntity.getPrice())) {
+                payRecordEntity = memberService.pay(memberId, roomsEntity.getPrice());
+                if (payRecordEntity != null) {
                     addToHotelSettlements(hotelId, roomsEntity.getPrice());
                 } else {
                     result.put(SystemDefault.HTTP_RESULT, false);
@@ -253,7 +257,12 @@ public class HotelServiceImpl implements HotelService {
 
 
         LiveMesEntity liveMesEntity = new LiveMesEntity(personNum, personMes, payMethod, memberId, roomId, hotelId);
-        liveMesRepository.save(liveMesEntity);
+        liveMesEntity = liveMesRepository.save(liveMesEntity);
+        if (payRecordEntity != null) {
+            payRecordEntity.setLiveId(liveMesEntity.getId());
+            payRecordRepository.save(payRecordEntity);
+        }
+
         roomsEntity.setStatus(2);
         roomsRepository.save(roomsEntity);
         reservedRepository.findByRoomId(roomId).forEach(reservedEntity -> {
@@ -272,7 +281,7 @@ public class HotelServiceImpl implements HotelService {
         List<ReservedEntity> reservedEntities = reservedRepository.findByHotelId(id);
 
         Map<String, Object> result = new TreeMap<>();
-        if (! reservedEntities.isEmpty()) {
+        if (!reservedEntities.isEmpty()) {
             result.put(SystemDefault.HTTP_RESULT, true);
 
             Map<String, Integer> dateAndNumber = new TreeMap<>();
@@ -294,7 +303,6 @@ public class HotelServiceImpl implements HotelService {
         }
 
 
-
         return result;
     }
 
@@ -303,7 +311,7 @@ public class HotelServiceImpl implements HotelService {
         List<LiveMesEntity> liveMesEntities = liveMesRepository.findByHotelId(id);
 
         Map<String, Object> result = new TreeMap<>();
-        if (! liveMesEntities.isEmpty()) {
+        if (!liveMesEntities.isEmpty()) {
             result.put(SystemDefault.HTTP_RESULT, true);
 
             Map<String, Integer> dateAndNumber = new TreeMap<>();
@@ -318,12 +326,10 @@ public class HotelServiceImpl implements HotelService {
             result.put("data", dateAndNumber);
 
 
-
         } else {
             result.put(SystemDefault.HTTP_RESULT, false);
             result.put(SystemDefault.HTTP_REASON, "Not any entities data found.");
         }
-
 
 
         return result;
@@ -336,36 +342,36 @@ public class HotelServiceImpl implements HotelService {
         Map<String, Object> result = new TreeMap<>();
 
 
-        if (! liveMesEntities.isEmpty()) {
+        if (!liveMesEntities.isEmpty()) {
             result.put(SystemDefault.HTTP_RESULT, true);
 
             Map<String, Integer> typeAndNumber = new TreeMap<>();
-            typeAndNumber.put("MemberCard" , 0);
-            typeAndNumber.put("Cash" , 0);
-            typeAndNumber.put("Credit Card", 0 );
+            typeAndNumber.put("MemberCard", 0);
+            typeAndNumber.put("Cash", 0);
+            typeAndNumber.put("Credit Card", 0);
             liveMesEntities.forEach(entity -> {
                 switch (entity.getPayMethod()) {
                     case 0:
-                        typeAndNumber.put("MemberCard", typeAndNumber.get("MemberCard") + 1);break;
+                        typeAndNumber.put("MemberCard", typeAndNumber.get("MemberCard") + 1);
+                        break;
                     case 1:
-                        typeAndNumber.put("Cash", typeAndNumber.get("Cash") + 1);break;
+                        typeAndNumber.put("Cash", typeAndNumber.get("Cash") + 1);
+                        break;
                     default:
-                        typeAndNumber.put("Credit Card", typeAndNumber.get("Credit Card") + 1);break;
+                        typeAndNumber.put("Credit Card", typeAndNumber.get("Credit Card") + 1);
+                        break;
 
                 }
-
 
 
             });
             result.put("data", typeAndNumber);
 
 
-
         } else {
             result.put(SystemDefault.HTTP_RESULT, false);
             result.put(SystemDefault.HTTP_REASON, "Not any entities data found.");
         }
-
 
 
         return result;
@@ -376,7 +382,7 @@ public class HotelServiceImpl implements HotelService {
         int numOfActive = roomsRepository.findByHotelIdAndStatus(id, SystemDefault.ROOM_ACTIVE).size();
         int numOfReserved = roomsRepository.findByHotelIdAndStatus(id, SystemDefault.ROOM_RESERVED).size();
         int numOfUnderUse = roomsRepository.findByHotelIdAndStatus(id, SystemDefault.ROOM_OCCUPIED).size();
-                List<Integer> result = new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
         result.add(numOfReserved);
         result.add(numOfUnderUse);
         result.add(numOfActive);

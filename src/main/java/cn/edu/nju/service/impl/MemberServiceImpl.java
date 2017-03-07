@@ -2,7 +2,6 @@ package cn.edu.nju.service.impl;
 
 import cn.edu.nju.dao.*;
 import cn.edu.nju.entity.*;
-import cn.edu.nju.service.AccountService;
 import cn.edu.nju.service.MemberService;
 import cn.edu.nju.util.Helper;
 import cn.edu.nju.util.SystemDefault;
@@ -55,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean pay(int id, int amount) {
+    public PayRecordEntity pay(int id, int amount) {
         MemberEntity entity = memberRepository.findOne(id);
         if (entity != null) {
             if (entity.getDeposit() > amount) {
@@ -68,11 +67,11 @@ public class MemberServiceImpl implements MemberService {
 //                entity.setPoints(entity.addPoints() + amount);
                 memberRepository.save(entity);
                 PayRecordEntity payRecordEntity = new PayRecordEntity(amount, after);
-                payRecordRepository.save(payRecordEntity);
-                return true;
+                payRecordEntity = payRecordRepository.save(payRecordEntity);
+                return payRecordEntity;
             }
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -135,6 +134,7 @@ public class MemberServiceImpl implements MemberService {
                 pointConvertEntity.setAmount(points);
                 pointConvertEntity.setPoint(points);
                 pointConvertEntity.setAfter(entity.getDeposit());
+                pointConvertEntity.setMemberId(id);
                 pointConvertRepository.save(pointConvertEntity);
 
 

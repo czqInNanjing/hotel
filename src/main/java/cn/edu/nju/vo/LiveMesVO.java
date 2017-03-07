@@ -15,7 +15,15 @@ public class LiveMesVO {
     private String roomName;
     private int payMethod;
     private int total;
+    private int status = 0;
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public LiveMesVO() {
     }

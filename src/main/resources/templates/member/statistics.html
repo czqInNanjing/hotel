@@ -111,12 +111,12 @@
                             <th>Deposit</th>
                         </tr>
                         <tr th:each="consume : ${statistics.consumptionVOS}"
-                            th:class="(${consume.type == 0}) ? 'success' : ((${room.status == 1}) ? 'info' : 'danger')">
-                            <td th:text="${${#numbers.formatInteger(consume.id,7)}}">1</td>
+                            th:class="(${consume.type == 0}) ? 'success' : ((${consume.type == 1}) ? 'info' : 'danger')">
+                            <td th:text="${#numbers.formatInteger(consume.id,7)}">1</td>
                             <td th:text="${#dates.format(new java.util.Date(consume.time),'dd/MM/yyyy hh:mm:ss')}">
                                 2016-3-18 22:25:25
                             </td>
-                            <td th:text="(${consume.type == 0}) ? 'Recharge' : ((${room.status == 1}) ? 'Point Convert' : 'Consumption')">
+                            <td th:text="(${consume.type == 0}) ? 'Recharge' : ((${consume.type == 1}) ? 'Point Convert' : 'Consumption')">
                                 Consumption
                             </td>
                             <td th:text="${consume.amount}">-500</td>
@@ -156,7 +156,7 @@
                             <td th:text="${#dates.format(new java.util.Date(liveMes.inTime),'dd/MM/yyyy hh:mm:ss')}">
                                 2016-3-18 22:25:25
                             </td>
-                            <td th:text="${#dates.format(new java.util.Date(liveMes.outTime),'dd/MM/yyyy hh:mm:ss')}">
+                            <td th:text="(${liveMes.status == 0}) ? '----' : ${#dates.format(new java.util.Date(liveMes.outTime),'dd/MM/yyyy HH:mm:ss')}">
                                 2016-3-19 10:25:25
                             </td>
                             <td th:text="${liveMes.hotelName}">Shanghai Hotel</td>

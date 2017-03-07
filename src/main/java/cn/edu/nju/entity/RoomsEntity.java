@@ -18,8 +18,8 @@ public class RoomsEntity {
     private int type = 0;
     private int price = 0;
     private int status = 0;
-    private Integer area;
-    private Integer breakfast;
+    private int area;
+    private int breakfast = 0;
     private String name;
 
     public RoomsEntity() {
@@ -148,21 +148,21 @@ public class RoomsEntity {
 
     @Basic
     @Column(name = "area", nullable = true)
-    public Integer getArea() {
+    public int getArea() {
         return area;
     }
 
-    public void setArea(Integer area) {
+    public void setArea(int area) {
         this.area = area;
     }
 
     @Basic
     @Column(name = "breakfast", nullable = true)
-    public Integer getBreakfast() {
+    public int getBreakfast() {
         return breakfast;
     }
 
-    public void setBreakfast(Integer breakfast) {
+    public void setBreakfast(int breakfast) {
         this.breakfast = breakfast;
     }
 

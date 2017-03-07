@@ -1,5 +1,6 @@
 package cn.edu.nju.service;
 
+import cn.edu.nju.entity.PayRecordEntity;
 import cn.edu.nju.vo.MemberInfoVO;
 import org.springframework.ui.Model;
 
@@ -19,7 +20,7 @@ public interface MemberService {
      * @param amount    pay amount
      * @return          whether success
      */
-    boolean pay(int id, int amount);
+    PayRecordEntity pay(int id, int amount);
     Map<String, Object> recharge(int id, int amount);
     void addPoints(int id, int amount);
 

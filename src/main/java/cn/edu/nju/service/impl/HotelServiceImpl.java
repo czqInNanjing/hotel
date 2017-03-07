@@ -267,6 +267,110 @@ public class HotelServiceImpl implements HotelService {
         return result;
     }
 
+    @Override
+    public Map<String, Object> getHotelReservedStatus(int id) {
+        List<ReservedEntity> reservedEntities = reservedRepository.findByHotelId(id);
+
+        Map<String, Object> result = new TreeMap<>();
+        if (! reservedEntities.isEmpty()) {
+            result.put(SystemDefault.HTTP_RESULT, true);
+
+            Map<String, Integer> dateAndNumber = new TreeMap<>();
+            reservedEntities.forEach(entity -> {
+                String date = Helper.timeToDateString(entity.getTime());
+                if (dateAndNumber.containsKey(date)) {
+                    dateAndNumber.put(date, dateAndNumber.get(date) + 1);
+                } else {
+                    dateAndNumber.put(date, 1);
+                }
+            });
+
+            result.put("data", dateAndNumber);
+
+
+        } else {
+            result.put(SystemDefault.HTTP_RESULT, false);
+            result.put(SystemDefault.HTTP_REASON, "Not any entities data found.");
+        }
+
+
+
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getHotelLiveStatus(int id) {
+        List<LiveMesEntity> liveMesEntities = liveMesRepository.findByHotelId(id);
+
+        Map<String, Object> result = new TreeMap<>();
+        if (! liveMesEntities.isEmpty()) {
+            result.put(SystemDefault.HTTP_RESULT, true);
+
+            Map<String, Integer> dateAndNumber = new TreeMap<>();
+            liveMesEntities.forEach(entity -> {
+                String date = Helper.timeToDateString(entity.getInTime());
+                if (dateAndNumber.containsKey(date)) {
+                    dateAndNumber.put(date, dateAndNumber.get(date) + 1);
+                } else {
+                    dateAndNumber.put(date, 1);
+                }
+            });
+            result.put("data", dateAndNumber);
+
+
+
+        } else {
+            result.put(SystemDefault.HTTP_RESULT, false);
+            result.put(SystemDefault.HTTP_REASON, "Not any entities data found.");
+        }
+
+
+
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getHotelConsumptionStatus(int id) {
+        List<LiveMesEntity> liveMesEntities = liveMesRepository.findByHotelId(id);
+
+        Map<String, Object> result = new TreeMap<>();
+
+
+        if (! liveMesEntities.isEmpty()) {
+            result.put(SystemDefault.HTTP_RESULT, true);
+
+            Map<String, Integer> typeAndNumber = new TreeMap<>();
+            typeAndNumber.put("MemberCard" , 0);
+            typeAndNumber.put("Cash" , 0);
+            typeAndNumber.put("Credit Card", 0 );
+            liveMesEntities.forEach(entity -> {
+                switch (entity.getPayMethod()) {
+                    case 0:
+                        typeAndNumber.put("MemberCard", typeAndNumber.get("MemberCard") + 1);break;
+                    case 1:
+                        typeAndNumber.put("Cash", typeAndNumber.get("Cash") + 1);break;
+                    default:
+                        typeAndNumber.put("Credit Card", typeAndNumber.get("Credit Card") + 1);break;
+
+                }
+
+
+
+            });
+            result.put("data", typeAndNumber);
+
+
+
+        } else {
+            result.put(SystemDefault.HTTP_RESULT, false);
+            result.put(SystemDefault.HTTP_REASON, "Not any entities data found.");
+        }
+
+
+
+        return result;
+    }
+
     /**
      * add the amount that was payed by the member card to the settlement
      */

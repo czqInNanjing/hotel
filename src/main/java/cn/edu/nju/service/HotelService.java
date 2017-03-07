@@ -51,6 +51,7 @@ public interface HotelService {
     Map<String, Object> addOutRecords(int recordId);
 
     /**
+     * Still some other work has been done about reserved room
      * This method needs to tackle several things:
      * 1. Check if the room is available
      * 2. if it is a member, check if the member is activated, its deposit is enough, then subtract the corresponding value from the account
@@ -64,8 +65,30 @@ public interface HotelService {
      * @param memberId      member id if a member
      * @param roomId        room id
      * @param hotelId       hotel id
-     * @param hasReserved
+     * @param hasReserved   if the room is used by user that has reserved this room
      * @return              success or failure, and reason if fail
      */
     Map<String, Object> addInRecords(int personNum, String personMes, int isMember, int payMethod, int memberId, int roomId, int hotelId, boolean hasReserved);
+
+
+    /**
+     * Return the Hotel Reserved Status
+     * @param id
+     * @return first is the search result, the second is the list<ReservedVO>, which consists of time and number of reservations
+     */
+    Map<String,Object> getHotelReservedStatus(int id);
+
+    /**
+     * Return the Hotel Live Status
+     * @param id
+     * @return first is the search result, the second is the list<LiveVO>, which consists of time and number of live
+     */
+    Map<String,Object> getHotelLiveStatus(int id);
+
+    /**
+     * Return the hotel consumption status
+     * @param id
+     * @return first is the search result, the second is the list<ConsumptionVO>, which consists of the consumption type and the consumption type
+     */
+    Map<String,Object> getHotelConsumptionStatus(int id);
 }

@@ -1,6 +1,7 @@
 package cn.edu.nju.dao;
 
 import cn.edu.nju.entity.ReservedEntity;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface ReservedRepository extends CrudRepository<ReservedEntity, Integ
     List<ReservedEntity> findByMemberId(int id);
 
     List<ReservedEntity> findByRoomId(int roomId);
+
+    @Query(value = "select * from reserved, rooms where hotel_id=? and reserved.room_id=rooms.id", nativeQuery = true)
+    List<ReservedEntity> findByHotelId(int id);
 }

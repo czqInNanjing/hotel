@@ -2,6 +2,7 @@ package cn.edu.nju.util;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.IntSummaryStatistics;
@@ -44,4 +45,8 @@ public class Helper {
     }
 
 
+    public static String timeToDateString(Timestamp time) {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        return fmt.format(time);
+    }
 }

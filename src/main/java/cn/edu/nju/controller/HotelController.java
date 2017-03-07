@@ -4,7 +4,6 @@ import cn.edu.nju.dao.HotelRepository;
 import cn.edu.nju.entity.HotelEntity;
 import cn.edu.nju.entity.LiveMesEntity;
 import cn.edu.nju.entity.RoomsEntity;
-import cn.edu.nju.service.FileService;
 import cn.edu.nju.service.HotelService;
 import cn.edu.nju.util.SystemDefault;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +27,12 @@ public class HotelController {
 
     private final HotelRepository hotelRepository;
     private final HotelService hotelService;
-    private final FileService fileService;
+
 
     @Autowired
-    public HotelController(HotelRepository hotelRepository, HotelService hotelService, FileService fileService) {
+    public HotelController(HotelRepository hotelRepository, HotelService hotelService) {
         this.hotelRepository = hotelRepository;
         this.hotelService = hotelService;
-
-        this.fileService = fileService;
     }
 
 
@@ -47,7 +44,7 @@ public class HotelController {
         HotelEntity hotel = hotelRepository.findOne(id);
 
         if (hotel == null) {
-            System.err.println(id);
+            return "../index";
         }
 
         if (hotel.getStatus() == 0) {
@@ -96,8 +93,6 @@ public class HotelController {
     @RequestMapping(value = "/addOutRecords", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> addOutRecords(int recordId) {
-
-        // TODO REMOVE futile return
         return hotelService.addOutRecords(recordId);
     }
 
@@ -160,5 +155,22 @@ public class HotelController {
         return "redirect:/index";
     }
 
+    @GetMapping("/reservedStatus")
+    @ResponseBody
+    public Map<String, Object> getHotelReservedStatus(@SessionAttribute(SystemDefault.USER_ID) int id) {
+        return hotelService.getHotelReservedStatus(id);
+    }
+
+    @GetMapping("/liveStatus")
+    @ResponseBody
+    public Map<String, Object> getHotelLiveStatus(@SessionAttribute(SystemDefault.USER_ID) int id) {
+        return hotelService.getHotelLiveStatus(id);
+    }
+
+    @GetMapping("/consumptionStatus")
+    @ResponseBody
+    public Map<String, Object> getHotelConsumptionStatus(@SessionAttribute(SystemDefault.USER_ID) int id) {
+        return hotelService.getHotelConsumptionStatus(id);
+    }
 
 }

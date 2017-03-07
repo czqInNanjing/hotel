@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
     <link rel="stylesheet" href="../../static/css/hotel.css" th:href="@{/css/hotel.css}"/>
+    <script src="../../static/js/echarts.min.js" th:src="@{/js/echarts.min.js}"></script>
     <title>Hotel Index</title>
 </head>
 <body>
@@ -52,8 +53,15 @@
 
 <div class="mainpage">
 
-    Now this page will be used for show the hotel's statistics message
+    <h2> Recent Record Status</h2>
+    <div id="reserved" style="width: 600px;height:400px;"></div>
 
+    <h2> Recent Live Status</h2>
+    <div id="live" style="width: 600px;height:400px;"></div>
+
+    <h2> Recent Consumption Status</h2>
+    <div id="consumption" style="width: 600px;height:400px;"></div>
+    <div class="err-msg"></div>
 </div>
 
 <div th:include="footer :: copy"></div>
@@ -62,6 +70,159 @@
 <!--Scripts-->
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-<script src="../../static/js/npm.js" th:src="@{/js/npm.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    var reservedChart = echarts.init(document.getElementById('reserved'));
+    var liveChart = echarts.init(document.getElementById('live'));
+    var consumptionChart = echarts.init(document.getElementById('consumption'));
+    var newData = {};
+    // 指定图表的配置项和数据
+    var reservedOption = {
+        title: {
+            text: 'Reserved Status'
+        },
+        tooltip: {},
+
+        xAxis: {
+            data: ["12-7","12-8","12-9","12-10","12-11","12-12"]
+        },
+        yAxis: {
+            name: 'Number'
+        },
+        series: [{
+            name: 'Reserved Number',
+            type: 'bar',
+            data: [5, 20,20, 10, 10, 20]
+        }]
+    };
+    reservedChart.setOption(reservedOption);
+    $.ajax({
+        url: '/hotel/reservedStatus',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            if (data.result) {
+                newData = data.data;
+                reservedOption.xAxis.data = Object.keys(newData);
+                reservedOption.series[0].data = Object.keys(newData).map(function(k) { return newData[k] });
+//                console.log(reservedOption);
+            } else {
+                var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>';
+                $(".err-msg").html(error_msg);
+            }
+            reservedChart.setOption(reservedOption);
+        }
+
+    });
+
+    var liveOption = {
+        title: {
+            text: 'Live Status'
+        },
+        tooltip: {},
+
+        xAxis: {
+            data: ["12-7","12-8","12-9","12-10","12-11","12-12"]
+        },
+        yAxis: {
+            name: 'Number'
+        },
+        series: [{
+            name: 'Lived Number',
+            type: 'bar',
+            data: [5, 20,20, 10, 10, 20]
+        }]
+    };
+    liveChart.setOption(liveOption);
+    $.ajax({
+        url: '/hotel/liveStatus',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            if (data.result) {
+                newData = data.data;
+                liveOption.xAxis.data = Object.keys(newData);
+                liveOption.series[0].data = Object.keys(newData).map(function(k) { return newData[k] });
+//                console.log(reservedOption);
+            } else {
+                var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>';
+                $(".err-msg").html(error_msg);
+            }
+            liveChart.setOption(liveOption);
+        }
+
+    });
+
+    var consumptionOption = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+            data:['Member Card','Cash','Credit Card']
+        },
+        series: [
+            {
+                name:'Num of type',
+                type:'pie',
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:[
+                    {value:335, name:'Member Card'},
+                    {value:310, name:'Cash'},
+                    {value:234, name:'Credit Card'}
+                ]
+            }
+        ]
+    };
+
+    consumptionChart.setOption(consumptionOption);
+    $.ajax({
+        url: '/hotel/consumptionStatus',
+        data: '',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            if (data.result) {
+                newData = data.data;
+                consumptionOption.series[0]['data'] = [];
+                for ( var temp in newData) {
+                    obj = {value : newData[temp] , name: temp};
+                    consumptionOption.series[0]['data'].push(obj);
+                }
+
+                console.log(consumptionOption);
+            } else {
+                var error_msg = '<p class="errtip">	<strong>Error</strong>：' + data.reason + '</p>';
+                $(".err-msg").html(error_msg);
+            }
+            consumptionChart.setOption(consumptionOption);
+        }
+
+    });
+
+
+</script>
 </body>
 </html>

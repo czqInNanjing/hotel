@@ -24,7 +24,7 @@ import java.util.Random;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-//@Commit
+@Commit
 public class CustomerRepositoryTest {
 
     @Autowired
@@ -64,6 +64,18 @@ public class CustomerRepositoryTest {
 //    }
 
 
+    @Test
+    public void deleteHotel() throws Exception {
+        Iterable<HotelEntity> hotelEntities = hotelRepository.findAll();
+
+
+        for (HotelEntity hotelEntity : hotelEntities) {
+            if (hotelEntity.getId() > 140) {
+                hotelRepository.delete(hotelEntity.getId());
+            }
+        }
+
+    }
 
     @Test
     public void testFindPath() throws Exception {

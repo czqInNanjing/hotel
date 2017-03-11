@@ -1,5 +1,7 @@
 package cn.edu.nju.entity;
 
+import cn.edu.nju.util.SystemDefault;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,7 +15,7 @@ public class ReservedEntity {
     private int id;
     private int roomId;
     private int memberId;
-    private Timestamp time;
+    private Timestamp time = new Timestamp(System.currentTimeMillis());
     private Integer status = 0;
 
     @GeneratedValue

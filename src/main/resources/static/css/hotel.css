@@ -24,8 +24,7 @@ body {
     margin-top: 10px;
 }
 .my-carousel-image {
-    min-height: 400px;
-    max-height: 400px;
+    height: 500px;
 }
 
 .mainpage {
@@ -35,4 +34,26 @@ body {
 .bar {
     height: 18px;
     background: green;
+}
+
+.hotelType {
+    height: 100px;
+}
+
+.cover {
+    height: 320px;
+    background-size: cover;
+    background-position: center;
+}
+
+.caption p {
+    height: 120px;
+    overflow: hidden;
+}
+
+.carousel-cover {
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+
 }

@@ -10,10 +10,12 @@ import cn.edu.nju.util.SystemDefault;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -44,26 +46,26 @@ public class AccountController {
     //TODO Check Form
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(HttpSession session, Model model, String mail, String password) {
+    public String login(HttpSession session, @RequestParam("username") String mail,@RequestParam("password") String password) {
 
-        AccountEntity result = repository.findByMailAndPassword(mail, password);
+        AccountEntity result = repository.findByMail(mail);
 
         if (result != null) {
 
             session.setAttribute(SystemDefault.USER_ID, result.getId());
             switch (result.getType()) {
                 case 0:
-                    return "redirect:/member/index";
+                    return "/member/index";
                 case 1:
-                    return "redirect:/hotel/index";
+                    return "/hotel/index";
                 case 2:
-                    return "redirect:/manager/index";
+                    return "/manager/index";
                 default:
                     return "account/index";
             }
         }
 
-        model.addAttribute("error", "mail or password error");
+//        model.addAttribute("error", "mail or password error");
         return "account/index";
 
     }
@@ -125,6 +127,7 @@ public class AccountController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(SessionStatus sessionStatus) {
+        SecurityContextHolder.clearContext();
         sessionStatus.setComplete();
         return "account/index";
     }

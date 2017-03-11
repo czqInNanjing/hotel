@@ -64,7 +64,8 @@
     <div class="row">
         <div th:each="room : ${hotel.vos}" class="col-sm-6 col-md-4">
             <div class="thumbnail">
-                <img src="../../static/img/hotel/hotel1.JPG" alt="hotel pic" th:src="${room.picUrl}"/>
+                <div class="cover"  style="'background-image: url('../../static/img/hotel/hotel1.JPG')'" th:style="'background-image: url(' + ${room.picUrl} + ')'" ></div>
+                <!--<img src="../../static/img/hotel/hotel1.JPG" alt="hotel pic" th:src="${room.picUrl}"/>-->
                 <div class="caption">
                     <h3 th:text="${room.name}">Room Name</h3>
                     <table class="table table-condensed">
@@ -96,12 +97,12 @@
                         </tr>
                     </table>
 
-                    <p>
+                    <div>
                         <button type="button" class="btn btn-info reserveButton" data-toggle="modal"
                                 data-target="#reserveModal" th:name="${room.id}">
                             Reserve
                         </button>
-                    </p>
+                    </div>
 
                 </div>
             </div>

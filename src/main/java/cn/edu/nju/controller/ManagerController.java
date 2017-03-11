@@ -60,16 +60,7 @@ public class ManagerController {
         return "/manager/statistics";
     }
 
-    @RequestMapping("/register")
-    public String register() {
-        return "redirect:/register";
-    }
 
-    @RequestMapping("/logout")
-    public String logout(SessionStatus sessionStatus) {
-        sessionStatus.setComplete();
-        return "redirect:/index";
-    }
 
 
     @GetMapping("/hotelStatus")

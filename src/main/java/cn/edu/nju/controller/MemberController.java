@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -24,6 +25,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final HotelService hotelService;
+    private  static Locale locale = new Locale("zh");
     @Autowired
     public MemberController(MemberService memberService, HotelService hotelService) {
         this.memberService = memberService;
@@ -56,7 +58,7 @@ public class MemberController {
 
     @RequestMapping("/statistics")
     public String statistics(Model model, @SessionAttribute(SystemDefault.USER_ID) int id) {
-
+        model.addAttribute("locale"  ,locale);
         return memberService.statistics(model, id);
     }
 
@@ -118,15 +120,9 @@ public class MemberController {
         return result;
     }
 
-    @RequestMapping("/register")
+    @RequestMapping("../register")
     public String register() {
         return "redirect:/register";
-    }
-
-    @RequestMapping("/logout")
-    public String logout(SessionStatus sessionStatus) {
-        sessionStatus.setComplete();
-        return "redirect:/index";
     }
 
 }

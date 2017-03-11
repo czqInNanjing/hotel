@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -180,6 +181,7 @@ public class MemberServiceImpl implements MemberService {
             }
 
             ReservedEntity reservedEntity = new ReservedEntity();
+            reservedEntity.setTime(new Timestamp(System.currentTimeMillis()));
             reservedEntity.setMemberId(id);
             reservedEntity.setRoomId(roomId);
             reservedRepository.save(reservedEntity);

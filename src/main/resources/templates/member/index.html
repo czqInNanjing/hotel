@@ -40,8 +40,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Welcome, Smith <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="../account/index.html" th:href="@{logout}">Sign out</a></li>
-                        <li><a href="../account/register.html" th:href="@{register}">Register</a></li>
+                        <li><a href="../account/index.html" th:href="@{../logout}">Sign out</a></li>
+                        <li><a href="../account/register.html" th:href="@{../register}">Register</a></li>
                     </ul>
                 </li>
             </ul>
@@ -51,7 +51,7 @@
 
 
 <div class="mainpage">
-    <div id="carousel-example-generic" class="carousel slide col-md-12 " data-ride="carousel">
+    <div id="carousel-example-generic" class="carousel slide " data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
             <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -62,21 +62,30 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner " role="listbox">
             <div class="item active my-carousel-image">
-                <img src="../../static/img/hotel/hotel1.JPG" th:src="@{/img/hotel/hotel1.JPG}" alt="Hotel One"/>
+
+                <!--<img src="../../static/img/hotel/hotel1.JPG" th:src="${hotels[0].picUrl}" alt="Hotel One"/>-->
+                <div class="carousel-cover" style="background-image:url('/img/hotel/bigHotel1.jpg')" ></div>
                 <div class="carousel-caption">
-                    Hotel 1
-                </div>
+                    <h2>
+                        <a href="detail.html" th:href="@{/member/detail(hotelId=${hotels[0].id})}"
+                           th:text="${hotels[0].name}"></a>
+                    </h2></div>
             </div>
             <div class="item my-carousel-image">
-                <img src="../../static/img/hotel/hotel2.jpeg" th:src="@{/img/hotel/hotel2.jpeg}" alt="Hotel 2"/>
+                <div class="carousel-cover"  style="background-image:url('/img/hotel/bigHotel2.jpg')"  ></div>
+                <!--<img src="../../static/img/hotel/hotel2.jpeg" th:src="${hotels[1].picUrl}" alt="Hotel 2"/>-->
                 <div class="carousel-caption">
-                    Hotel 2
-                </div>
+                    <h2><a href="detail.html" th:href="@{/member/detail(hotelId=${hotels[1].id})}"
+                           th:text="${hotels[1].name}"></a>
+                    </h2></div>
             </div>
             <div class="item my-carousel-image">
-                <img src="../../static/img/hotel/hotel3.jpg" th:src="@{/img/hotel/hotel3.jpg}" alt="Hotel 3"/>
+                <!--<a href="detail.html" th:href="@{/member/detail(hotelId=${hotels[2].id})}"></a>-->
+                <div class="carousel-cover"  style="background-image:url('/img/hotel/bigHotel3.jpg')" ></div>
+                <!--<img src="../../static/img/hotel/hotel3.jpg" style="background-image:url('../../static/img/hotel/hotel3.jpeg')" th:src="${hotels[2].picUrl}" alt="Hotel 3"/>-->
                 <div class="carousel-caption">
-                    Hotel 3
+                    <h2><a href="detail.html" th:href="@{/member/detail(hotelId=${hotels[2].id})}"
+                           th:text="${hotels[2].name}"></a></h2>
                 </div>
             </div>
         </div>
@@ -95,16 +104,18 @@
     <div class="row">
         <div th:each="hotel : ${hotels}" class="col-sm-6 col-md-4">
             <div class="thumbnail">
-                <img src="../../static/img/hotel/hotel1.JPG" alt="hotel pic" th:src="${hotel.picUrl}"/>
+                <!--<img src="../../static/img/hotel/hotel1.JPG" alt="hotel pic" th:src="${hotel.picUrl}"/>-->
+                <div class="cover"   th:style="'background-image: url(' + ${hotel.picUrl} + ')'" ></div>
                 <div class="caption">
                     <h3 th:text="${hotel.name}">Shanghai Hotel</h3>
-                    <p th:text="${hotel.description}">This is a very good hotel with wifi and hot water. The average
+                    <p th:text="${hotel.description}">This is a very good hotel with wifi and hot
+                        water. The average
                         reputation exceed 4 of 5 points! Why not have a try?</p>
-                    <p>
+                    <div>
 
                         <!--<a data-target="#bookModal" href="#" class="btn btn-primary" role="button" "></a>-->
                         <a href="detail.html" th:href="@{/member/detail(hotelId=${hotel.id})}" class="btn btn-info"
-                           role="button">More</a></p>
+                           role="button">More</a></div>
                 </div>
             </div>
         </div>

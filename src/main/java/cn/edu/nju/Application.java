@@ -11,9 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 18/02/2017
  */
 //@EnableScheduling
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
+@SpringBootApplication
 //@EnableJpaRepositories(repositoryBaseClass = CustomPayRecordRepositoryImpl.class)
 public class Application {
     //TODO add Spring security

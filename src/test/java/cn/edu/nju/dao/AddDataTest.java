@@ -14,10 +14,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Qiang
@@ -64,6 +61,16 @@ public class AddDataTest {
     }
 
     @Test
+    public void name() throws Exception {
+        Iterable<RoomsEntity> roomsEntityIterator = roomsRepository.findAll();
+        Random random = new Random();
+        for (RoomsEntity roomsEntity : roomsEntityIterator) {
+            roomsEntity.setType(random.nextInt(2) + 1);
+        }
+        roomsRepository.save(roomsEntityIterator);
+    }
+
+    @Test
     public void addRooms() throws Exception {
         Iterable<HotelEntity> hotelEntities = hotelRepository.findAll();
         List<RoomsEntity> roomsEntities = new ArrayList<>(40);
@@ -83,7 +90,7 @@ public class AddDataTest {
                 roomsEntity.setName("room" + i);
                 roomsEntity.setBreakfast(random2.nextInt(2));
                 roomsEntity.setWifi(random3.nextInt(2));
-                roomsEntity.setType(random4.nextInt(2));
+                roomsEntity.setType(random4.nextInt(2) + 1);
                 roomsEntity.setPrice(random5.nextInt(100) + 50);
 //                roomsEntity.setAvailableTime();
                 roomsEntities.add(roomsEntity);

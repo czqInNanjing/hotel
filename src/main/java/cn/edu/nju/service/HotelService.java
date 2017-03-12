@@ -55,7 +55,7 @@ public interface HotelService {
      * This method needs to tackle several things:
      * 1. Check if the room is available
      * 2. if it is a member, check if the member is activated, its deposit is enough, then subtract the corresponding value from the account
-     * 3. <continue> then add points to the member's account, add pay records and add the amount to the hotel's waiting for settlement
+     * 3. then add points to the member's account, add pay records and add the amount to the hotel's waiting for settlement
      * 4. add the live message to the db
      * 5. mark the specific room 'lived
      * @param personNum     number who live in that room
@@ -74,21 +74,21 @@ public interface HotelService {
     /**
      * Return the Hotel Reserved Status
      * @param id
-     * @return first is the search result, the second is the list<ReservedVO>, which consists of time and number of reservations
+     * @return first is the search result, the second is the list ReservedVO, which consists of time and number of reservations
      */
     Map<String,Object> getHotelReservedStatus(int id);
 
     /**
      * Return the Hotel Live Status
      * @param id
-     * @return first is the search result, the second is the list<LiveVO>, which consists of time and number of live
+     * @return first is the search result, the second is the list LiveVO, which consists of time and number of live
      */
     Map<String,Object> getHotelLiveStatus(int id);
 
     /**
      * Return the hotel consumption status
      * @param id
-     * @return first is the search result, the second is the list<ConsumptionVO>, which consists of the consumption type and the consumption type
+     * @return first is the search result, the second is the list ConsumptionVO, which consists of the consumption type and the consumption type
      */
     Map<String,Object> getHotelConsumptionStatus(int id);
 

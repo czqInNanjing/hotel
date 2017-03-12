@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
     <link rel="stylesheet" href="../../static/css/hotel.css" th:href="@{/css/hotel.css}"/>
     <link rel="stylesheet" href="../../static/css/other.css" th:href="@{/css/other.css}"/>
+    <link rel="stylesheet" href="../../static/css/w3.css" th:href="@{/css/w3.css}"/>
     <title>Hotel Index</title>
 </head>
 <body>
@@ -55,7 +56,7 @@
 
 
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="w3-table w3-bordered w3-striped w3-card-4">
             <tr>
                 <th>Item</th>
                 <th>Message</th>
@@ -82,7 +83,7 @@
             </tr>
         </table>
     </div>
-    <p><a href="javascript:" class="btn btn-primary my-pop-1" role="button">Edit Apply</a>
+    <p style="margin-top: 10px"><a href="javascript:" class="btn btn-primary my-pop-1" role="button">Edit Apply</a>
         <a href="#" class="btn btn-info my-pop-2" role="button" th:unless="${hotel.status==1}">Apply for open</a>
     </p>
 

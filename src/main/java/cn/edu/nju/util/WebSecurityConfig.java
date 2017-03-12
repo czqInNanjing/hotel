@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import javax.sql.DataSource;
+
 /**
  * @author Qiang
  * @since 10/03/2017
@@ -15,17 +17,24 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    javax.sql.DataSource dataSource;
-    @Autowired
-    MyAuthenticationProvider provider;
-    @Autowired
+    private final DataSource dataSource;
+    private final MyAuthenticationProvider provider;
+    private final
     AuthenticationSuccessHandler handler;
+
+    @Autowired
+    public WebSecurityConfig(AuthenticationSuccessHandler handler, DataSource dataSource, MyAuthenticationProvider provider) {
+        this.handler = handler;
+        this.dataSource = dataSource;
+        this.provider = provider;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index" , "/register" , "/cors/*" , "/css/*" , "/fonts/*" , "/img/*" , "/js/*").permitAll()
+                .antMatchers("/", "/index", "/register", "/cors/*", "/css/*", "/fonts/*", "/img/*", "/js/*").permitAll()
                 .antMatchers("/member/*").hasRole("USER")
                 .antMatchers("/hotel/*").hasRole("HOTEL")
                 .antMatchers("/manager/*").hasRole("MANAGER")
@@ -44,4 +53,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(provider);
 
-    }}
+    }
+}

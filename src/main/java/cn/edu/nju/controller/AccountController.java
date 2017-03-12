@@ -42,9 +42,6 @@ public class AccountController {
         this.hotelRepository = hotelRepository;
     }
 
-    //TODO Check Login status in each request use Spring Security
-    //TODO Check Form
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(HttpSession session, @RequestParam("username") String mail,@RequestParam("password") String password) {
 
@@ -55,11 +52,11 @@ public class AccountController {
             session.setAttribute(SystemDefault.USER_ID, result.getId());
             switch (result.getType()) {
                 case 0:
-                    return "/member/index";
+                    return "member/index";
                 case 1:
-                    return "/hotel/index";
+                    return "hotel/index";
                 case 2:
-                    return "/manager/index";
+                    return "manager/index";
                 default:
                     return "account/index";
             }
@@ -131,6 +128,8 @@ public class AccountController {
         sessionStatus.setComplete();
         return "account/index";
     }
+
+
 
 
 }

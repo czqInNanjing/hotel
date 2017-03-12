@@ -29,7 +29,7 @@ public class ManagerController {
         model.addAttribute("opens", managerService.getAllOpenApplication(false, -1));
         model.addAttribute("edits" , managerService.getAllModifyApplication(false, -1));
 
-        return "/manager/index";
+        return "manager/index";
     }
 
     @RequestMapping(value = "/settlements", method = RequestMethod.GET)
@@ -37,7 +37,7 @@ public class ManagerController {
         model.addAttribute("settlements", managerService.getAllSettlements(false, -1));
 //        model.addAttribute("edits" , managerService.getAllModifyApplication());
 
-        return "/manager/settlement";
+        return "manager/settlement";
     }
 
 
@@ -57,7 +57,7 @@ public class ManagerController {
 
     @RequestMapping("/statistics")
     public String statistics() {
-        return "/manager/statistics";
+        return "manager/statistics";
     }
 
 

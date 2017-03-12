@@ -37,7 +37,7 @@ public class MemberController {
         model.addAttribute(SystemDefault.HOTELS, hotelService.getHotelsByPage(page));
 
         model.addAttribute(SystemDefault.CURRENT_PAGE, page);
-        return "/member/index";
+        return "member/index";
     }
 
 
@@ -46,7 +46,7 @@ public class MemberController {
 
         model.addAttribute("member", memberService.getMemberProfile(id));
 
-        return "/member/profile";
+        return "member/profile";
     }
 
     @PostMapping("/reserve")
@@ -71,7 +71,7 @@ public class MemberController {
         }
         model.addAttribute(SystemDefault.HOTEL_ID, hotelId);
         model.addAttribute(SystemDefault.CURRENT_PAGE, page);
-        return "/member/detail";
+        return "member/detail";
     }
 
     @PostMapping("/edit")

@@ -76,7 +76,7 @@ public class HotelController {
             model.addAttribute("records", liveMesEntities);
         }
 
-        return "/hotel/record";
+        return "hotel/record";
     }
 
 
@@ -110,13 +110,13 @@ public class HotelController {
             model.addAttribute("open", true);
         }
 
-        return "/hotel/info";
+        return "hotel/info";
     }
 
 
     @RequestMapping("/statistics")
     public String statistics() {
-        return "/hotel/statistics";
+        return "hotel/statistics";
     }
 
 
@@ -128,8 +128,7 @@ public class HotelController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String editApplication(Model model, String name, String address, String description, @SessionAttribute(SystemDefault.USER_ID) int id, String url) {
-        //TODO upload image
-//        String url = fileService.saveFile(file);
+
 
         hotelService.saveModifyApplication(name, address, description, id, url);
 

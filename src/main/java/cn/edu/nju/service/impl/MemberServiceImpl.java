@@ -253,7 +253,7 @@ public class MemberServiceImpl implements MemberService {
 
 
         model.addAttribute("statistics", buildMemberStatisticsVO(reservedEntities, liveMesEntities, rechargeEntities, payRecordEntities, pointConvertEntities));
-        return "/member/statistics";
+        return "member/statistics";
     }
 
     @Override

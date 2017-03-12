@@ -23,7 +23,7 @@ import java.util.*;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@Commit
+//@Commit
 public class AddDataTest {
 
 
@@ -51,8 +51,6 @@ public class AddDataTest {
             memberEntity.setRegistDate(new Timestamp(System.currentTimeMillis() - random.nextInt(30)*3600*24*1000));
             memberEntity.setDeposit(random.nextInt(3000));
             memberRepository.save(memberEntity);
-
-
 
 
 

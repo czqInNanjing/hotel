@@ -166,6 +166,7 @@
 <!--Scripts-->
 <script src="../../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}"></script>
 <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../../static/js/jquery.jsonp-2.4.0.min.js" th:src="@{/js/jquery.jsonp-2.4.0.min.js}"></script>
 <script th:inline="javascript">
     var roomId = 0;
     var inputs = [];
@@ -173,7 +174,6 @@
         e.preventDefault();
         roomId = $(this).attr("name");
     });
-
 
     $('.reserve').on('click', function (e) {
         e.preventDefault();

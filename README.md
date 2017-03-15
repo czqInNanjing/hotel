@@ -1,6 +1,6 @@
-#Hostel World -- A Hotel System based on J2EE
+# Hostel World -- A Hotel System based on J2EE #
 
-##Introduction
+## Introduction ##
 
 Hostel World is a J2EE Web Application implementing the basic functions of a hotel system including:
 
@@ -22,22 +22,22 @@ Hostel World is a J2EE Web Application implementing the basic functions of a hot
 	* 	Approval/Deny the applications of the hotel
 	*  Check Hostel World Statistics, including the living, reservation, consumption, financial status
 
-##Features
+## Features
 * Spring Boot Ver1.5.1
 * Spring Security
 * Thymeleaf
 
-##Get Started
-###Requried:
+## Get Started
+### Requried:
  * MySQL
  * JDK1.8+
 
-###Start Procedures
+### Start Procedures
 1. Clone the project to your PC
 2. Import the database data in the docs/Hotel.sql to your MySQL
 3. Start the SpringBootApplication
 
-##Preview
+## Preview
 ### Login ###
 ![Login](docs/pics/login.png)
 ---

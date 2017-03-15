@@ -64,7 +64,7 @@
             <div class="item active my-carousel-image">
 
                 <!--<img src="../../static/img/hotel/hotel1.JPG" th:src="${hotels[0].picUrl}" alt="Hotel One"/>-->
-                <div class="carousel-cover" style="background-image:url('/img/hotel/bigHotel1.jpg')" ></div>
+                <div class="carousel-cover" style="background-image:url('/img/hotel/bigHotel1.jpg')"></div>
                 <div class="carousel-caption">
                     <h2>
                         <a href="detail.html" th:href="@{/member/detail(hotelId=${hotels[0].id})}"
@@ -72,7 +72,7 @@
                     </h2></div>
             </div>
             <div class="item my-carousel-image">
-                <div class="carousel-cover"  style="background-image:url('/img/hotel/bigHotel2.jpg')"  ></div>
+                <div class="carousel-cover" style="background-image:url('/img/hotel/bigHotel2.jpg')"></div>
                 <!--<img src="../../static/img/hotel/hotel2.jpeg" th:src="${hotels[1].picUrl}" alt="Hotel 2"/>-->
                 <div class="carousel-caption">
                     <h2><a href="detail.html" th:href="@{/member/detail(hotelId=${hotels[1].id})}"
@@ -81,7 +81,7 @@
             </div>
             <div class="item my-carousel-image">
                 <!--<a href="detail.html" th:href="@{/member/detail(hotelId=${hotels[2].id})}"></a>-->
-                <div class="carousel-cover"  style="background-image:url('/img/hotel/bigHotel3.jpg')" ></div>
+                <div class="carousel-cover" style="background-image:url('/img/hotel/bigHotel3.jpg')"></div>
                 <!--<img src="../../static/img/hotel/hotel3.jpg" style="background-image:url('../../static/img/hotel/hotel3.jpeg')" th:src="${hotels[2].picUrl}" alt="Hotel 3"/>-->
                 <div class="carousel-caption">
                     <h2><a href="detail.html" th:href="@{/member/detail(hotelId=${hotels[2].id})}"
@@ -105,7 +105,7 @@
         <div th:each="hotel : ${hotels}" class="col-sm-6 col-md-4">
             <div class="thumbnail">
                 <!--<img src="../../static/img/hotel/hotel1.JPG" alt="hotel pic" th:src="${hotel.picUrl}"/>-->
-                <div class="cover"   th:style="'background-image: url(' + ${hotel.picUrl} + ')'" ></div>
+                <div class="cover" th:style="'background-image: url(' + ${hotel.picUrl} + ')'"></div>
                 <div class="caption">
                     <h3 th:text="${hotel.name}">Shanghai Hotel</h3>
                     <p th:text="${hotel.description}">This is a very good hotel with wifi and hot

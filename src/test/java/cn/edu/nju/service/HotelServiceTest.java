@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -100,4 +101,33 @@ public class HotelServiceTest {
     }
 
 
+    @Test
+    public void re() throws Exception {
+        liveMesRepository.findAll().forEach( liveMesEntity -> {
+            if (liveMesEntity.getPersonNum() == 0) {
+                liveMesEntity.setPersonNum(2);
+                liveMesRepository.save(liveMesEntity);
+            }
+
+
+        });
+    }
+
+    @Test
+    public void testEdit() throws Exception {
+
+
+        List<HotelEntity> hotelEntities = hotelRepository.findByStatus(1);
+        Random random = new Random();
+        for (int i = 0; i < 50; i++) {
+
+            if (random.nextInt(3) != 1) {
+                hotelService.saveModifyApplication("I want to change to a new name", "new address", "new description",hotelEntities.get(i).getId(), "/img/hotel/hotel2.jpeg" );
+
+//                hotelRepository.save()
+            }
+
+
+        }
+    }
 }

@@ -25,7 +25,7 @@ public class MemberQualifiedServiceImpl implements MemberQualifiedService {
         this.memberService = memberService;
     }
 
-    @Scheduled(cron = "\"0 0 2 * * ?\" ")
+    @Scheduled(cron = "0 0 * * * *")
     @Override
     public void memberQualifiedExecutor() {
         subtractAllRemainDays();

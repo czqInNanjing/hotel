@@ -75,9 +75,9 @@
                     <td th:text="${room.price}">800</td>
                     <td>
                         <div th:switch="${room.status}">
-                            <p th:case="0">Available</p>
-                            <p th:case="1">Reserved</p>
-                            <p th:case="*">Under Use</p>
+                            <span th:case="0">Available</span>
+                            <span th:case="1">Reserved</span>
+                            <span th:case="*">Under Use</span>
                         </div>
                     </td>
                 </tr>

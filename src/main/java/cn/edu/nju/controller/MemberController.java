@@ -67,12 +67,12 @@ public class MemberController {
     public String detail(Model model, int hotelId,@RequestParam(value = "page", defaultValue = "0") int page) {
         HotelDetailVO hotelDetailVO = hotelService.getHotelDetailVOByHotelId(hotelId,page);
         if (hotelDetailVO != null) {
-            model.addAttribute(SystemDefault.HOTEL_DETAIL, hotelDetailVO);
-        }
+        model.addAttribute(SystemDefault.HOTEL_DETAIL, hotelDetailVO);
+    }
         model.addAttribute(SystemDefault.HOTEL_ID, hotelId);
         model.addAttribute(SystemDefault.CURRENT_PAGE, page);
         return "member/detail";
-    }
+}
 
     @PostMapping("/edit")
     @ResponseBody

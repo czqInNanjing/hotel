@@ -191,14 +191,25 @@ public class ManagerServiceImpl implements ManagerService {
         List<Integer> underUseList = new ArrayList<>(hotelEntities.size());
         List<Integer> availableList = new ArrayList<>(hotelEntities.size());
 
-
-        hotelEntities.forEach(hotelEntity -> {
+        int index = 0;
+        for (HotelEntity hotelEntity : hotelEntities) {
+            index++;
+            if (index > 20) {
+                break;
+            }
             hotelNameList.add(hotelEntity.getName());
             List<Integer> status = hotelService.getRoomStatus(hotelEntity.getId());
             reservedList.add(status.get(0));
             underUseList.add(status.get(1));
             availableList.add(status.get(2));
-        });
+        }
+//        hotelEntities.forEach(hotelEntity -> {
+//            hotelNameList.add(hotelEntity.getName());
+//            List<Integer> status = hotelService.getRoomStatus(hotelEntity.getId());
+//            reservedList.add(status.get(0));
+//            underUseList.add(status.get(1));
+//            availableList.add(status.get(2));
+//        });
 
         result.put("hotelNameList", hotelNameList);
         result.put("reserved" , reservedList);
@@ -220,14 +231,29 @@ public class ManagerServiceImpl implements ManagerService {
         List<Integer> liveTimeList = new ArrayList<>();
         List<Integer> rechargeTimeList = new ArrayList<>();
 
+        int index = 0;
+        for (MemberEntity memberEntity : memberEntities) {
+            index++;
+            if (index > 40) {
+                break;
+            }
 
-        memberEntities.forEach(memberEntity -> {
             userId.add(String.format("%07d" , memberEntity.getId()));
             List<Integer> status = memberService.getMemberStatus(memberEntity.getId());
             reservedTimeList.add(status.get(0));
             liveTimeList.add(status.get(1));
             rechargeTimeList.add(status.get(2));
-        });
+        }
+
+//        memberEntities.forEach(memberEntity -> {
+//            userId.add(String.format("%07d" , memberEntity.getId()));
+//            List<Integer> status = memberService.getMemberStatus(memberEntity.getId());
+//            reservedTimeList.add(status.get(0));
+//            liveTimeList.add(status.get(1));
+//            rechargeTimeList.add(status.get(2));
+//        });
+//
+
 
         result.put("userIdList", userId);
         result.put("reservedTime" , reservedTimeList);

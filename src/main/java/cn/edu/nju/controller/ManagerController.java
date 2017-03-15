@@ -1,11 +1,12 @@
 package cn.edu.nju.controller;
 
 import cn.edu.nju.service.ManagerService;
+import cn.edu.nju.service.MemberService;
+import cn.edu.nju.vo.MemberInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -18,10 +19,11 @@ import java.util.Map;
 @RequestMapping("/manager")
 public class ManagerController {
     private final ManagerService managerService;
-
+    private final MemberService memberService;
     @Autowired
-    public ManagerController(ManagerService managerService) {
+    public ManagerController(ManagerService managerService, MemberService memberService) {
         this.managerService = managerService;
+        this.memberService = memberService;
     }
 
     @RequestMapping({"/", "/index"})
@@ -84,4 +86,7 @@ public class ManagerController {
         return managerService.getFinanceStatus();
 
     }
+
+
+
 }

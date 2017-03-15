@@ -5,12 +5,13 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author Qiang
  * @since 18/02/2017
  */
-//@EnableScheduling
+@EnableScheduling
 @SpringBootApplication
 //@EnableJpaRepositories(repositoryBaseClass = CustomPayRecordRepositoryImpl.class)
 public class Application {

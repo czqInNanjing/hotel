@@ -5,7 +5,9 @@ import cn.edu.nju.entity.HotelEntity;
 import cn.edu.nju.entity.LiveMesEntity;
 import cn.edu.nju.entity.RoomsEntity;
 import cn.edu.nju.service.HotelService;
+import cn.edu.nju.service.MemberService;
 import cn.edu.nju.util.SystemDefault;
+import cn.edu.nju.vo.MemberInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,12 +29,13 @@ public class HotelController {
 
     private final HotelRepository hotelRepository;
     private final HotelService hotelService;
-
+    private final MemberService memberService;
 
     @Autowired
-    public HotelController(HotelRepository hotelRepository, HotelService hotelService) {
+    public HotelController(HotelRepository hotelRepository, HotelService hotelService, MemberService memberService) {
         this.hotelRepository = hotelRepository;
         this.hotelService = hotelService;
+        this.memberService = memberService;
     }
 
 
@@ -172,4 +175,15 @@ public class HotelController {
         return hotelService.getHotelConsumptionStatus(id);
     }
 
+
+    @GetMapping("/getDiscount")
+    @ResponseBody
+    public int getDiscount(int memberId ){
+        MemberInfoVO entity  = memberService.getMemberProfile(memberId);
+        if (entity != null) {
+            return entity.getDiscount();
+        } else {
+            return -1;
+        }
+    }
 }

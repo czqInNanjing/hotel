@@ -305,7 +305,7 @@
         var memberId = $('#memberId').val();
         console.log('lose focus');
         $.ajax({
-            url :'/member/getDiscount',
+            url :'/hotel/getDiscount',
             data:{memberId: memberId},
             dataType: "text",
             success: function (data) {
